@@ -1,0 +1,56 @@
+﻿@model PlaceViewModel
+
+<div class="form-group  ">
+   <div asp-validation-summary="All"></div>
+          
+            <div class="form-group">
+                <label asp-for="Name" class="col-form-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+    </div> 
+    
+    <div class="form-group">
+        <label asp-for="Description" class="col-form-label"></label>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Location" class="col-form-label"></label>
+        <input asp-for="Location" class="form-control" />
+        <span asp-validation-for="Location" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Rating" class="col-form-label"></label>
+        <input asp-for="Rating" class="form-control" />
+        <span asp-validation-for="Rating" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Link" class="col-form-label"></label>
+        <input asp-for="Link" class="form-control" />
+        <span asp-validation-for="Link" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Phone" class="col-form-label"></label>
+        <input asp-for="Phone" class="form-control" />
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="inputAddress" class="col-form-label">City</label>
+        <select asp-for="CityId" class="col-form-label mt-2" asp-items="@(new SelectList(Model.Cities_List,"Id" ,"Name"))" style="width :70px ; border : 2px dashed black">
+            <option>--Please Select A City</option>
+
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="inputAddress" class="=col-form-label">Category</label>
+        <select asp-for="CategoryId" class="col-form-select mt-2" asp-items="@(new SelectList(Model.Categories_List,"Id","Name"))" style="width :70px ; border : 2px dashed black">
+            <option>--Please Select A Category</option>
+        </select>
+    </div>
+   
+
+</div>
+
+

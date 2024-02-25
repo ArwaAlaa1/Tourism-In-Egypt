@@ -1,0 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Tourism.Core.Entities;
+
+namespace Tourism.Core.Repositories.Contract
+{
+    public interface INotificationRepository : IGenericRepository<Notification>
+    {
+        Task<IEnumerable<Notification>> GetAll();
+
+        Task<Notification> GetNotificationwithUser(int id);
+    }
+}

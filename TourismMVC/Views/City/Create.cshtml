@@ -1,0 +1,32 @@
+﻿@model City
+
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+<div class="m-auto w-75 bg-white p-5">
+<h1>Add New City</h1>
+
+<hr />
+
+<form asp-action="Create" method="post">
+
+
+    <partial name="PartialViews/CreateEditView" />
+
+    <div class="form-group mt-4">
+        <input type="submit" value="Create" class="btn btn-primary" />
+        <a asp-action="Index" class="btn btn-light">Back to List</a>
+    </div>
+</form>
+
+</div>
+@*@section validation{
+    <partial name="_ValidationScriptsPartial" />
+   
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+}*@

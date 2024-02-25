@@ -1,0 +1,23 @@
+﻿@model NotificationModel
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="m-auto w-75">
+    <h1>Edit Notification</h1>
+
+    <hr />
+
+    <form asp-action="Edit" method="post">
+
+
+        <partial name="PartialViews/CreateEditView" />
+
+        <div class="form-group mt-4">
+            <input type="submit" value="Save" class="btn btn-primary" />
+            <a asp-action="Index" class="btn btn-light">Back to List</a>
+        </div>
+    </form>
+
+</div>
+

@@ -1,0 +1,39 @@
+﻿@model Notification
+<div class="card-body">
+    <h5 class="card-title">Notification Details</h5>
+
+    <ul>
+
+
+        <li class="card-text">
+
+            <label asp-for="Message" class="col-form-label"></label>
+            : @Model.Message
+        </li>
+
+
+        <li class="card-text">
+            <label asp-for="Message" class="col-form-label"></label>
+           : @Model.ReadStatus</li>
+        
+        <li class="card-text">
+            <label asp-for="Date" class="col-form-label"></label>
+            : @Model.Date
+        </li>
+        <li class="card-text">
+            <label asp-for="User.FName" class="col-form-label"></label>
+           : @Model.User.FName</li>
+        <li class="card-text">
+            <label asp-for="CreatedDate" class="col-form-label"></label>
+
+            : @Model.CreatedDate</li>
+        <li class="card-text">
+            <label asp-for="ModifiedDate" class="col-form-label"></label>
+
+           : @Model.ModifiedDate</li>
+        <li class="card-text">
+            <label asp-for="IsActive" class="col-form-label"></label>
+
+            : @Model.IsActive</li>
+    </ul>
+</div>

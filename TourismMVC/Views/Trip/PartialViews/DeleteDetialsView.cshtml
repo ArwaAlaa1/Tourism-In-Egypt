@@ -1,0 +1,44 @@
+﻿@model Trip 
+
+<div class="card-body">
+    <h5 class="card-title">Trip Details</h5>
+
+    <ul>
+        <li class="card-text">
+
+            <label asp-for="Name" class="col-form-label"></label>
+            : @Model.Name
+        </li>
+        <li class="card-text">
+            <label asp-for="StartLocation" class="col-form-label"></label>
+
+           : @Model.StartLocation</li>
+        <li class="card-text">
+            <label asp-for="Description" class="col-form-label"></label>
+
+           : @Model.Description</li>
+        <li class="card-text">
+            <label asp-for="StartDate" class="col-form-label"></label>
+            : @Model.StartDate
+        </li>
+        <li class="card-text">
+            <label asp-for="EndDate" class="col-form-label"></label>
+
+           : @Model.EndDate</li>
+        <li class="card-text">
+            <label asp-for="CreatedDate" class="col-form-label"></label>
+
+            : @Model.CreatedDate
+        </li>
+        <li class="card-text">
+            <label asp-for="ModifiedDate" class="col-form-label"></label>
+
+            : @Model.ModifiedDate
+        </li>
+        <li class="card-text">
+            <label asp-for="IsActive" class="col-form-label"></label>
+
+            : @Model.IsActive
+        </li>
+    </ul>
+</div>

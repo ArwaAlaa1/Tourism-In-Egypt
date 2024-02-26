@@ -1,15 +1,21 @@
-﻿@model Tourism.Core.Entities.Category
+﻿@model CityPhotosViewModel
 
 <div >
-   
+    <div asp-validation-summary="All"></div>
+
     <div class="form-group">
-    <label asp-for="Name" class="col-form-label"></label>
-        <input asp-for="Name" class="form-control" readonly/>
+        <label asp-for="Id" class="col-form-label"></label>
+        <input asp-for="Id" class="form-control" readonly />
 
     </div>
+    @*<div class="form-group">
+    <label asp-for="CityId" class="col-form-label">City</label>
+        <input asp-for="CityId"  class="form-control" readonly />
+
+    </div>*@
     <div class="form-group">
-    <label asp-for="CreatedDate" class="col-form-label"></label>
-     <input asp-for="CreatedDate" class="form-control" readonly />
+    <label asp-for="Photo" class="col-form-label"></label>
+     <input asp-for="Photo" class="form-control" readonly />
 
     </div>
 </div>

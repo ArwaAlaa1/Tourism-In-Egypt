@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,11 @@ using Tourism.Core.Entities;
 namespace Tourism.Repository.Data
 {
     public class TourismContext : DbContext
-    { 
+    {
+        public TourismContext() : base()
+        {
+
+        }
         public TourismContext(DbContextOptions<TourismContext> options)
             : base(options)
         {
@@ -31,7 +36,11 @@ namespace Tourism.Repository.Data
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Review> Reviews { get; set; }
 
-        
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+           
+           optionsBuilder.UseSqlServer(" Server = ARWA-ALAA\\ARWAALAA; Database = Tourism ; Trusted_Connection = true");
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
           

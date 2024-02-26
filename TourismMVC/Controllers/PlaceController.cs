@@ -149,6 +149,8 @@ namespace TourismMVC.Controllers
         {
             if (id != placeVM.Id)
                 return BadRequest();
+
+
             var placemapped = mapper.Map<PlaceViewModel, Place>(placeVM);
             if (ModelState.IsValid)  //server side validation
             {

@@ -10,6 +10,7 @@ namespace Tourism.Core.Repositories.Contract
     public interface IGenericRepository<T> where T : BaseEntity
     {
         Task<T?> GetAsync(int id);
+        CityPhotos GetCityPhAsync(int id);
         Task<IEnumerable<T>> GetAllAsync();
         void Add(T entity);
         void Update(T entity);

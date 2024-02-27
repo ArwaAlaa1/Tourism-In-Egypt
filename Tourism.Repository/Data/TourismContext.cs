@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,11 @@ namespace Tourism.Repository.Data
 {
     public class TourismContext : DbContext
     {
+
         public TourismContext()
         {
         }
+
 
         public TourismContext(DbContextOptions<TourismContext> options)
             : base(options)
@@ -41,7 +44,7 @@ namespace Tourism.Repository.Data
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Review> Reviews { get; set; }
 
-        
+       
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
           

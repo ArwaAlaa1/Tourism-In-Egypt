@@ -10,6 +10,8 @@ namespace TourismMVC.Helpers
 		public MappingProfiles()
 		{
 			CreateMap<PlaceViewModel,Place>().ReverseMap();
+			CreateMap<CityPhotosViewModel,CityPhotos>().ReverseMap();
+
 			CreateMap<NotificationModel,Notification>().ReverseMap();
             CreateMap<Place_TripModel, Place_Trip>().ReverseMap();
 

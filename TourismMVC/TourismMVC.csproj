@@ -327,6 +327,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Views\CityPhotos\Create.cshtml" />
+    <None Include="Views\CityPhotos\Delete.cshtml" />
+    <None Include="Views\CityPhotos\Details.cshtml" />
+    <None Include="Views\CityPhotos\Edit.cshtml" />
+    <None Include="Views\CityPhotos\Index.cshtml" />
+    <None Include="Views\CityPhotos\PartialViews\CreateEditView.cshtml" />
+    <None Include="Views\CityPhotos\PartialViews\DeleteDetialsView.cshtml" />
     <None Include="wwwroot\assets\css\all.min.css" />
     <None Include="wwwroot\assets\css\style.css" />
     <None Include="wwwroot\assets\icon\icons8-aircraft-16.png" />

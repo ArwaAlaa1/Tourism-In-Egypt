@@ -15,6 +15,7 @@ namespace Tourism.Repository
     {
         public IGenericRepository<T> generic { get ; set; }
         public IReviewRepository review { get; set; }
+      
         public IPlace_TripRepository placeTrip { get; set; }
         public INotificationRepository notification { get; set; }
         private readonly TourismContext _context;

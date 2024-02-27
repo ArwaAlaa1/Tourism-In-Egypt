@@ -22,7 +22,7 @@ namespace Tourism.Repository.Repository
 
         public async Task<IEnumerable<Place_Trip>> GetAllWithPlaceAndTrip()
         {
-            return await _context.Place_Trips.Include("Places").Include("Trips").ToListAsync();
+            return await _context.Place_Trips.Include("Place").Include("Trip").ToListAsync();
         }
 
 
@@ -31,7 +31,10 @@ namespace Tourism.Repository.Repository
             return await _context.Place_Trips.Include("Place").Include("Trip").FirstAsync(x => x.Id == id );
         }
 
-       
+       public async Task<Place_Trip> ForUnique(int valueofplace , int trip)
+        {
+            return await _context.Place_Trips.FirstAsync(x => x.PlaceId == valueofplace && x.TripId == trip);
+        }
 
     }
 }

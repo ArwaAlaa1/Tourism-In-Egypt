@@ -14,14 +14,12 @@
             </div>
     <div class="form-group">
         <label asp-for="ReadStatus" class="col-form-label"></label>
-        <input  type="checkbox" checked="true" asp-for="ReadStatus" class="form-control" value="true"/>
-        <input type="checkbox" checked="false" asp-for="ReadStatus" class="form-control" value="false"/>
-
+        <input  type="checkbox" checked="true" asp-for="ReadStatus"  value="true"/>
         <span asp-validation-for="ReadStatus" class="text-danger"></span>
     </div>
     <div class="mb-3">
         <label>User Name</label>
-        <select asp-for="UserId" asp-items="@(new SelectList(Model.users,"UserId","UserName"))">
+        <select asp-for="UserId" asp-items="@(new SelectList(Model.users,"Id","FName"))">
             <option value="0">select a department</option>
         </select>
     </div>

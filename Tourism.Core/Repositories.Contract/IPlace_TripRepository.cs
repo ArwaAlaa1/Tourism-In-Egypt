@@ -12,5 +12,8 @@ namespace Tourism.Core.Repositories.Contract
         Task<Place_Trip >GetOneWithPlaceAndTrip(int id);
         Task<IEnumerable<Place_Trip>> GetAllWithPlaceAndTrip();
 
+        Task<Place_Trip> ForUnique(int valueofplace, int trip);
+
+
     }
 }

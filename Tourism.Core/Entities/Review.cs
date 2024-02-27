@@ -11,7 +11,7 @@ namespace Tourism.Core.Entities
 
         public float Rating { get; set; }
 
-        public DateTime Time { get; set; }
+        public DateTime Time { get; set; } = DateTime.Now;
 
         public int UserId { get; set; }
         public virtual User? User { get; set; }

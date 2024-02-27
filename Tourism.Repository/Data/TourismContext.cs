@@ -10,11 +10,21 @@ using Tourism.Core.Entities;
 namespace Tourism.Repository.Data
 {
     public class TourismContext : DbContext
-    { 
+    {
+        public TourismContext()
+        {
+        }
+
         public TourismContext(DbContextOptions<TourismContext> options)
             : base(options)
         {
             
+        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+           
+            optionsBuilder.UseSqlServer("Server = DESKTOP-9IISLS5 ; Initial Catalog = Tourism ; Integrated Security = true ; TrustServerCertificate = true");
         }
         public DbSet<Trip> Trips { get; set; }
         public DbSet<User> Users { get; set; }

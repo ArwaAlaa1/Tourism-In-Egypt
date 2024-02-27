@@ -34,7 +34,7 @@ namespace TourismMVC.Controllers
             IEnumerable<Trip> trips;
             trips = await _unitOfWork.generic.GetAllAsync();
 
-            return PartialView(trips);
+            return View(trips);
         }
 
         //Open view of create trip

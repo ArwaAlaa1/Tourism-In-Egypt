@@ -3,23 +3,23 @@
 @inject IUnitOfWork<City> _unitOfWork
 
 @{
-    var cities = new SelectList(await _unitOfWork.generic.GetAllAsync(), "Id", "Name");
+    var cities = new SelectList(await _unitOfWork.generic.GetAllAsync(), nameof(City.Id),nameof(City.Name));
 }
 <div class="form-group p-5 ">
     <div asp-validation-summary="All"></div>
 
     <div class="form-group">
-        <label for="inputAddress" class="col-form-label">City</label>
-        <select asp-for="CityId" class="col-form-label mt-2" asp-items="@cities" style="width :70px ; border : 2px dashed black">
+        <label asp-for="CityId" class="col-form-label">City</label>
+        <select asp-for="CityId" class="form-control mt-2" asp-items="@cities" style="width :70px ; border : 2px dashed black">
             <option value="@null">--Please Select A City</option>
 
         </select>
     </div>
            <div class="form-group">
-        <label asp-for="Photo" class="control-label">Photo</label>
-        <input asp-for="Photo" class="form-control" />
-                <span asp-validation-for="Photo" class="text-danger"></span> 
-            </div>
+        <label asp-for="PhotoFile" class="control-label"></label>
+        <input asp-for="PhotoFile" class="form-control-file" />
+        @*<span asp-validation-for="PhotoFile" class="text-danger"></span>*@
+    </div>
 
          
             

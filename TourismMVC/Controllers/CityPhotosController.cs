@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Tourism.Core.Entities;
 using Tourism.Core.Repositories.Contract;
 using Tourism.Repository;
 using Tourism.Repository.Data;
+using TourismMVC.Helpers;
 using TourismMVC.ViewModels;
 
 namespace TourismMVC.Controllers
@@ -14,7 +16,7 @@ namespace TourismMVC.Controllers
 		private readonly IUnitOfWork<CityPhotos> unitOfWork;
 		
 		private readonly IMapper mapper;
-        private readonly TourismContext context;
+        
 
         public CityPhotosController(IUnitOfWork<CityPhotos> unitOfWork,
 		 IMapper mapper)
@@ -22,8 +24,8 @@ namespace TourismMVC.Controllers
 			this.unitOfWork = unitOfWork;
 			
 			this.mapper = mapper;
-            
-        }
+			
+		}
 
 		// GET: CityPhotosController
 		public async Task<IActionResult> Index()
@@ -31,6 +33,7 @@ namespace TourismMVC.Controllers
 			IEnumerable<CityPhotos> cityPhotos;
 			cityPhotos = await unitOfWork.generic.GetAllAsync();
 
+			
 			var cityPhviewModelList = mapper.Map<IEnumerable<CityPhotos>, IEnumerable<CityPhotosViewModel>>(cityPhotos);
 
 			if (cityPhviewModelList is not null)
@@ -46,7 +49,8 @@ namespace TourismMVC.Controllers
 			if (id is null)
 				return BadRequest();
 
-			var cityPh = await unitOfWork.generic.GetAsync(id.Value);
+		   var cityPh = await unitOfWork.generic.GetAsync(id.Value);
+			
 
 			if (cityPh is null)
 				return NotFound();
@@ -57,7 +61,7 @@ namespace TourismMVC.Controllers
 		}
 
 		// GET: CityPhotosController/Create
-		public async Task<IActionResult> Create()
+		public IActionResult Create()
 		{
 			return View();
 		}
@@ -65,13 +69,12 @@ namespace TourismMVC.Controllers
 		// POST: CityPhotosController/Create
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create(CityPhotosViewModel cityPhotos)
+		public IActionResult Create(CityPhotosViewModel cityPhotos)
 		{
-			//var AllCities = await _genericRepository.GetAllAsync();
-			//cityPhotos.cities = AllCities;
 			
 			if (ModelState.IsValid)
 			{
+               // cityPhotos.Photo = DocumentSetting.UploadFile(cityPhotos.PhotoFile, "Images");
                 var Citymapped = mapper.Map<CityPhotosViewModel, CityPhotos>(cityPhotos);
 
                 try
@@ -136,7 +139,7 @@ namespace TourismMVC.Controllers
         // POST: CityPhotosController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete([FromRoute]int? id, CityPhotosViewModel cityPhotosViewModel)
+        public IActionResult Delete([FromRoute]int? id, CityPhotosViewModel cityPhotosViewModel)
         {
             if (id != cityPhotosViewModel.Id)
                 return BadRequest();

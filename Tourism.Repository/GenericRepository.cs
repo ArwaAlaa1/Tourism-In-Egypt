@@ -21,12 +21,12 @@ namespace Tourism.Repository
 
         public async Task<IEnumerable<T>> GetAllAsync()
         {
-            //if (typeof(T) == typeof(CityPhotos))
-            //{
-            //    return (IEnumerable<T>) _context.CityPhotos.Include(c=>c.city);
-            //}
-            //else
-            return await _context.Set<T>().ToListAsync();
+            if (typeof(T) == typeof(CityPhotos))
+            {
+                return (IEnumerable<T>)_context.CityPhotos.Include(c => c.city);
+            }
+            else
+                return await _context.Set<T>().ToListAsync();
         }
 
         public async Task<T?> GetAsync(int id)
@@ -55,10 +55,6 @@ namespace Tourism.Repository
            
         }
 
-        public CityPhotos GetCityPhAsync(int id)
-        {
-            return  _context.CityPhotos.Include("city").FirstOrDefault(x => x.Id == id);
-
-        }
+       
     }
 }

@@ -10,8 +10,10 @@ namespace TourismMVC.ViewModels
 
 		[UniqueCityPhoto]
         public int CityId { get; set; }
-		public string Photo { get; set; }
-		public virtual City? city { get; set; }
+		public IFormFile PhotoFile { get; set; }
+        public string? Photo { get; set; }
+
+        public virtual City? city { get; set; }
 		public IEnumerable<City>? cities { get; set; }
 	}
 }

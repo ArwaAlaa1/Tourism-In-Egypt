@@ -11,16 +11,12 @@ namespace TourismMVC.Controllers
     {
         private readonly IUnitOfWork<Place> _unitOfWork;
 		private readonly IMapper mapper;
-		private readonly IGenericRepository<City> city;
-		private readonly IGenericRepository<Category> category;
-
-		public PlaceController(IUnitOfWork<Place> unitOfWork,IMapper mapper,
-            IGenericRepository<City> city , IGenericRepository<Category> Category)
+		
+		public PlaceController(IUnitOfWork<Place> unitOfWork,IMapper mapper )
         {
             _unitOfWork = unitOfWork;
 			this.mapper = mapper;
-			this.city = city;
-			category = Category;
+			
 		}
 
         // GET: CityController
@@ -55,28 +51,17 @@ namespace TourismMVC.Controllers
         }
 
         // GET: CityController/Create
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
-            PlaceViewModel place = new PlaceViewModel();
-
-            var cities =await  city.GetAllAsync();
-			var categories = await category.GetAllAsync();
-
-			place.Cities_List = cities;
-			place.Categories_List = categories;
-			return View(place);
+         
+			return View();
 		}
 
         // POST: CityController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(PlaceViewModel place)
+        public IActionResult Create(PlaceViewModel place)
         {
-            //var CityGet=await city.GetAsync(place.CityId);
-            //place.City = CityGet;
-
-            //var CategoryGet = await category.GetAsync(place.CategoryId);
-            //place.Category = CategoryGet;
             
             var placemapped=mapper.Map< PlaceViewModel,Place>(place);
             
@@ -94,11 +79,7 @@ namespace TourismMVC.Controllers
 
                 return RedirectToAction("Index");
             }
-            var cities = await city.GetAllAsync();
-            var categories = await category.GetAllAsync();
-
-            place.Cities_List = cities;
-            place.Categories_List = categories;
+           
             return View(place);
         }
 

@@ -11,6 +11,7 @@ namespace TourismMVC.Helpers
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
             var CityPh = (CityPhotosViewModel)validationContext.ObjectInstance;
+            CityPh.Photo = DocumentSetting.UploadFile(CityPh.PhotoFile, "Images");
 
             TourismContext context = new TourismContext();
 

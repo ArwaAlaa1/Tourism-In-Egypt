@@ -8,11 +8,13 @@
         <input asp-for="Id" class="form-control" readonly />
 
     </div>
-    @*<div class="form-group">
-    <label asp-for="CityId" class="col-form-label">City</label>
-        <input asp-for="CityId"  class="form-control" readonly />
 
-    </div>*@
+    <div class="form-group">
+    <label asp-for="city" class="col-form-label">City</label>
+        <input asp-for="city.Name" value="" class="form-control" readonly />
+
+    </div>
+
     <div class="form-group">
     <label asp-for="Photo" class="col-form-label"></label>
      <input asp-for="Photo" class="form-control" readonly />

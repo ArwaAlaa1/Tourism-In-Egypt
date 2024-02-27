@@ -1204,6 +1204,7 @@
     <Folder Include="Views\Notification\PartialViews\" />
     <Folder Include="Views\Review\PartialViews\" />
     <Folder Include="Views\Trip\PartialViews\" />
+    <Folder Include="wwwroot\Files\Images\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,8 @@
-﻿@model IEnumerable<CityPhotosViewModel> 
+﻿@model IEnumerable<TourismMVC.ViewModels.PlacePhotoViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
 
 
 <!DOCTYPE html>
@@ -84,7 +88,7 @@
 		}
 
 			table.table tr th:first-child {
-				width:100px;
+				width: 100px;
 			}
 
 			table.table tr th:last-child {
@@ -129,7 +133,7 @@
 			}
 
 			table.table td a.details {
-				color:#2196F3;
+				color: #2196F3;
 				font-size: 20px;
 			}
 
@@ -292,7 +296,6 @@
 			font-weight: normal;
 		}
 
-
 	</style>
 	<script>
 		$(document).ready(function () {
@@ -352,14 +355,14 @@
 
 								</th>
 								<th>
-									@Html.DisplayNameFor(model => model.city)
+									@Html.DisplayNameFor(model => model.Place)
 
 								</th>
 								<th>
 									@Html.DisplayNameFor(model =>model.Photo)
 
 								</th>
-								
+
 								<th>
 									Details
 								</th>
@@ -383,12 +386,12 @@
 											@item.Id
 									</td>
 									<td>
-											@item.city?.Name
+											@item.Place?.Name
 									</td>
 									<td>
 										<img src="~/Files/Images/@item.Photo" width="90" height="90" class="rounded-2 img-fluid" />
 									</td>
-									
+
 
 									<td>
 										<a asp-action="Details" asp-route-id="@item.Id" class="btn btn-warning ">
@@ -409,7 +412,7 @@
 								</tr>
 								}
 
-							
+
 
 						</tbody>
 					</table>
@@ -422,5 +425,5 @@
 	{
 		<h1>No Data Available</h1>
 	}
-	</body>
+</body>
 </html>

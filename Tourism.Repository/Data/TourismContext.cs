@@ -29,12 +29,12 @@ namespace Tourism.Repository.Data
         {
             base.OnConfiguring(optionsBuilder);
            
-            optionsBuilder.UseSqlServer("Server = DESKTOP-9IISLS5 ; Initial Catalog = Tourism ; Integrated Security = true ; TrustServerCertificate = true");
+            optionsBuilder.UseSqlServer("Server = ARWA-ALAA\\ARWAALAA; Database = Tourism ; Trusted_Connection = true");
         }
         public DbSet<Trip> Trips { get; set; }
         public DbSet<ApplicationUser> Users { get; set; }
         public DbSet<CityPhotos> CityPhotos { get; set; }
-        public DbSet<PlacePhotos> PlacePhotos { get; set; }
+        public DbSet<CityPhotos> PlacePhotos { get; set; }
         public DbSet<User_Trip> User_Trips { get; set; }
         public DbSet<Place_Trip> Place_Trips { get; set; }
         public DbSet<Category> Categories { get; set; }

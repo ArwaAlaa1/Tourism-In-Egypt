@@ -1,23 +1,17 @@
-﻿@model PlaceViewModel
-
-
-@{
-    ViewData["Title"] = "Edit";
-}
-
+﻿@model TourismMVC.ViewModels.PlacePhotoViewModel
 
 <div class="m-auto w-75 bg-white p-5">
-    <h1>Edit Place</h1>
+    <h1>Add Place Photo</h1>
 
     <hr />
 
-    <form asp-action="Edit" method="post">
+    <form asp-action="Create" method="post" enctype="multipart/form-data">
 
 
         <partial name="PartialViews/CreateEditView" />
 
         <div class="form-group mt-4 p-5">
-            <input type="submit" value="Save" class="btn btn-primary" />
+            <input type="submit" value="Create" class="btn btn-primary" />
             <a asp-action="Index" class="btn btn-light">Back to List</a>
         </div>
     </form>

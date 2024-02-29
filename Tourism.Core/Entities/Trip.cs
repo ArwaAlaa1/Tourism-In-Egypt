@@ -8,7 +8,7 @@
         public TimeSpan EndDate { get; set; }
         public string Description { get; set; }
 
-        public virtual ICollection<User> Users { get; set; } = new List<User>();
+        public virtual ICollection<ApplicationUser> Users { get; set; } = new List<ApplicationUser>();
 
         public  virtual ICollection <Place> Places { get; set; } = new List <Place>();
     }

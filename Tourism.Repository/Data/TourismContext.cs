@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -10,7 +12,7 @@ using Tourism.Core.Entities;
 
 namespace Tourism.Repository.Data
 {
-    public class TourismContext : DbContext
+    public class TourismContext : IdentityDbContext<ApplicationUser , ApplicationRole ,int>
     {
 
         public TourismContext()
@@ -30,7 +32,7 @@ namespace Tourism.Repository.Data
             optionsBuilder.UseSqlServer("Server = DESKTOP-9IISLS5 ; Initial Catalog = Tourism ; Integrated Security = true ; TrustServerCertificate = true");
         }
         public DbSet<Trip> Trips { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<ApplicationUser> Users { get; set; }
         public DbSet<CityPhotos> CityPhotos { get; set; }
         public DbSet<PlacePhotos> PlacePhotos { get; set; }
         public DbSet<User_Trip> User_Trips { get; set; }
@@ -44,10 +46,13 @@ namespace Tourism.Repository.Data
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Review> Reviews { get; set; }
 
+        
        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-          
+          modelBuilder.Entity<IdentityUserLogin<int>>().HasKey(t => new {t.ProviderKey , t.LoginProvider });
+            modelBuilder.Entity<IdentityUserRole<int>>().HasKey(t => new { t.RoleId, t.UserId });
+            modelBuilder.Entity<IdentityUserToken<int>>().HasKey(t => new { t.UserId, t.LoginProvider });
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         }

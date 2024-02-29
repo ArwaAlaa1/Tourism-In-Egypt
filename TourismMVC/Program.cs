@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Tourism.Core.Entities;
 using Tourism.Core.Repositories.Contract;
 using Tourism.Repository;
 using Tourism.Repository.Data;
@@ -22,6 +23,9 @@ namespace TourismMVC
 
 			builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             builder.Services.AddAutoMapper(m=> m.AddProfile(new MappingProfiles()));
+            builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
+            options.Password.RequireUppercase = false)//configuration
+                .AddEntityFrameworkStores<TourismContext>();
 
 			var app = builder.Build();
 

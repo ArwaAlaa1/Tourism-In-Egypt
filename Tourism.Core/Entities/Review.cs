@@ -14,7 +14,7 @@ namespace Tourism.Core.Entities
         public DateTime Time { get; set; } = DateTime.Now;
 
         public int UserId { get; set; }
-        public virtual User? User { get; set; }
+        public virtual ApplicationUser? User { get; set; }
 
 
         public int Placeid { get; set; }

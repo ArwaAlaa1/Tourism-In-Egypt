@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Tourism.Core.Entities;
 using Tourism.Core.Repositories.Contract;
@@ -10,12 +11,12 @@ namespace TourismMVC.Controllers
     public class NotificationController : Controller
     {
         IUnitOfWork<Notification> _unitOfWorkNo { get; set; }
-        IUnitOfWork<User> _unitOfWorkUser { get; set; }
+        UserManager<ApplicationUser> _unitOfWorkUser { get; set; }
         private readonly IMapper mapper;
-        public NotificationController(IUnitOfWork<Notification> unitOfWork, IUnitOfWork<User> unitOfWorkUser , IMapper mapper)
+        public NotificationController(IUnitOfWork<Notification> unitOfWork, IMapper mapper, UserManager<ApplicationUser> unitOfWorkUser )
         {
             _unitOfWorkNo = unitOfWork;
-            _unitOfWorkUser = unitOfWorkUser;
+           _unitOfWorkUser = unitOfWorkUser;
             this.mapper = mapper;
         }
 
@@ -46,9 +47,9 @@ namespace TourismMVC.Controllers
         }
 
         //Get: Open Create form
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
-            var userlist = await _unitOfWorkUser.generic.GetAllAsync();
+            var userlist = _unitOfWorkUser.Users;
             NotificationModel model = new NotificationModel()
             {
                 users = userlist
@@ -59,7 +60,7 @@ namespace TourismMVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(NotificationModel model)
+        public IActionResult Create(NotificationModel model)
         {
             
                    var NotModel = mapper.Map<NotificationModel , Notification>(model);
@@ -78,7 +79,7 @@ namespace TourismMVC.Controllers
                             ModelState.AddModelError(string.Empty , ex.InnerException.Message);
                         }
                     }
-            var userlist = await _unitOfWorkUser.generic.GetAllAsync();
+            var userlist =  _unitOfWorkUser.Users;
             model.users = userlist;
 
             return View(model);
@@ -96,7 +97,7 @@ namespace TourismMVC.Controllers
             }
             else
             {
-                var userlist = await _unitOfWorkUser.generic.GetAllAsync();
+                var userlist =  _unitOfWorkUser.Users;
                 
                 var nomapper = mapper.Map<Notification, NotificationModel>(Choosen);
                 nomapper.users = userlist;
@@ -123,7 +124,7 @@ namespace TourismMVC.Controllers
                     ModelState.AddModelError(string.Empty, ex.InnerException.Message);
                 }
             }
-            var userlist = await _unitOfWorkUser.generic.GetAllAsync();
+            var userlist =  _unitOfWorkUser.Users;
             model.users = userlist;
             return View(model);
         }

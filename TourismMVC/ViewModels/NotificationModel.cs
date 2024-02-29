@@ -17,8 +17,8 @@ namespace TourismMVC.ViewModels
         public DateTime Date { get; set; } = DateTime.Now;
 
         public int UserId { get; set; }
-        public virtual User? User { get; set; }
+        public virtual ApplicationUser? User { get; set; }
 
-      public  IEnumerable<User> users { get; set; } = new List<User>();
+      public  IEnumerable<ApplicationUser> users { get; set; } = new List<ApplicationUser>();
     }
 }

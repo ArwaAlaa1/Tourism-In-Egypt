@@ -1,0 +1,33 @@
+﻿using Microsoft.AspNetCore.Components.Web;
+using System.ComponentModel.DataAnnotations;
+using Tourism.Repository.Data;
+using TourismMVC.ViewModels;
+
+namespace TourismMVC.Helpers
+{
+    public class UniqueUserName : ValidationAttribute
+    {
+        TourismContext Context = new TourismContext();
+        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
+        {
+            if (value != null)
+            {
+                var UName = value.ToString();
+
+                var UNameIndb = Context.Users.FirstOrDefault(u => u.UserName == UName);
+                if (UNameIndb == null)
+                {
+                    return ValidationResult.Success;
+                }
+                else
+                    return new ValidationResult("Already Tooken");
+
+
+            }
+            else
+                return new ValidationResult("Required");
+
+        }
+
+    }
+}

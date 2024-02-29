@@ -6,21 +6,51 @@
                 <img src="~/NiceAdmin/assets/img/WhatsApp Image 2023-09-27 at 23.03.49.png.jpg" alt="">
                 <span class="d-none d-lg-block">TRAVEL TREK</span>
             </a>
+
           <i class="bi bi-list toggle-sidebar-btn"></i>
+        
+
         </div><!-- End Logo -->
 
-      
+    
+    <div>
+        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="LogOut">LogOut </a>
+
+    </div>
+    
+    
+    <div>
+        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register"> Register </a>
+
+        </div>
+        <div>
+        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login"> Login </a>
+
+        </div>
+   
+     
         <nav class="header-nav ">
-            <ul class="d-flex align-items-center">
-           
+@* 
+            <ul class="navbar-nav ">
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="LogOut">LogOut</a>
+                </li>
             </ul>
+         *@
         </nav><!-- End Icons Navigation -->
 
     </header><!-- End Header -->
     <!-- ======= Sidebar ======= -->
 <aside id="sidebar" class="sidebar">
-
-    <ul class="sidebar-nav" id="sidebar-nav">
+   
+        <ul class="sidebar-nav" id="sidebar-nav">
 
         <li class="nav-item">
             <a class="nav-link " href="https://localhost:7038">
@@ -199,5 +229,5 @@
        
 
     </ul>
-
+    
 </aside><!-- End Sidebar-->

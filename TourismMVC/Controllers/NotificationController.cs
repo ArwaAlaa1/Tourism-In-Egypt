@@ -26,7 +26,7 @@ namespace TourismMVC.Controllers
             var list = await _unitOfWorkNo.notification.GetAll();
             if (list != null)
             {
-                return PartialView(list);
+                return View(list);
             }
             else
                 return BadRequest();
@@ -61,8 +61,9 @@ namespace TourismMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(NotificationModel model)
         {
+            
                    var NotModel = mapper.Map<NotificationModel , Notification>(model);
-
+                    
                     if (ModelState.IsValid)
                     {
                         try
@@ -96,27 +97,25 @@ namespace TourismMVC.Controllers
             else
             {
                 var userlist = await _unitOfWorkUser.generic.GetAllAsync();
-                NotificationModel model = new NotificationModel()
-                {
-                    users = userlist
-                };
-                return View(model);
+                
+                var nomapper = mapper.Map<Notification, NotificationModel>(Choosen);
+                nomapper.users = userlist;
+                return View(nomapper);
             }
         }
-
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id ,NotificationModel model)
         {
-            var NotModel = mapper.Map<NotificationModel , Notification>(model);
 
             if (ModelState.IsValid)
             {
                 try
                 {
+                    var NotModel = mapper.Map<NotificationModel, Notification>(model);
+
                     _unitOfWorkNo.generic.Update(NotModel);
-                    _unitOfWorkNo.Complet();
+                  var count =  _unitOfWorkNo.Complet();
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
@@ -125,11 +124,8 @@ namespace TourismMVC.Controllers
                 }
             }
             var userlist = await _unitOfWorkUser.generic.GetAllAsync();
-            NotificationModel notificationModel = new NotificationModel()
-            {
-                users = userlist
-            };
-            return View(notificationModel);
+            model.users = userlist;
+            return View(model);
         }
 
         public async Task<IActionResult> Delete (int id)

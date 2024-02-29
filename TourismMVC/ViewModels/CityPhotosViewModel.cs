@@ -1,4 +1,5 @@
-﻿using Tourism.Core.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Tourism.Core.Entities;
 
 using TourismMVC.Helpers;
 
@@ -9,11 +10,11 @@ namespace TourismMVC.ViewModels
 		public int? Id { get; set; }
 
 		[UniqueCityPhoto]
-        public int CityId { get; set; }
-		public IFormFile PhotoFile { get; set; }
-        public string? Photo { get; set; }
-
-        public virtual City? city { get; set; }
+        [ForeignKey("city")]
+        public int? CityId { get; set; }
+		public City? city { get; set; }
+		public IFormFile? PhotoFile { get; set; }
+        public string Photo { get; set; }
 		public IEnumerable<City>? cities { get; set; }
 	}
 }

@@ -11,7 +11,7 @@
             //file.Name : contain name of type like .pdf , .jpg
             //file.FileName: contain name of file 
             //Guid.NewGuid() : generate unique names
-            string filename = $"{Guid.NewGuid()}{file.FileName}";
+            string filename = file.FileName;
 
             //Get file path that i will save file come from IFormFile on it 
             string filePath = Path.Combine(folderpath, filename);

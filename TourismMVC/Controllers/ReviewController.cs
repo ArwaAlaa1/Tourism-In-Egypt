@@ -16,7 +16,7 @@ namespace TourismMVC.Controllers
         public async Task<IActionResult> Index()
         {
             var rw = await _unitOfWork.review.GetAll();
-            return PartialView(rw);
+            return View(rw);
         }
 
         //Get one review

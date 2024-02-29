@@ -11,8 +11,8 @@ namespace TourismMVC.Helpers
 		{
 			CreateMap<PlaceViewModel,Place>().ReverseMap();
 			CreateMap<CityPhotosViewModel,CityPhotos>().ReverseMap();
-
-			CreateMap<NotificationModel,Notification>().ReverseMap();
+            CreateMap<PlacePhotoViewModel, PlacePhotos>().ReverseMap();
+            CreateMap<NotificationModel,Notification>().ReverseMap();
             CreateMap<Place_TripModel, Place_Trip>().ReverseMap();
 
         }

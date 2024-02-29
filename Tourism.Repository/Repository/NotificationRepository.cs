@@ -22,7 +22,7 @@ namespace Tourism.Repository.Repository
 
         public async Task<IEnumerable<Notification>> GetAll()
         {
-            return _context.Notifications.Include("User").ToList();
+            return  _context.Notifications.Include("User").ToList();
         }
 
 		public async Task<Notification> GetNotificationwithUser(int id)

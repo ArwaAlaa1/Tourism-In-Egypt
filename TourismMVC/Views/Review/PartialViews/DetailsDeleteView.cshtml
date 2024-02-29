@@ -22,7 +22,7 @@
             : @Model.User.FName
         </li>
         <li class="card-text">
-            <label asp-for="User.FName" class="col-form-label"></label>
+            <label asp-for="Place.Name" class="col-form-label"></label>
 
            : @Model.Place.Name</li>
         <li class="card-text">
@@ -39,6 +39,11 @@
             <label asp-for="IsActive" class="col-form-label"></label>
 
             : @Model.IsActive
+        </li>
+        <li class="card-text">
+            <label asp-for="IsDeleted" class="col-form-label"></label>
+
+            : @Model.IsDeleted
         </li>
     </ul>
 </div>

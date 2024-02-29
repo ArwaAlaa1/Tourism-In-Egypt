@@ -74,7 +74,7 @@ namespace TourismMVC.Controllers
 			
 			if (ModelState.IsValid)
 			{
-               // cityPhotos.Photo = DocumentSetting.UploadFile(cityPhotos.PhotoFile, "Images");
+             
                 var Citymapped = mapper.Map<CityPhotosViewModel, CityPhotos>(cityPhotos);
 
                 try
@@ -98,7 +98,8 @@ namespace TourismMVC.Controllers
 		// GET: CityPhotosController/Edit/5
 		public async Task<IActionResult> Edit(int? id)
         {
-            return await Details(id, "Edit");
+            
+             return await Details(id, "Edit");
         }
 
         // POST: CityPhotosController/Edit/5
@@ -109,11 +110,19 @@ namespace TourismMVC.Controllers
             if (id != photosViewModel.Id)
                 return BadRequest();
 
-          
+            if (photosViewModel.PhotoFile.FileName != null)
+            {
+                DocumentSetting.DeleteFile("Images", photosViewModel.Photo);
+                photosViewModel.Photo = DocumentSetting.UploadFile(photosViewModel.PhotoFile, "Images");
+
+            }
+
+       
             if (ModelState.IsValid)  //server side validation
             {
                 try
                 {
+
                     var cityphmapped = mapper.Map<CityPhotosViewModel, CityPhotos>(photosViewModel);
                     unitOfWork.generic.Update(cityphmapped);
                     var count = unitOfWork.Complet();
@@ -149,15 +158,19 @@ namespace TourismMVC.Controllers
                     var Citymapped = mapper.Map<CityPhotosViewModel, CityPhotos>(cityPhotosViewModel);
 
                     unitOfWork.generic.Delete(Citymapped);
-                    unitOfWork.Complet();
-                    return RedirectToAction(nameof(Index));
+                   var count= unitOfWork.Complet();
+				if (count > 0)
+					DocumentSetting.DeleteFile("Images", Citymapped.Photo);
+                   
+                return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
                 {
                     ModelState.AddModelError(string.Empty, ex.InnerException.Message);
-                }
+                return View(cityPhotosViewModel);
+            }
 
-                  return View(cityPhotosViewModel);
+                  
         }
     }
 }

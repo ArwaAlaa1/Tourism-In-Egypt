@@ -5,7 +5,7 @@ using Tourism.Core.Repositories.Contract;
 
 namespace TourismMVC.Controllers
 {
-    public class CityController : Controller
+    public class CityController : BaseControllerMVC
     {
         private readonly IUnitOfWork<City> _unitOfWork;
 

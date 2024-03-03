@@ -14,6 +14,8 @@ namespace TourismMVC.Helpers
             CreateMap<PlacePhotoViewModel, PlacePhotos>().ReverseMap();
             CreateMap<NotificationModel,Notification>().ReverseMap();
             CreateMap<Place_TripModel, Place_Trip>().ReverseMap();
+            CreateMap<RoleViewModel,ApplicationRole >()
+                .ForMember(AR=> AR.Name,RV=> RV.MapFrom(v=>v.RoleName)).ReverseMap();
 
         }
     }

@@ -1,33 +1,36 @@
 ﻿@model LoginUserModel
 @{
     ViewData["Title"] = "Login";
+     Layout = "~/Views/Shared/_AuthLayout.cshtml";
 }
+
+<div class="main-agileinfo">
+    <div class="agileits-top">
 <form method="post" asp-action="Login"> 
 
     <div asp-validation-summary="All" >
     <!-- Email input -->
-    <div class="form-outline mb-4">
-        <input  asp-for="UserName" class="form-control" />
-        <label class="form-label" asp-for="UserName">UserName</label>
-        <span asp-validation-for="UserName" class="text-danger"></span>
-    </div>
+                <div class="form-outline mb-4 ">
+                    <input Class="text w3lpass" asp-for="UserName" class="form-control" />
+                     <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
 
     <!-- Password input -->
-    <div class="form-outline mb-4">
-        <input type="password" asp-for="Password" class="form-control" />
-        <label class="form-label" asp-for="Password">Password</label>
+                <div class="form-outline mb-4 ">
+                    <input Class="text w3lpass" type="password" asp-for="Password" class="form-control" />
+       
             <span asp-validation-for="Password" class="text-danger"></span>
     </div>
 
-    <div class="form-outline mb-4">
-        <input type="checkbox" asp-for="RememberMe" class="form-check-input" />
+                <div class="form-outline mb-4 ">
+                    <input Class="text w3lpass" type="checkbox" asp-for="RememberMe" class="form-check-input" />
         <label class="form-check-label" class="form-label" asp-for="RememberMe">Remember me</label>
-    </div>
+  </div>
 
    
     <!-- Submit button -->
 
-            <input type="submit" value="Sign in" class="btn btn-primary btn-block mb-4"  />
+            <input type="submit" value="Sign In"   />
         
 
        
@@ -38,4 +41,6 @@
     </div>
     </div>
 </form>
+</div>
+</div>
 

@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using TourismMVC.Models;
 
 namespace TourismMVC.Controllers
 {
-    public class HomeController : Controller
+    [Authorize]
+    public class HomeController : BaseControllerMVC
     {
         private readonly ILogger<HomeController> _logger;
 

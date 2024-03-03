@@ -1,51 +1,32 @@
 ﻿ <!-- ======= Header ======= -->
-    <header id="header" class="header fixed-top d-flex align-items-center " style="height=500px">
+    <header id="header" class="header fixed-top d-flex  " style="height=500px">
 
         <div class="d-flex align-items-center justify-content-between">
             <a href="index.html" class="logo d-flex align-items-center">
                 <img src="~/NiceAdmin/assets/img/WhatsApp Image 2023-09-27 at 23.03.49.png.jpg" alt="">
                 <span class="d-none d-lg-block">TRAVEL TREK</span>
             </a>
-
           <i class="bi bi-list toggle-sidebar-btn"></i>
-        
-
         </div><!-- End Logo -->
 
-    
-    <div>
-        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="LogOut">LogOut </a>
-
+    <div class="ms-auto ps-5 pt-2">
+        <div class="float-start pe-2 fs-3 fw-bold">
+            <a class="nav-link text-dark" asp-controller="User" asp-action="Index">Users </a>
+        </div>
     </div>
-    
-    
-    <div>
-        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register"> Register </a>
 
+    <div class="ms-auto ps-5 pt-2">
+        <div class="float-start pe-2 fs-3 fw-bold">
+            <a class="nav-link text-dark" asp-controller="Role" asp-action="Index">Roles</a>
         </div>
-        <div>
-        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login"> Login </a>
-
+    </div>
+       
+        <div class="ms-auto ps-5 pt-2">
+              <div class="float-start pe-2 fs-3 fw-bold">
+                <a class="nav-link text-dark" asp-controller="Account" asp-action="LogOut">LogOut </a>
+              </div>
         </div>
-   
-     
-        <nav class="header-nav ">
-@* 
-            <ul class="navbar-nav ">
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="LogOut">LogOut</a>
-                </li>
-            </ul>
-         *@
-        </nav><!-- End Icons Navigation -->
-
+    
     </header><!-- End Header -->
     <!-- ======= Sidebar ======= -->
 <aside id="sidebar" class="sidebar">

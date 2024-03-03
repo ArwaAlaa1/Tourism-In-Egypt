@@ -11,7 +11,7 @@ using TourismMVC.ViewModels;
 
 namespace TourismMVC.Controllers
 {
-    public class CityPhotosController : Controller
+    public class CityPhotosController : BaseControllerMVC
     {
 		private readonly IUnitOfWork<CityPhotos> unitOfWork;
 		

@@ -20,12 +20,12 @@ namespace TourismMVC.Helpers
                     return ValidationResult.Success;
                 }
                 else
-                    return new ValidationResult("Already Tooken");
+                    return new ValidationResult("User Name Already Tooken");
 
 
             }
             else
-                return new ValidationResult("Required");
+                return new ValidationResult(" User Name Required");
 
         }
 

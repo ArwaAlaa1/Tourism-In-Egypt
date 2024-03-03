@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Tourism.Core.Entities;
+using TourismMVC.Helpers;
 using TourismMVC.ViewModels;
 
 namespace TourismMVC.Controllers
@@ -9,12 +10,12 @@ namespace TourismMVC.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IMapper _mapper;
+
         private readonly SignInManager<ApplicationUser> _signInManager; 
-        public AccountController(UserManager<ApplicationUser> userManager, IMapper mapper , SignInManager<ApplicationUser> signInManager)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
-            _mapper = mapper;
+           
             _signInManager = signInManager;
         }
 
@@ -28,13 +29,13 @@ namespace TourismMVC.Controllers
 
         //Get : Open Register Form
         [HttpGet]
-        public async Task<IActionResult> Register()
+        public IActionResult Register()
         {
             return View();
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+      [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterUserModel registerUser)
         {
             if(ModelState.IsValid)
@@ -47,22 +48,24 @@ namespace TourismMVC.Controllers
                     FName = registerUser.FName,
                     LName = registerUser.LName,
                     Location = registerUser.Location,
-                    ProfilePhotoURL = registerUser.ProfilePhotoURL,
                     BirthDate = registerUser.BirthDate,
                     PhoneNumber = registerUser.PhoneNumber,
                     CreatedDate = DateTime.Now,
                     UpdatedDate = DateTime.Now,
-                    DisplayName = registerUser.DisplayName,
-                    PasswordHash = registerUser.Password
-                };
+                    DisplayName = registerUser.Email.Split("@")[0],
+                    //PasswordHash = registerUser.Password,
+					ProfilePhotoURL = DocumentSetting.UploadFile(registerUser.PhotoFile, "Images"),
+					
 
+				};
 
-               IdentityResult result = await _userManager.CreateAsync(RUM, registerUser.Password);
+              
+                IdentityResult result = await _userManager.CreateAsync(RUM, registerUser.Password);
 
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(RUM, false);
-                    return RedirectToAction("Index");
+                    return RedirectToAction(nameof(Login));
                 }
                 else
                 {
@@ -109,8 +112,9 @@ namespace TourismMVC.Controllers
 
                     if (Check == true)
                     {
-                        await _signInManager.SignInAsync(username, loginUserModel.RememberMe);
-                        return RedirectToAction("Index");
+                       var result= await _signInManager.PasswordSignInAsync(username,loginUserModel.Password,loginUserModel.RememberMe,false);
+                        if (result.Succeeded) 
+                          return RedirectToAction(nameof(HomeController.Index),"Home");
                     }
                     else
                     {

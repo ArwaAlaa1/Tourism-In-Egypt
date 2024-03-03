@@ -22,11 +22,27 @@ namespace TourismMVC
             builder.Services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
 
 			builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+           
             builder.Services.AddAutoMapper(m=> m.AddProfile(new MappingProfiles()));
-            builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
-            options.Password.RequireUppercase = false)//configuration
+
+        builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(
+            config =>
+            {
+                config.Password.RequireUppercase = false;
+                config.Lockout.MaxFailedAccessAttempts = 3;
+                config.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+
+
+            })//configuration
                 .AddEntityFrameworkStores<TourismContext>();
 
+            builder.Services.ConfigureApplicationCookie(config =>
+            {
+                config.LoginPath = "/Account/Login";
+                //config.ExpireTimeSpan= TimeSpan.FromMinutes(5);
+            });
+
+            
 			var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -41,7 +57,7 @@ namespace TourismMVC
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

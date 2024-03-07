@@ -6,11 +6,11 @@ using Tourism.Core.Repositories.Contract;
 namespace Tourism_Egypt.Controllers
 {
     
-    public class CitiesController : BaseApiController
+    public class CityController : BaseApiController
     {
         private readonly IGenericRepository<City> _cityRepo;
 
-        public CitiesController(IGenericRepository<City> cityRepo)
+        public CityController(IGenericRepository<City> cityRepo)
         {
             _cityRepo = cityRepo;
         }

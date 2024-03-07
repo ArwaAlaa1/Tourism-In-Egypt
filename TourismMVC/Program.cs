@@ -25,7 +25,7 @@ namespace TourismMVC
            
             builder.Services.AddAutoMapper(m=> m.AddProfile(new MappingProfiles()));
 
-        builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(
+            builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(
             config =>
             {
                 config.Password.RequireUppercase = false;

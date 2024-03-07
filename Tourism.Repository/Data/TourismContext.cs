@@ -29,7 +29,7 @@ namespace Tourism.Repository.Data
         {
             base.OnConfiguring(optionsBuilder);
            
-            optionsBuilder.UseSqlServer("Server = ARWA-ALAA\\ARWAALAA; Database = Tourism ; Trusted_Connection = true");
+            optionsBuilder.UseSqlServer("Server = ARWA-ALAA\\ARWAALAA; Database = Tourism ; Trusted_Connection = true ;MultipleActiveResultSets=true ");
         }
         public DbSet<Trip> Trips { get; set; }
         public DbSet<ApplicationUser> Users { get; set; }

@@ -29,7 +29,7 @@ namespace Tourism.Core.Entities
         public virtual ICollection<Trip> Trips { get; set; } = new List<Trip>();
         public  virtual ICollection<ApplicationUser> Users { get; set; } = new List<ApplicationUser>();
 
-        //public  ICollection<PlacePhotos> placePhotos { get; set; }
+       public virtual  IEnumerable<PlacePhotos> placePhotos { get; set; }=new List<PlacePhotos>();
 
     }
 }

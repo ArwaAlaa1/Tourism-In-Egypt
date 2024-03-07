@@ -14,6 +14,9 @@ namespace Tourism.Repository.Data.Configurations
         public void Configure(EntityTypeBuilder<Category> builder)
         {
             builder.Property(C => C.Name).HasMaxLength(100).IsRequired();
+            //builder.HasMany(P => P.Places)
+            //      .WithOne(c => c.Category)
+            //      .HasForeignKey(P => P.CategoryId);
         }
     }
 }

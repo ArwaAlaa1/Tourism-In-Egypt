@@ -9,10 +9,10 @@ using Tourism.Repository.Data;
 
 #nullable disable
 
-namespace Tourism.Repository.Data.Migrations
+namespace Tourism.Repository.Migrations
 {
     [DbContext(typeof(TourismContext))]
-    [Migration("20240229112153_init")]
+    [Migration("20240307081506_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -693,7 +693,7 @@ namespace Tourism.Repository.Data.Migrations
             modelBuilder.Entity("Tourism.Core.Entities.CityPhotos", b =>
                 {
                     b.HasOne("Tourism.Core.Entities.City", "city")
-                        .WithMany()
+                        .WithMany("CityPhotos")
                         .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -736,7 +736,7 @@ namespace Tourism.Repository.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("Tourism.Core.Entities.City", "City")
-                        .WithMany()
+                        .WithMany("Places")
                         .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -768,7 +768,7 @@ namespace Tourism.Repository.Data.Migrations
             modelBuilder.Entity("Tourism.Core.Entities.PlacePhotos", b =>
                 {
                     b.HasOne("Tourism.Core.Entities.Place", "Place")
-                        .WithMany()
+                        .WithMany("placePhotos")
                         .HasForeignKey("PlaceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -817,6 +817,18 @@ namespace Tourism.Repository.Data.Migrations
             modelBuilder.Entity("Tourism.Core.Entities.Category", b =>
                 {
                     b.Navigation("Places");
+                });
+
+            modelBuilder.Entity("Tourism.Core.Entities.City", b =>
+                {
+                    b.Navigation("CityPhotos");
+
+                    b.Navigation("Places");
+                });
+
+            modelBuilder.Entity("Tourism.Core.Entities.Place", b =>
+                {
+                    b.Navigation("placePhotos");
                 });
 #pragma warning restore 612, 618
         }

@@ -17,7 +17,9 @@ namespace Tourism.Repository.Data.Configurations
             builder.Property(C => C.Location).IsRequired();
             builder.Property(C => C.Description).IsRequired();
 
-
+            //builder.HasMany(P => P.Places)
+            //     .WithOne(c => c.City)
+            //     .HasForeignKey(P => P.CityId);
         }
     }
 }

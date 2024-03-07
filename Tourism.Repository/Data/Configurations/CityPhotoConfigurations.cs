@@ -13,8 +13,8 @@ namespace Tourism.Repository.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<CityPhotos> builder)
         {
-            builder.HasOne(CP => CP.city)
-                .WithMany()
+            builder.HasOne<City>(CP => CP.city)
+                .WithMany(c=>c.CityPhotos)
                 .HasForeignKey(CP => CP.CityId);
 
             builder.HasKey(CP => CP.Id);

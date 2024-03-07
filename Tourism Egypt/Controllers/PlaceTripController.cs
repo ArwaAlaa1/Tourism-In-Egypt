@@ -7,38 +7,38 @@ namespace Tourism_Egypt.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TripController : ControllerBase
+    public class PlaceTripController : ControllerBase
     {
-        private readonly IGenericRepository<Trip> _trip;
+        private readonly IGenericRepository<Place_Trip> _placetrip;
 
-        public TripController(IGenericRepository<Trip> trip)
+        public PlaceTripController(IGenericRepository<Place_Trip> placetrip)
         {
-            _trip = trip;
+            _placetrip = placetrip;
         }
-
-
         [HttpGet]
-        public async Task<IActionResult> ShowAll()
+        public async Task<IActionResult> GetAll()
         {
-            var List = await _trip.GetAllAsync();
+            var List = await _placetrip.GetAllAsync();
             if (List == null)
             {
                 return BadRequest();
+
             }
             else
                 return Ok(List);
         }
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Details(int id)
-        {
-            var trip = await _trip.GetAsync(id);
 
-            if (trip == null)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOne(int id)
+        {
+            var PT = await _placetrip.GetAsync(id);
+
+            if (PT == null)
             {
                 return NotFound();
             }
             else
-                return Ok(trip);
+            return Ok(PT);
         }
     }
 }

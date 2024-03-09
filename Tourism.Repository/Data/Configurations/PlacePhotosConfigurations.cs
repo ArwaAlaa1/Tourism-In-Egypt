@@ -16,8 +16,8 @@ namespace Tourism.Repository.Data.Configurations
         {
             
 
-            builder.HasOne(PP => PP.Place)
-                  .WithMany()
+            builder.HasOne<Place>(PP => PP.Place)
+                  .WithMany(p=>p.placePhotos)
                   .HasForeignKey(PP => PP.PlaceId);
 
             builder.HasKey(PP => PP.Id);

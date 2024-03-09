@@ -59,8 +59,8 @@ namespace Tourism_Egypt.Controllers
                                 return Ok(new UserDTO()
                                 {
                                     DisplayName = username.DisplayName,
-                                    Email = email.Email,
-                                    Token = await _authService.CreateTokenAsync(email, _userManager)
+                                    Username = username.UserName,
+                                    Token = await _authService.CreateTokenAsync(username, _userManager)
                                 });
                             }
                         }
@@ -102,6 +102,7 @@ namespace Tourism_Egypt.Controllers
                     {
                         DisplayName = user.DisplayName,
                         Email = user.Email,
+                        Username = user.UserName,
                         Token = await _authService.CreateTokenAsync(user, _userManager)
                     }) ;
                 }

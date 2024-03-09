@@ -1,4 +1,4 @@
-﻿@model TourismMVC.ViewModels.RoleViewModel
+﻿@model TourismMVC.ViewModels.RoleEditViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -13,7 +13,24 @@
     <form asp-action="Edit" method="post">
 
 
-        <partial name="PartialViews/CreateEditView" />
+
+        <div class="form-group  ">
+            <div asp-validation-summary="All"></div>
+
+            <div class="form-group">
+                <label asp-for="RoleName" class="control-label"></label>
+                <input asp-for="RoleName" class="form-control" />
+                <span asp-validation-for="RoleName" class="text-danger"></span>
+            </div>
+           @* <div class="form-group">
+                <label asp-for="IsSelected" class="control-label"></label>
+                <input asp-for="IsSelected" class="form-control" />
+                <span asp-validation-for="IsSelected" class="text-danger"></span>
+            </div>*@
+        </div>
+
+
+
 
         <div class="form-group mt-4">
             <input type="submit" value="Save" class="btn btn-primary" />

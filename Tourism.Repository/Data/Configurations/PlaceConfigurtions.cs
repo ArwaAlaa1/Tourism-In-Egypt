@@ -20,14 +20,14 @@ namespace Tourism.Repository.Data.Configurations
             builder.Property(P => P.Phone).IsRequired();
             builder.Property(P => P.Link).IsRequired();
 
-            //builder.HasOne(P => P.Category)
-            //       .WithMany()
-            //       .HasForeignKey(P => P.CategoryId);
+            builder.HasOne<Category>(P => P.Category)
+                   .WithMany(c => c.Places)
+                   .HasForeignKey(P => P.CategoryId);
 
-            //builder.HasOne(P => P.City)
-            //       .WithMany()
-            //       .HasForeignKey(P => P.CityId);
-            
+            builder.HasOne<City>(P => P.City)
+                   .WithMany(c => c.Places)
+                   .HasForeignKey(P => P.CityId);
+
         }
     }
 }

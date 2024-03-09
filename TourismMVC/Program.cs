@@ -3,6 +3,7 @@ using Tourism.Core.Entities;
 using Tourism.Core.Repositories.Contract;
 using Tourism.Repository;
 using Tourism.Repository.Data;
+using Tourism.Service;
 using TourismMVC.Helpers;
 
 namespace TourismMVC
@@ -22,7 +23,8 @@ namespace TourismMVC
             builder.Services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
 
 			builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-           
+            builder.Services.AddScoped(typeof(IAuthService), typeof(AuthService));
+
             builder.Services.AddAutoMapper(m=> m.AddProfile(new MappingProfiles()));
 
         builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(

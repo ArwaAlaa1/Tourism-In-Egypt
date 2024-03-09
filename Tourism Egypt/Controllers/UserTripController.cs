@@ -5,12 +5,11 @@ using Tourism.Core.Repositories.Contract;
 
 namespace Tourism_Egypt.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class UaserTripController : ControllerBase
+    
+    public class UserTripController : BaseApiController
     {
         private readonly IGenericRepository<User_Trip> _userTrip;
-        public UaserTripController(IGenericRepository<User_Trip> userTrip)
+        public UserTripController(IGenericRepository<User_Trip> userTrip)
         {
             _userTrip = userTrip;
         }

@@ -12,7 +12,7 @@ using Tourism.Repository.Data;
 namespace Tourism.Repository.Data.Migrations
 {
     [DbContext(typeof(TourismContext))]
-    [Migration("20240229112153_init")]
+    [Migration("20240309125648_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -152,7 +152,8 @@ namespace Tourism.Repository.Data.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("BirthDate")
+                    b.Property<DateTime?>("BirthDate")
+                        .IsRequired()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -162,7 +163,6 @@ namespace Tourism.Repository.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DisplayName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")

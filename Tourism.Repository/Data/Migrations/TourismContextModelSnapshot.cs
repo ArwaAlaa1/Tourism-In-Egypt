@@ -41,7 +41,7 @@ namespace Tourism.Repository.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RoleClaims", (string)null);
+                    b.ToTable("RoleClaims");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
@@ -63,7 +63,7 @@ namespace Tourism.Repository.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserClaims", (string)null);
+                    b.ToTable("UserClaims");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
@@ -82,7 +82,7 @@ namespace Tourism.Repository.Data.Migrations
 
                     b.HasKey("ProviderKey", "LoginProvider");
 
-                    b.ToTable("UserLogins", (string)null);
+                    b.ToTable("UserLogins");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
@@ -95,7 +95,7 @@ namespace Tourism.Repository.Data.Migrations
 
                     b.HasKey("RoleId", "UserId");
 
-                    b.ToTable("UserRoles", (string)null);
+                    b.ToTable("UserRoles");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
@@ -114,7 +114,7 @@ namespace Tourism.Repository.Data.Migrations
 
                     b.HasKey("UserId", "LoginProvider");
 
-                    b.ToTable("UserTokens", (string)null);
+                    b.ToTable("UserTokens");
                 });
 
             modelBuilder.Entity("Tourism.Core.Entities.ApplicationRole", b =>
@@ -136,7 +136,7 @@ namespace Tourism.Repository.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("Tourism.Core.Entities.ApplicationUser", b =>
@@ -150,7 +150,8 @@ namespace Tourism.Repository.Data.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("BirthDate")
+                    b.Property<DateTime?>("BirthDate")
+                        .IsRequired()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -160,7 +161,6 @@ namespace Tourism.Repository.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DisplayName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -252,7 +252,7 @@ namespace Tourism.Repository.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("Tourism.Core.Entities.City", b =>
@@ -290,7 +290,7 @@ namespace Tourism.Repository.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cities", (string)null);
+                    b.ToTable("Cities");
                 });
 
             modelBuilder.Entity("Tourism.Core.Entities.CityPhotos", b =>
@@ -324,7 +324,7 @@ namespace Tourism.Repository.Data.Migrations
 
                     b.HasIndex("CityId");
 
-                    b.ToTable("CityPhotos", (string)null);
+                    b.ToTable("CityPhotos");
                 });
 
             modelBuilder.Entity("Tourism.Core.Entities.Favorite", b =>
@@ -359,7 +359,7 @@ namespace Tourism.Repository.Data.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("Favorites", (string)null);
+                    b.ToTable("Favorites");
                 });
 
             modelBuilder.Entity("Tourism.Core.Entities.Notification", b =>
@@ -399,7 +399,7 @@ namespace Tourism.Repository.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Notifications", (string)null);
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("Tourism.Core.Entities.Place", b =>
@@ -458,7 +458,7 @@ namespace Tourism.Repository.Data.Migrations
 
                     b.HasIndex("CityId");
 
-                    b.ToTable("Places", (string)null);
+                    b.ToTable("Places");
                 });
 
             modelBuilder.Entity("Tourism.Core.Entities.Place_Trip", b =>
@@ -527,7 +527,7 @@ namespace Tourism.Repository.Data.Migrations
 
                     b.HasIndex("PlaceId");
 
-                    b.ToTable("PlacePhotos", (string)null);
+                    b.ToTable("PlacePhotos");
                 });
 
             modelBuilder.Entity("Tourism.Core.Entities.Review", b =>
@@ -572,7 +572,7 @@ namespace Tourism.Repository.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reviews", (string)null);
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("Tourism.Core.Entities.Trip", b =>
@@ -685,7 +685,7 @@ namespace Tourism.Repository.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserFavs", (string)null);
+                    b.ToTable("UserFavs");
                 });
 
             modelBuilder.Entity("Tourism.Core.Entities.CityPhotos", b =>

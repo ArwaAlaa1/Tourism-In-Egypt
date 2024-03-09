@@ -1,8 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using Tourism.Core.Entities;
 using Tourism.Core.Repositories.Contract;
 using Tourism.Repository;
 using Tourism.Repository.Data;
 using Tourism.Repository.Repository;
+using Tourism.Service;
 
 namespace Tourism_Egypt
 {
@@ -22,10 +24,19 @@ namespace Tourism_Egypt
                 options => options.UseSqlServer(builder.Configuration.GetConnectionString("conn")));
 
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            builder.Services.AddScoped(typeof(IAuthService), typeof(AuthService));
+            builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(
+            config =>
+            {
+                config.Password.RequireUppercase = false;
+                config.Lockout.MaxFailedAccessAttempts = 3;
+                config.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
 
 
+            })//configuration
+                .AddEntityFrameworkStores<TourismContext>();
 
-          
+
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -42,7 +53,7 @@ namespace Tourism_Egypt
             }
 
             app.UseHttpsRedirection();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

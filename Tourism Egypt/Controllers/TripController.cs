@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Tourism.Core.Entities;
 using Tourism.Core.Repositories.Contract;
@@ -17,6 +19,7 @@ namespace Tourism_Egypt.Controllers
 
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> ShowAll()
         {
             var List = await _trip.GetAllAsync();

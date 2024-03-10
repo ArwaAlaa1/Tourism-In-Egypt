@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Tourism.Core.Entities;
@@ -7,6 +8,7 @@ using TourismMVC.ViewModels;
 
 namespace TourismMVC.Controllers
 {
+    
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -36,6 +38,7 @@ namespace TourismMVC.Controllers
 
         [HttpPost]
       [ValidateAntiForgeryToken]
+       
         public async Task<IActionResult> Register(RegisterUserModel registerUser)
         {
             if(ModelState.IsValid)

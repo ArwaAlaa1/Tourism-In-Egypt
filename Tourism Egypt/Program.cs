@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Tourism.Core.Entities;
 using Tourism.Core.Repositories.Contract;
@@ -5,6 +6,8 @@ using Tourism.Repository;
 using Tourism.Repository.Data;
 using Tourism.Repository.Repository;
 using Tourism.Service;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Tourism_Egypt
 {
@@ -23,6 +26,7 @@ namespace Tourism_Egypt
             builder.Services.AddDbContext<TourismContext>(
                 options => options.UseSqlServer(builder.Configuration.GetConnectionString("conn")));
 
+            #region Identity Services
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             builder.Services.AddScoped(typeof(IAuthService), typeof(AuthService));
             builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(
@@ -36,7 +40,28 @@ namespace Tourism_Egypt
             })//configuration
                 .AddEntityFrameworkStores<TourismContext>();
 
+            //Authentication Schema
+            builder.Services.AddAuthentication(options => {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).
+                AddJwtBearer(options =>
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateAudience = true,
+                    ValidAudience = builder.Configuration["JWT:ValidAudience"],
+                    ValidateIssuer = true,
+                    ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:secretKey"])),
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.FromDays(double.Parse(builder.Configuration["JWT:Duration"]))
+                }
+                ) ;
+                
+               
 
+            #endregion
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

@@ -25,20 +25,20 @@ namespace Tourism.Repository.Data
         {
             
         }
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    base.OnConfiguring(optionsBuilder);
-
-        //    optionsBuilder.UseSqlServer("Server = ARWA-ALAA\\ARWAALAA; Database = Tourism ; Trusted_Connection = true");
-        //} 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
 
-           
-            optionsBuilder.UseSqlServer("Server = DESKTOP-9IISLS5; Database = Tourism ; Trusted_Connection = true ;MultipleActiveResultSets=true ");
-
+            optionsBuilder.UseSqlServer("Server = ARWA-ALAA\\ARWAALAA; Database = Tourism ; Trusted_Connection = true");
         }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    base.OnConfiguring(optionsBuilder);
+
+
+        //    optionsBuilder.UseSqlServer("Server = DESKTOP-9IISLS5; Database = Tourism ; Trusted_Connection = true ;MultipleActiveResultSets=true ");
+
+        //}
         public DbSet<Trip> Trips { get; set; }
         public DbSet<ApplicationUser> Users { get; set; }
         public DbSet<CityPhotos> CityPhotos { get; set; }

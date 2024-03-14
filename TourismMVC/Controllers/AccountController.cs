@@ -38,7 +38,6 @@ namespace TourismMVC.Controllers
 
         [HttpPost]
       [ValidateAntiForgeryToken]
-       
         public async Task<IActionResult> Register(RegisterUserModel registerUser)
         {
             if(ModelState.IsValid)

@@ -66,9 +66,15 @@ namespace Tourism_Egypt
                     ClockSkew = TimeSpan.FromDays(double.Parse(builder.Configuration["JWT:Duration"]))
                 }
                 ) ;
-                
-               
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("MyPolicy", options =>
+                {
+                    options.AllowAnyHeader().AllowAnyOrigin().AllowAnyOrigin();
+                }
+                );
+            });
             #endregion
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -111,6 +117,8 @@ namespace Tourism_Egypt
             //}
 
             app.UseHttpsRedirection();
+
+            app.UseCors("MyPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
 

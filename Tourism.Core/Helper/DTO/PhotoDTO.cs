@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tourism.Core.Helper.DTO
 {
-    public class CityPhotoDTO
+    public class PhotoDTO
     {
         public int Id { get; set; }
         public string Photo { get; set; }

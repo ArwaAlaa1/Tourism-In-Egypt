@@ -28,8 +28,10 @@ namespace Tourism.Repository.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
+            //optionsBuilder.UseSqlServer("Server = ARWA-ALAA\\ARWAALAA; Database = Tourism ; Trusted_Connection = true");
 
-            optionsBuilder.UseSqlServer("Server = ARWA-ALAA\\ARWAALAA; Database = Tourism ; Trusted_Connection = true");
+            
+            optionsBuilder.UseSqlServer("Data Source=SQL5109.site4now.net;Initial Catalog=db_aa6718_tourism;User Id=db_aa6718_tourism_admin;Password=DotNetDev1");
         }
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{

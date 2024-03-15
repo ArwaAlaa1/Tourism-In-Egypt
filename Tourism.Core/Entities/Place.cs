@@ -16,20 +16,14 @@ namespace Tourism.Core.Entities
         public string Link { get; set; }
         public string Phone { get; set; }
 
-		//public IEnumerable<City> Cities_List { get; set; } = new List<City>();
-
-		//public IEnumerable<Category> Categories_List { get; set; } = new List<Category>();
-
 		public int CategoryId { get; set; } 
         public virtual Category Category { get; set; }
 
         public int CityId { get; set; } 
         public virtual City City { get; set; }
-
+        public virtual IEnumerable<PlacePhotos> Photos { get; set; }
         public virtual ICollection<Trip> Trips { get; set; } = new List<Trip>();
         public  virtual ICollection<ApplicationUser> Users { get; set; } = new List<ApplicationUser>();
-
-       public virtual  IEnumerable<PlacePhotos> placePhotos { get; set; }=new List<PlacePhotos>();
 
     }
 }

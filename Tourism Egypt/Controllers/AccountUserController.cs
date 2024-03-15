@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Tourism.Core.Entities;
 using Tourism.Core.Helper.DTO;
 using Tourism.Core.Repositories.Contract;
@@ -82,6 +84,9 @@ namespace Tourism_Egypt.Controllers
         {
             if(ModelState.IsValid)
             {
+                if(CheckEmail(registerUser.Email).Result.Value)
+                    return BadRequest("This email already exist");
+
                 ApplicationUser user = new ApplicationUser()
                 {
                     Email = registerUser.Email,
@@ -116,6 +121,28 @@ namespace Tourism_Egypt.Controllers
             return BadRequest();
         }
 
-            
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetUser()
+        {
+            var email = User.FindFirstValue(ClaimTypes.Email);
+            var user = await _userManager.FindByEmailAsync(email);
+
+
+            return Ok(new UserDTO
+            {
+                 DisplayName = user.DisplayName,
+                 Email = user.Email,
+                 Username = user.UserName,
+                 Token = await _authService.CreateTokenAsync(user , _userManager)
+            });
+        }
+
+        [HttpGet("EmailExists")]
+        public async Task<ActionResult<bool>> CheckEmail(string email)
+        {
+            return await _userManager.FindByEmailAsync(email) != null;
+        }
+
     }
 }

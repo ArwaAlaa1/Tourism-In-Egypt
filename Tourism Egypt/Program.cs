@@ -8,12 +8,14 @@ using Tourism.Repository.Repository;
 using Tourism.Service;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Tourism.Core.Helper;
+using Microsoft.AspNetCore.Identity;
 
 namespace Tourism_Egypt
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static  async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -23,9 +25,15 @@ namespace Tourism_Egypt
             builder.Services.AddControllers();
 
             //dbcontext
+            #region Container Services
             builder.Services.AddDbContext<TourismContext>(
-                options => options.UseSqlServer(builder.Configuration.GetConnectionString("conn")));
+                   options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddScoped(typeof(ICityRepository), typeof(CityRepository));
+            builder.Services.AddScoped(typeof(IPlaceRepository), typeof(PlaceRepository));
 
+            builder.Services.AddAutoMapper(typeof(MapperConfig));
+
+            #endregion
             #region Identity Services
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             builder.Services.AddScoped(typeof(IAuthService), typeof(AuthService));
@@ -70,12 +78,37 @@ namespace Tourism_Egypt
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
+
+            #region Update DB
+
+            //Explicitly
+           using  var scope = app.Services.CreateScope();
+            var services = scope.ServiceProvider;
+
+            var loggerfactury = services.GetRequiredService<ILoggerFactory>();
+            var dbContext = services.GetRequiredService<TourismContext>();
+            try
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
+              
+                 await dbContext.Database.MigrateAsync();
+            
             }
+            catch (Exception ex)
+            {
+                var logger = loggerfactury.CreateLogger<Program>();//return to main 
+                logger.LogError(ex, "Erro Occured during apply migration");
+
+            }
+
+            #endregion
+
+
+            // Configure the HTTP request pipeline.
+            //if (app.Environment.IsDevelopment())
+            //{
+            app.UseSwagger();
+               app.UseSwaggerUI();
+            //}
 
             app.UseHttpsRedirection();
             app.UseAuthentication();

@@ -9,13 +9,13 @@ using Tourism.Core.Repositories.Contract;
 
 namespace Tourism_Egypt.Controllers
 {
-    public class AccountController : BaseApiController
+    public class AccountUserController : BaseApiController
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IAuthService _authService;
 
-        public AccountController(UserManager<ApplicationUser> userManager , SignInManager<ApplicationUser> signInManager,IAuthService authService)
+        public AccountUserController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IAuthService authService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -26,8 +26,7 @@ namespace Tourism_Egypt.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginUserDTO loginUser)
         {
-            try
-            {
+            
                 var email = await _userManager.FindByEmailAsync(loginUser.Email);
                 var username = await _userManager.FindByNameAsync(loginUser.Username);
                 if (email == null && username == null)
@@ -51,7 +50,8 @@ namespace Tourism_Egypt.Controllers
                                     Token = await _authService.CreateTokenAsync(email, _userManager)
                                 });
                             }
-                        }
+                        return BadRequest();
+                    }
 
                         if (username != null)
                         {
@@ -65,58 +65,52 @@ namespace Tourism_Egypt.Controllers
                                     Token = await _authService.CreateTokenAsync(username, _userManager)
                                 });
                             }
-                        }
-
-
+                        return BadRequest();
                     }
-                    return BadRequest();
+
+                    
                 }
-            }
-            catch (Exception ex) 
-            {
-                return BadRequest(ex.Message);
-            }
-           
+                   
+                }
+            return BadRequest();
+
+
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterUserDTO registerUser)
-        {
-            if(ModelState.IsValid)
+        { 
+            if (ModelState.IsValid)
             {
                 if(CheckEmail(registerUser.Email).Result.Value)
                     return BadRequest("This email already exist");
 
-                ApplicationUser user = new ApplicationUser()
-                {
-                    Email = registerUser.Email,
-                    FName = registerUser.Name.Split(" ")[0],
-                    LName = registerUser.Name.Split(" ")[1],
-                    Id = registerUser.Id,
-                    PhoneNumber = registerUser.Phone,
-                    UserName = registerUser.Username,
-                    DisplayName = registerUser.Name,
-                };
-
-                var result = await _userManager.CreateAsync(user , registerUser.Password);
-                if(result.Succeeded)
-                {
-                  await _signInManager.SignInAsync(user, isPersistent: false);
-
-                    return Ok(new UserDTO
+                var username = _userManager.FindByNameAsync(registerUser.Username);
+               
+                    ApplicationUser user = new ApplicationUser()
                     {
-                        DisplayName = user.DisplayName,
-                        Email = user.Email,
-                        Username = user.UserName,
-                        Token = await _authService.CreateTokenAsync(user, _userManager)
-                    }) ;
-                }
-                else
-                {
-                  return BadRequest("Password must have 1 non alphanumeric and at least 6 characters and 1 number or username is already tooken");
-                    
-                }
-
+                        Email = registerUser.Email,
+                        FName = registerUser.Name.Split(" ")[0],
+                        LName = registerUser.Name.Split(" ")[1],
+                        Id = registerUser.Id,
+                        PhoneNumber = registerUser.Phone,
+                        UserName = registerUser.Username,
+                        DisplayName = registerUser.Name,
+                    };
+                    var result = await _userManager.CreateAsync(user, registerUser.Password);
+                    if (result.Succeeded)
+                    {
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        return Ok(new UserDTO
+                        {
+                            DisplayName = user.DisplayName,
+                            Email = user.Email,
+                            Username = user.UserName,
+                            Token = await _authService.CreateTokenAsync(user, _userManager)
+                        });
+                    }
+                    return BadRequest("Password must have 1 non alphanumeric and at least 6 characters and 1 number  or username is already tooken");
+ 
             }
             return BadRequest();
         }
@@ -131,10 +125,10 @@ namespace Tourism_Egypt.Controllers
 
             return Ok(new UserDTO
             {
-                 DisplayName = user.DisplayName,
-                 Email = user.Email,
-                 Username = user.UserName,
-                 Token = await _authService.CreateTokenAsync(user , _userManager)
+                DisplayName = user.DisplayName,
+                Email = user.Email,
+                Username = user.UserName,
+                Token = await _authService.CreateTokenAsync(user, _userManager)
             });
         }
 
@@ -143,6 +137,5 @@ namespace Tourism_Egypt.Controllers
         {
             return await _userManager.FindByEmailAsync(email) != null;
         }
-
     }
 }

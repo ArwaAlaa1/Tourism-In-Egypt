@@ -15,11 +15,8 @@ namespace Tourism_Egypt.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IAuthService _authService;
 
-<<<<<<< HEAD
+
         public AccountUserController(UserManager<ApplicationUser> userManager , SignInManager<ApplicationUser> signInManager,IAuthService authService)
-=======
-        public AccountUserController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IAuthService authService)
->>>>>>> 63a751d0c5c3a0afc448efba34325d0a7d3a38fd
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -90,17 +87,21 @@ namespace Tourism_Egypt.Controllers
                     return BadRequest("This email already exist");
 
                 var username = _userManager.FindByNameAsync(registerUser.Username);
-               
-                    ApplicationUser user = new ApplicationUser()
-                    {
-                        Email = registerUser.Email,
-                        FName = registerUser.Name.Split(" ")[0],
-                        LName = registerUser.Name.Split(" ")[1],
-                        Id = registerUser.Id,
-                        PhoneNumber = registerUser.Phone,
-                        UserName = registerUser.Username,
-                        DisplayName = registerUser.Name,
-                    };
+
+                ApplicationUser user = new ApplicationUser();
+                    user.Email= registerUser.Email;
+                user.FName = registerUser.Name.Split(" ")[0];
+                user.Id = registerUser.Id;
+                user.PhoneNumber = registerUser.Phone;
+                user.UserName = registerUser.Username;
+                user.DisplayName = registerUser.Name;
+                try
+                {
+                    user.LName= registerUser.Name.Split(" ")[1];
+                }catch
+                {
+                    return BadRequest("Enter Full Name");
+                }
                     var result = await _userManager.CreateAsync(user, registerUser.Password);
                     if (result.Succeeded)
                     {

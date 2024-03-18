@@ -11,15 +11,15 @@ using Tourism.Core.Helper.DTO;
 
 namespace Tourism.Core.Helper
 {
-    public class PhotoImageResolved : IValueResolver<Place,PlaceDTO,IEnumerable<PhotoDTO>>
+    public class PhotoPlaceResolved : IValueResolver<Place,PlaceDTO,IEnumerable<PhotoDTO>>
     {
         private readonly IConfiguration configuration;
 
-        public PhotoImageResolved(IConfiguration configuration)
+        public PhotoPlaceResolved(IConfiguration configuration)
         {
             this.configuration = configuration;
         }
-      
+    
         public IEnumerable<PhotoDTO> Resolve(Place source, PlaceDTO destination, IEnumerable<PhotoDTO> destMember, ResolutionContext context)
         {
             List<PhotoDTO> dtoList = new List<PhotoDTO>();
@@ -36,5 +36,5 @@ namespace Tourism.Core.Helper
             return dtoList;
         }
     }
-
+   
 }

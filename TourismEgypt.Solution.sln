@@ -11,7 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tourism.Repository", "Touri
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tourism.Service", "Tourism.Service\Tourism.Service.csproj", "{36A2F147-5299-4DBF-A974-0B6DFA1B00B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TourismMVC", "TourismMVC\TourismMVC.csproj", "{5A24F3A5-ACF8-4551-A9FF-E5AC0D4A8D08}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TourismMVC", "TourismMVC\TourismMVC.csproj", "{5A24F3A5-ACF8-4551-A9FF-E5AC0D4A8D08}"
+	ProjectSection(ProjectDependencies) = postProject
+		{36A2F147-5299-4DBF-A974-0B6DFA1B00B4} = {36A2F147-5299-4DBF-A974-0B6DFA1B00B4}
+		{E528DBEB-5339-4009-B7C5-336E3865ED4A} = {E528DBEB-5339-4009-B7C5-336E3865ED4A}
+		{FA21AFF2-F83D-45EF-ABB3-EE108714A997} = {FA21AFF2-F83D-45EF-ABB3-EE108714A997}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

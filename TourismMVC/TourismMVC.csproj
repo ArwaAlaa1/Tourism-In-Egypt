@@ -4,6 +4,9 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+	  <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
+
+	  <ServerGarbageCollection>false</ServerGarbageCollection>
   </PropertyGroup>
 
   <ItemGroup>
@@ -1014,10 +1017,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tourism Egypt\Tourism Egypt.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <TypeScriptCompile Include="wwwroot\assets\vendor\chart.js\controllers\controller.bar.d.ts" />
     <TypeScriptCompile Include="wwwroot\assets\vendor\chart.js\controllers\controller.bubble.d.ts" />
     <TypeScriptCompile Include="wwwroot\assets\vendor\chart.js\controllers\controller.doughnut.d.ts" />
@@ -1208,9 +1207,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Tourism Egypt">
-      <HintPath>..\Tourism Egypt\bin\Debug\net6.0\Tourism Egypt.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\Tourism Egypt\Tourism Egypt.csproj" />
   </ItemGroup>
 
 </Project>

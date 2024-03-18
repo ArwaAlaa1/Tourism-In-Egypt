@@ -8,9 +8,10 @@ namespace Tourism.Core.Entities
 {
     public class Category:BaseEntity
     {
+       
         public string Name { get; set; }
 
-        public virtual ICollection<Place> Places { get; set; } = new List<Place>();
+        public virtual IEnumerable<Place> Places { get; set; }
 
     }
 }

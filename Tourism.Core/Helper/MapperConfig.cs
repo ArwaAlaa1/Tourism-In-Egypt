@@ -11,12 +11,18 @@ namespace Tourism.Core.Helper
 {
     public class MapperConfig :Profile
     {
+        
         public MapperConfig()
         {
             CreateMap<Place, PlaceDTO>().ForMember(b => b.Category, o => o.MapFrom(b => b.Category.Name))
                 .ForMember(t => t.City, o => o.MapFrom(t => t.City.Name))
-               .ForMember(p => p.Photos, o => o.MapFrom<PhotoImageResolved>());
-            ;
+               .ForMember(p => p.Photos, o => o.MapFrom<PhotoPlaceResolved>());
+
+            CreateMap<Category, CategoryDTO>();
+
+            CreateMap<City, CityDTO>()
+              .ForMember(c=>c.cityPhotos, o => o.MapFrom<PhotoCityResolved>());
         }
+        
     }
 }

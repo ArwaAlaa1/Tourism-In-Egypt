@@ -1,36 +1,51 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Tourism.Core.Entities;
+using Tourism.Core.Helper.DTO;
 using Tourism.Core.Repositories.Contract;
+using Tourism.Repository.Repository;
 
 namespace Tourism_Egypt.Controllers
 {
 
     public class CategoryController : BaseApiController
     {
+  
+        private readonly ICategoryRepository _categoryRepository;
+        private readonly IMapper mapper;
 
-        public CategoryController(IGenericRepository<Category> categoryrepo)
+        public CategoryController(ICategoryRepository categoryRepository,IMapper mapper)
         {
-            _categoryrepo = categoryrepo;
+           
+           _categoryRepository = categoryRepository;
+            this.mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetAllCategories()
+        public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetAllCategories()
         {
-            var categories = await _categoryrepo.GetAllAsync();
+            var categories = await _categoryRepository.GetAllAsync();
 
-            return Ok(categories);
+            var data = mapper.Map<IEnumerable<Category>, IEnumerable<CategoryDTO>>(categories);
+
+            return Ok(data);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategory(int id)
+        public async Task<ActionResult<CategoryDTO>> GetCategory(int id)
         {
-            var category = await _categoryrepo.GetAsync(id);
+           var category = await _categoryRepository.GetAsync(id);
 
             if (category == null)
                 return NotFound();
+           // var places = await _categoryRepository.GetAllPlacesBySpecificCategory(id);
+           //var placemapped =mapper.Map<ICollection<Place>,ICollection<PlaceDTO>>(places);
+            var data = mapper.Map<Category, CategoryDTO>(category);
+            //data.Places = placemapped;
+        
 
-            return Ok(category);
+            return Ok(data);
         }
     }
 }

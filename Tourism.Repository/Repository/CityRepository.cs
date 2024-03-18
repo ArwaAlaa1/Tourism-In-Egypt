@@ -18,9 +18,21 @@ namespace Tourism.Repository.Repository
         {
             this.context = context;
         }
-        public async Task<List<CityPhotos>> GetAllPhotoBySpecIdAsync(int id)
+
+        public async Task<City> GetAsync(int id)
         {
-            return await context.CityPhotos.Where(c => c.CityId == id).ToListAsync();
+            return await context.Cities.Include(c => c.Places).ThenInclude(c => c.Photos).Include(c => c.CityPhotos).Include(c => c.Places).ThenInclude(c => c.Category).FirstAsync(p => p.Id == id);
+
         }
+        public async Task<IEnumerable<City>> GetAllAsync()
+        {
+
+            var cities = await context.Cities.Include(c=>c.Places).ThenInclude(c=>c.Photos).Include(c=>c.CityPhotos).Include(c => c.Places).ThenInclude(c => c.Category).ToListAsync();
+            return cities;
+        }
+        //public async Task<List<CityPhotos>> GetAllPhotoBySpecIdAsync(int id)
+        //{
+        //    return await context.CityPhotos.Where(c => c.CityId == id).ToListAsync();
+        //}
     }
 }

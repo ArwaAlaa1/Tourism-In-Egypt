@@ -30,6 +30,7 @@ namespace Tourism_Egypt
                    options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddScoped(typeof(ICityRepository), typeof(CityRepository));
             builder.Services.AddScoped(typeof(IPlaceRepository), typeof(PlaceRepository));
+            builder.Services.AddScoped(typeof(ICategoryRepository), typeof(CategoryRepository));
 
             builder.Services.AddAutoMapper(typeof(MapperConfig));
 

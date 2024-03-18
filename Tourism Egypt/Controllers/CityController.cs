@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Tourism.Core.Entities;
@@ -14,18 +15,21 @@ namespace Tourism_Egypt.Controllers
     {
 
         private readonly ICityRepository _cityrepo;
-       
-        public CityController(ICityRepository cityrepo)
+        private readonly IMapper mapper;
+
+        public CityController(ICityRepository cityrepo,IMapper mapper)
         {
             _cityrepo = cityrepo;
+            this.mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<City>>> GetAllCities()
+        public async Task<ActionResult<IEnumerable<CityDTO>>> GetAllCities()
         {
             var cities = await _cityrepo.GetAllAsync();
+            var data = mapper.Map<IEnumerable<City>, IEnumerable<CityDTO>>(cities);
 
-            return Ok(cities);
+            return Ok(data);
         }
 
 
@@ -37,17 +41,10 @@ namespace Tourism_Egypt.Controllers
             if (city == null)
                 return NotFound();
 
-            var photos =await _cityrepo.GetAllPhotoBySpecIdAsync(id);
-     
-            var mapped = new CityDTO()
-            {
-                Id = city.Id,
-                Name = city.Name,
-                Description = city.Description,
-                Location = city.Location,
-                //cityPhotos = PhotosResolve.ConvertionCity(photos),  
-            };
-            return Ok(mapped);
+            //var photos =await _cityrepo.GetAllPhotoBySpecIdAsync(id);
+            var data = mapper.Map<City, CityDTO>(city);
+
+            return Ok(data);
         }
     }
 }

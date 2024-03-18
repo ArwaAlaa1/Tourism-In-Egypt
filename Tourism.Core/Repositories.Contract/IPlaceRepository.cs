@@ -9,6 +9,6 @@ namespace Tourism.Core.Repositories.Contract
 {
     public interface IPlaceRepository:IGenericRepository<Place>
     {
-        Task<List<PlacePhotos>> GetAllPhotoBySpecIdAsync(int id);
+    //    Task<List<PlacePhotos>> GetAllPhotoBySpecIdAsync(int id);
     }
 }

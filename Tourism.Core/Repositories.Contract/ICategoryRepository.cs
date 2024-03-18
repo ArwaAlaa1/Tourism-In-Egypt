@@ -7,8 +7,8 @@ using Tourism.Core.Entities;
 
 namespace Tourism.Core.Repositories.Contract
 {
-    public interface ICityRepository:IGenericRepository<City>
+    public interface ICategoryRepository:IGenericRepository<Category>
     {
-        //Task<List<CityPhotos>> GetAllPhotoBySpecIdAsync(int id);
+       //Task<List<Place>> GetAllPlacesBySpecificCategory(int id);
     }
 }

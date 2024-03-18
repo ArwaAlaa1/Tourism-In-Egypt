@@ -20,7 +20,7 @@ namespace Tourism.Repository.Repository
         }
         public async Task<Place> GetAsync(int id)
         {
-            return await context.Places.Include("City").Include("Category").FirstAsync(p=>p.Id==id);
+            return await context.Places.Include(c=>c.City).Include(c=>c.Category).Include(c => c.Photos).FirstAsync(p=>p.Id==id);
 
         }
         public async Task<IEnumerable<Place>> GetAllAsync()
@@ -29,9 +29,9 @@ namespace Tourism.Repository.Repository
              var places= await context.Places.Include("City").Include("Category").Include("Photos").ToListAsync();
              return places;
         }
-        public async Task<List<PlacePhotos>> GetAllPhotoBySpecIdAsync(int id)
-        {
-            return await context.PlacePhotos.Where(p=>p.PlaceId == id).ToListAsync();
-        }
+        //public async Task<List<PlacePhotos>> GetAllPhotoBySpecIdAsync(int id)
+        //{
+        //    return await context.PlacePhotos.Where(p=>p.PlaceId == id).ToListAsync();
+        //}
     }
 }

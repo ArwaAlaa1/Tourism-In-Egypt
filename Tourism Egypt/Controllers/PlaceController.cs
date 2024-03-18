@@ -42,8 +42,8 @@ namespace Tourism_Egypt.Controllers
             if (place == null)
                 return NotFound();
 
-            var photos = await _placerepo.GetAllPhotoBySpecIdAsync(id);
-            place.Photos= photos;
+            //var photos = await _placerepo.GetAllPhotoBySpecIdAsync(id);
+            //place.Photos= photos;
             var data = mapper.Map<Place, PlaceDTO>(place);
 
             return Ok(data);

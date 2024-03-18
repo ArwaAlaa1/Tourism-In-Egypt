@@ -12,9 +12,9 @@ namespace Tourism.Core.Entities
         public string Description { get; set; }
         public string Location { get; set; }
 
-        public virtual ICollection<CityPhotos> CityPhotos { get; set; } = new List<CityPhotos>();
+        public virtual IEnumerable<CityPhotos> CityPhotos { get; set; } 
 
-        public virtual ICollection<Place> Places { get; set; } = new List<Place>();
+        public virtual IEnumerable<Place> Places { get; set; } 
 
 
 

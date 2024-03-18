@@ -16,9 +16,8 @@ namespace Tourism_Egypt.Controllers
         private readonly IAuthService _authService;
 
 
-       
 
-        public AccountUserController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IAuthService authService)
+        public AccountUserController(UserManager<ApplicationUser> userManager , SignInManager<ApplicationUser> signInManager,IAuthService authService)
 
         {
             _userManager = userManager;

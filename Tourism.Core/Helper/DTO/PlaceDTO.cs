@@ -18,8 +18,6 @@ namespace Tourism.Core.Helper.DTO
         public string Phone { get; set; }
 
         public string Category { get; set; }
-       
-       
         public string City { get; set; }
       
         

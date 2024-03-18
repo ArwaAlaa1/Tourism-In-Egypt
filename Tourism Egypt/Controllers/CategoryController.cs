@@ -8,7 +8,6 @@ namespace Tourism_Egypt.Controllers
 
     public class CategoryController : BaseApiController
     {
-        private readonly IGenericRepository<Category> _categoryrepo;
 
         public CategoryController(IGenericRepository<Category> categoryrepo)
         {

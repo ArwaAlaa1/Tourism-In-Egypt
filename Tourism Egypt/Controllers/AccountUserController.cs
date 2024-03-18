@@ -90,17 +90,21 @@ namespace Tourism_Egypt.Controllers
                     return BadRequest("This email already exist");
 
                 var username = _userManager.FindByNameAsync(registerUser.Username);
-               
-                    ApplicationUser user = new ApplicationUser()
-                    {
-                        Email = registerUser.Email,
-                        FName = registerUser.Name.Split(" ")[0],
-                        LName = registerUser.Name.Split(" ")[1],
-                        Id = registerUser.Id,
-                        PhoneNumber = registerUser.Phone,
-                        UserName = registerUser.Username,
-                        DisplayName = registerUser.Name,
-                    };
+
+                ApplicationUser user = new ApplicationUser();
+                    user.Email= registerUser.Email;
+                user.FName = registerUser.Name.Split(" ")[0];
+                user.Id = registerUser.Id;
+                user.PhoneNumber = registerUser.Phone;
+                user.UserName = registerUser.Username;
+                user.DisplayName = registerUser.Name;
+                try
+                {
+                    user.LName= registerUser.Name.Split(" ")[1];
+                }catch
+                {
+                    return BadRequest("Enter Full Name");
+                }
                     var result = await _userManager.CreateAsync(user, registerUser.Password);
                     if (result.Succeeded)
                     {

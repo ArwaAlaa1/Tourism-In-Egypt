@@ -12,7 +12,18 @@
         <li class="card-text">
             <label asp-for="Rating" class="col-form-label"></label>
 
-           : @Model.Rating</li>
+           : 
+
+            @for (float i = 0; i < @Model.Rating; i++)
+                {
+                    <i class="bi bi-star-fill rating-color"></i>
+                }
+            @for (float i = @Model.Rating; i < 5; i++)
+                {
+                    <i class="bi bi-star"></i>
+                }
+           
+        </li>
         <li class="card-text">
             <label asp-for="Time" class="col-form-label"></label>
 

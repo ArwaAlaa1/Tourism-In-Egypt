@@ -1009,6 +1009,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.0.25" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.25">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -1207,7 +1208,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tourism Egypt\Tourism Egypt.csproj" />
+    <ProjectReference Include="..\Tourism.Repository\Tourism.Repository.csproj" />
   </ItemGroup>
 
 </Project>

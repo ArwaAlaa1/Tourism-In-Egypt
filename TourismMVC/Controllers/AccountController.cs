@@ -49,14 +49,11 @@ namespace TourismMVC.Controllers
                     Email = registerUser.Email,
                     FName = registerUser.FName,
                     LName = registerUser.LName,
-                    Location = registerUser.Location,
-                    BirthDate = registerUser.BirthDate,
-                    PhoneNumber = registerUser.PhoneNumber,
+                   
                     CreatedDate = DateTime.Now,
                     UpdatedDate = DateTime.Now,
                     DisplayName = registerUser.Email.Split("@")[0],
                     //PasswordHash = registerUser.Password,
-					ProfilePhotoURL = DocumentSetting.UploadFile(registerUser.PhotoFile, "Images"),
 					
 
 				};

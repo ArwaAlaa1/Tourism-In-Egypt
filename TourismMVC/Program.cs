@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Tourism.Core.Entities;
 using Tourism.Core.Repositories.Contract;
 using Tourism.Repository;
@@ -18,9 +19,13 @@ namespace TourismMVC
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddDbContext<TourismContext>(
-               options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("conn")));
-
-            builder.Services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
+               options =>
+               {
+               options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("conn"));
+               options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+               });
+        
+           builder.Services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
 
 			builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             builder.Services.AddScoped(typeof(IAuthService), typeof(AuthService));

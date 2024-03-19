@@ -1,17 +1,21 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Tourism.Core.Entities;
 using Tourism.Core.Repositories.Contract;
+using TourismMVC.ViewModels;
 
 namespace TourismMVC.Controllers
 {
     public class CategoryController : BaseControllerMVC
     {
         private readonly IUnitOfWork<Category> _unitOfWork;
+        private readonly IMapper mapper;
 
-        public CategoryController(IUnitOfWork<Category> unitOfWork)
+        public CategoryController(IUnitOfWork<Category> unitOfWork,IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            this.mapper = mapper;
         }
         // GET: CategoryController
         public async Task<IActionResult> Index()
@@ -34,11 +38,11 @@ namespace TourismMVC.Controllers
                 return BadRequest();
 
             var category = await _unitOfWork.generic.GetAsync(id.Value);
-
+            var categorymapped = mapper.Map<Category, CategoryViewModel>(category);
             if (category is null)
                 return NotFound();
             
-            return View(viewname ,category);
+            return View(viewname , categorymapped);
         }
 
         // GET: CategoryController/Create
@@ -50,25 +54,35 @@ namespace TourismMVC.Controllers
         // POST: CategoryController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Category category)
+        public async Task<ActionResult> Create(CategoryViewModel category)
         {
 
-            if (ModelState.IsValid)  //server side validation
-            { 
-                
-                _unitOfWork.generic.Add(category);
-                var count = _unitOfWork.Complet();
+            var categorymapped = mapper.Map<CategoryViewModel, Category>(category);
+            var allcategory = await _unitOfWork.generic.GetAllAsync();
+            bool exists = allcategory.Any(e => e.Name == categorymapped.Name);
 
-                if (count > 0)
-                    TempData["message"] = "Category Created succesfully";
-                else
-                    TempData["message"] = "Category Failed Created";
-
-                return RedirectToAction(nameof(Index));
-
+            if (exists)
+            {
+                TempData["message"] = $"{categorymapped.Name} already exists in the database.";
+                return View(category);
             }
+            else
+            {
+                if (ModelState.IsValid)
+                {
+                    _unitOfWork.generic.Add(categorymapped);
+                    var count = _unitOfWork.Complet();
+
+                    if (count > 0)
+                        TempData["message"] = "Category Created succesfully";
+                    else
+                        TempData["message"] = "Category Failed Created";
+
+                    return RedirectToAction("Index");
+                }
+            }
+
             return View(category);
-            
         }
 
         // GET: CategoryController/Edit/5
@@ -91,28 +105,39 @@ namespace TourismMVC.Controllers
         // POST: CategoryController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([FromRoute]int id, Category category)
+        public async Task<IActionResult> Edit([FromRoute] int id, CategoryViewModel category)
         {
             if (id != category.Id)
                 return BadRequest();
 
+            var categorymapped = mapper.Map<CategoryViewModel, Category>(category);
+            var allcategory = await _unitOfWork.generic.GetAllAsync();
+            bool exists = allcategory.Any(e => e.Name == categorymapped.Name);
+
+            if (exists)
+            {
+                TempData["message"] = $"{categorymapped.Name} already exists in the database.";
+                return View(category);
+            }
+            else { 
             if (ModelState.IsValid)  //server side validation
             {
                 try
                 {
 
-                  _unitOfWork.generic.Update(category);
-                var count = _unitOfWork.Complet();
+                    _unitOfWork.generic.Update(categorymapped);
+                    var count = _unitOfWork.Complet();
 
-                return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
                 {
                     ModelState.AddModelError(string.Empty, ex.Message);
                 }
-             
 
+               }
             }
+       
             return View(category);
         }
 
@@ -125,17 +150,17 @@ namespace TourismMVC.Controllers
         // POST: CategoryController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete([FromRoute]int id, Category category)
+        public IActionResult Delete([FromRoute]int id, CategoryViewModel category)
         {
             if (id != category.Id)
                 return BadRequest();
-
+            var categorymapped = mapper.Map<CategoryViewModel, Category>(category);
             if (ModelState.IsValid)  //server side validation
             {
                 try
                 {
 
-                     _unitOfWork.generic.Delete(category);
+                     _unitOfWork.generic.Delete(categorymapped);
                     var count = _unitOfWork.Complet();
 
                     return RedirectToAction(nameof(Index));

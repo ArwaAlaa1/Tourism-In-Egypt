@@ -27,7 +27,7 @@ namespace TourismMVC.Controllers
                 UserName= u.UserName,
                 DisplayName= u.DisplayName,
                 Email= u.Email,
-                PhoneNumber= u.PhoneNumber,
+                //PhoneNumber= u.PhoneNumber,
                 Roles = _userManager.GetRolesAsync(u).Result
 
             }).ToListAsync();

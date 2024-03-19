@@ -1,32 +1,41 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Tourism.Core.Entities;
-using Tourism.Core.Repositories.Contract;
+using Tourism.Repository.Data;
 
 namespace TourismMVC.Controllers
 {
     public class ReviewController : Controller
     {
-        IUnitOfWork<Review> _unitOfWork;
-        public ReviewController(IUnitOfWork<Review> _unitOfWork)
+        private readonly TourismContext _context;
+        public ReviewController(TourismContext context)
         {
-            this._unitOfWork = _unitOfWork;
+            _context = context;
         }
 
-        //Get all reviews
         public async Task<IActionResult> Index()
         {
-            var rw = await _unitOfWork.review.GetAll();
-            return View(rw);
+            try
+            {
+                var reviews = await _context.Reviews.Include(U => U.User).Include(P => P.Place).ToListAsync();
+
+                return View(reviews);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        //Get one review
+
         public async Task<IActionResult> Details(int id)
         {
-            var review = await _unitOfWork.review.GetIdIncludeUser(id);
-            if (review == null)
-            {
-                return RedirectToAction("Index");
-            }
+            var review = _context.Reviews.Include(U => U.User).Include(P => P.Place).FirstOrDefault(r => r.Id == id);
+
+            if (review is null)
+                return NotFound();
+
+
             return View(review);
         }
 
@@ -34,25 +43,29 @@ namespace TourismMVC.Controllers
         //Get : open form of Delete
         public async Task<IActionResult> Delete(int id)
         {
-            var review = await _unitOfWork.review.GetIdIncludeUser(id);
+            var review = await _context.Reviews.FindAsync(id);
 
-            if (review == null)
-            {
-                return RedirectToAction("Index");
-            }
-            else
-                return View(review);
+            if (review is null)
+                return NotFound();
+
+            return View(review);
         }
 
         //post : Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(int id, Review review)
+        public IActionResult Delete(Review review)
         {
             try
             {
-                _unitOfWork.generic.Delete(review);
-                _unitOfWork.Complet();
+                var findWeview = _context.Reviews.Find(review.Id);
+
+                if (review is null)
+                    return NotFound();
+
+                _context.Reviews.Remove(review);
+
+                _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -61,23 +74,5 @@ namespace TourismMVC.Controllers
             }
         }
 
-        //     //Get: Delete All Reviews
-
-        //     public async Task<IActionResult> DeleteAll()
-        //     {
-        //         try
-        //         {
-        //            var list = await _unitOfWork.generic.GetAllAsync();
-
-        //              _unitOfWork.review.DeleteAll(list);
-        //             _unitOfWork.Complet();
-        //             return RedirectToAction(nameof(Index));
-
-        //         }catch(Exception ex)
-        //         {
-
-        //             return RedirectToAction(nameof(Index));
-        //}
-        //     }
     }
 }

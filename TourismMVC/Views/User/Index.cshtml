@@ -362,9 +362,9 @@
 								<th>
 									@Html.DisplayNameFor(model => model.Email)
 								</th>
-								<th>
+								@*<th>
 									@Html.DisplayNameFor(model => model.PhoneNumber)
-								</th>
+								</th>*@
 								<th>
 									Roles
 								</th>
@@ -398,9 +398,9 @@
 									<td>
 										@Html.DisplayFor(modelItem => item.Email)
 									</td>
-									<td>
+									@*<td>
 										@Html.DisplayFor(modelItem => item.PhoneNumber)
-									</td>
+									</td>*@
 									<td>
 										@string.Join(",",item.Roles)
 									</td>

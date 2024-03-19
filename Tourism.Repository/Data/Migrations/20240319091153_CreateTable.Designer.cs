@@ -12,8 +12,8 @@ using Tourism.Repository.Data;
 namespace Tourism.Repository.Data.Migrations
 {
     [DbContext(typeof(TourismContext))]
-    [Migration("20240309185222_init")]
-    partial class init
+    [Migration("20240319091153_CreateTable")]
+    partial class CreateTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -362,46 +362,6 @@ namespace Tourism.Repository.Data.Migrations
                     b.ToTable("Favorites");
                 });
 
-            modelBuilder.Entity("Tourism.Core.Entities.Notification", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("ReadStatus")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Notifications");
-                });
-
             modelBuilder.Entity("Tourism.Core.Entities.Place", b =>
                 {
                     b.Property<int>("Id")
@@ -548,13 +508,12 @@ namespace Tourism.Repository.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Message")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Placeid")
+                    b.Property<int>("PlaceId")
                         .HasColumnType("int");
 
                     b.Property<float>("Rating")
@@ -568,7 +527,7 @@ namespace Tourism.Repository.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Placeid");
+                    b.HasIndex("PlaceId");
 
                     b.HasIndex("UserId");
 
@@ -714,17 +673,6 @@ namespace Tourism.Repository.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Tourism.Core.Entities.Notification", b =>
-                {
-                    b.HasOne("Tourism.Core.Entities.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Tourism.Core.Entities.Place", b =>
                 {
                     b.HasOne("Tourism.Core.Entities.Category", "Category")
@@ -766,7 +714,7 @@ namespace Tourism.Repository.Data.Migrations
             modelBuilder.Entity("Tourism.Core.Entities.PlacePhotos", b =>
                 {
                     b.HasOne("Tourism.Core.Entities.Place", "Place")
-                        .WithMany("placePhotos")
+                        .WithMany("Photos")
                         .HasForeignKey("PlaceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -778,7 +726,7 @@ namespace Tourism.Repository.Data.Migrations
                 {
                     b.HasOne("Tourism.Core.Entities.Place", "Place")
                         .WithMany()
-                        .HasForeignKey("Placeid")
+                        .HasForeignKey("PlaceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -826,7 +774,7 @@ namespace Tourism.Repository.Data.Migrations
 
             modelBuilder.Entity("Tourism.Core.Entities.Place", b =>
                 {
-                    b.Navigation("placePhotos");
+                    b.Navigation("Photos");
                 });
 #pragma warning restore 612, 618
         }

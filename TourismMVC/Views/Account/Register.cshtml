@@ -8,8 +8,9 @@
 <div class="main-agileinfo">
     <div class="agileits-top">
         <form asp-action="Register" method="post" enctype="multipart/form-data">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            
+            <div asp-validation-summary="All"></div>
+
+
             <div class="form-group">
                 <input class="text w3lpass" asp-for="FName" placeholder="FName" required="">
                 <span asp-validation-for="FName" class="text-danger"></span>
@@ -18,32 +19,15 @@
                 <input class="text w3lpass" asp-for="LName" placeholder="LName" required="">
                 <span asp-validation-for="LName" class="text-danger"></span>
             </div>
+            
             <div class="form-group">
-                <input class="text w3lpass" asp-for="Location" placeholder="Location" required="">
-                <span asp-validation-for="Location" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input class="text" asp-for="BirthDate" placeholder="BirthDate" required="">
-                <span asp-validation-for="BirthDate" class="text-danger"></span>
-            </div>
-           @* <div class="form-group">
-                <label asp-for="CreatedDate" class="control-label"></label>
-                <input asp-for="CreatedDate" class="form-control" />
-                <span asp-validation-for="CreatedDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UpdatedDate" class="control-label"></label>
-                <input asp-for="UpdatedDate" class="form-control" />
-                <span asp-validation-for="UpdatedDate" class="text-danger"></span>
-            </div>*@
-            <div class="form-group">
-                <input class="text" asp-for="Password" placeholder="Password" required="">
+                <input class="text w3lpass" asp-for="Password" placeholder="Password" required="">
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-            <div class="form-group">
+           @* <div class="form-group">
                 <input class="text w3lpass" asp-for="ConfirmedPassword" placeholder="Confirm Password" required="">
                 <span asp-validation-for="ConfirmedPassword" class="text-danger"></span>
-            </div>
+            </div>*@
             <div class="form-group">
 
                 <input class="text" asp-for="UserName" placeholder="Username" required="">
@@ -54,17 +38,7 @@
                 <input class="text email" asp-for="Email" placeholder="Email" required="">
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input class="text w3lpass" asp-for="PhoneNumber" placeholder="PhoneNumber" required="">
-
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
             
-            <div class="form-group">
-                <label asp-for="PhotoFile" class="control-label fw-bold fs-4"></label>
-                <input asp-for="PhotoFile" class="form-control form-control-lg" type="file" id="formFile" />
-                @*<span asp-validation-for="PhotoFile" class="text-danger"></span>*@
-            </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

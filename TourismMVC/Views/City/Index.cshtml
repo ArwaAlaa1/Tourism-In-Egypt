@@ -324,7 +324,12 @@
 
 
 
-
+@if (!string.IsNullOrEmpty(TempData["message"] as string))
+	{
+		<div class="alert alert-primary mt-3 mb-2">
+			@TempData["message"]
+		</div>
+	}
 	@if (Model != null)
 	{
 		<div class="container-l">

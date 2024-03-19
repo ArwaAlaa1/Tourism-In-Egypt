@@ -337,6 +337,10 @@
     <None Include="Views\CityPhotos\Index.cshtml" />
     <None Include="Views\CityPhotos\PartialViews\CreateEditView.cshtml" />
     <None Include="Views\CityPhotos\PartialViews\DeleteDetialsView.cshtml" />
+    <None Include="Views\Review\Delete.cshtml" />
+    <None Include="Views\Review\Details.cshtml" />
+    <None Include="Views\Review\Index.cshtml" />
+    <None Include="Views\Review\PartialViews\DetailsDeleteView.cshtml" />
     <None Include="wwwroot\assets\css\all.min.css" />
     <None Include="wwwroot\assets\css\style.css" />
     <None Include="wwwroot\assets\icon\icons8-aircraft-16.png" />
@@ -1009,6 +1013,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.0.25" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.25">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -1200,14 +1205,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Notification\PartialViews\" />
-    <Folder Include="Views\Review\PartialViews\" />
     <Folder Include="Views\Trip\PartialViews\" />
     <Folder Include="wwwroot\Files\Images\" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tourism Egypt\Tourism Egypt.csproj" />
+    <ProjectReference Include="..\Tourism.Repository\Tourism.Repository.csproj" />
   </ItemGroup>
 
 </Project>

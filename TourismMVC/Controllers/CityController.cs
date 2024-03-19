@@ -1,17 +1,21 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Tourism.Core.Entities;
 using Tourism.Core.Repositories.Contract;
+using TourismMVC.ViewModels;
 
 namespace TourismMVC.Controllers
 {
     public class CityController : BaseControllerMVC
     {
         private readonly IUnitOfWork<City> _unitOfWork;
+        private readonly IMapper mapper;
 
-        public CityController(IUnitOfWork<City> unitOfWork)
+        public CityController(IUnitOfWork<City> unitOfWork,IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            this.mapper = mapper;
         }
 
         // GET: CityController
@@ -34,11 +38,12 @@ namespace TourismMVC.Controllers
                 return BadRequest();
 
             var city = await _unitOfWork.generic.GetAsync(id.Value);
-
-            if (city is null)
+            var citymapped=mapper.Map<City,CityViewModel>(city);
+           
+            if (citymapped is null)
                 return NotFound();  
 
-            return View(viewname,city);
+            return View(viewname, citymapped);
         }
 
         // GET: CityController/Create
@@ -50,20 +55,33 @@ namespace TourismMVC.Controllers
         // POST: CityController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(City city)
+        public async Task<IActionResult> Create(CityViewModel city)
         {
-            if (ModelState.IsValid)
+            var citymapped = mapper.Map<CityViewModel, City>(city);
+            var allcity =await _unitOfWork.generic.GetAllAsync();
+            bool exists = allcity.Any(e => e.Name == citymapped.Name); 
+
+            if (exists)
             {
-                _unitOfWork.generic.Add(city);
-                var count = _unitOfWork.Complet();
-
-                if (count > 0)
-                    TempData["message"] = "City Created succesfully";
-                else
-                    TempData["message"] = "City Failed Created";
-
-                return RedirectToAction("Index");
+                TempData["message"] = $"{citymapped.Name} already exists in the database.";
+                return View(city);
             }
+            else
+            {
+                if (ModelState.IsValid)
+                {
+                    _unitOfWork.generic.Add(citymapped);
+                    var count = _unitOfWork.Complet();
+
+                    if (count > 0)
+                        TempData["message"] = "City Created succesfully";
+                    else
+                        TempData["message"] = "City Failed Created";
+
+                    return RedirectToAction("Index");
+                }
+            }
+          
             return View(city);
         }
 
@@ -76,28 +94,37 @@ namespace TourismMVC.Controllers
         // POST: CityController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([FromRoute]int id, City city)
+        public async Task<IActionResult> Edit([FromRoute]int id, CityViewModel city)
         {
             if (id != city.Id)
                 return BadRequest();
+            var citymapped = mapper.Map<CityViewModel, City>(city);
 
-            if (ModelState.IsValid)  //server side validation
+            var allcity = await _unitOfWork.generic.GetAllAsync();
+            bool exists = allcity.Any(e => e.Name == citymapped.Name);
+
+            if (exists)
             {
-                try
+                TempData["message"] = $"{citymapped.Name}'already exists in the database.'";
+              
+                return View(city);
+            }
+            else
+            {
+                if (ModelState.IsValid)
                 {
-
-                    _unitOfWork.generic.Update(city);
+                    _unitOfWork.generic.Update(citymapped);
                     var count = _unitOfWork.Complet();
 
-                    return RedirectToAction(nameof(Index));
-                }
-                catch (Exception ex)
-                {
-                    ModelState.AddModelError(string.Empty, ex.Message);
-                }
+                    if (count > 0)
+                        TempData["message"] = "City Created succesfully";
+                    else
+                        TempData["message"] = "City Failed Created";
 
-
+                    return RedirectToAction("Index");
+                }
             }
+
             return View(city);
         }
 
@@ -110,17 +137,17 @@ namespace TourismMVC.Controllers
         // POST: CityController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete([FromRoute]int id, City city)
+        public ActionResult Delete([FromRoute]int id, CityViewModel city)
         {
             if (id != city.Id)
                 return BadRequest();
-
-            if (ModelState.IsValid)  //server side validation
+			var citymapped = mapper.Map<CityViewModel, City>(city);
+			if (ModelState.IsValid)  //server side validation
             {
                 try
                 {
 
-                    _unitOfWork.generic.Delete(city);
+                    _unitOfWork.generic.Delete(citymapped);
                     var count = _unitOfWork.Complet();
 
                     return RedirectToAction(nameof(Index));

@@ -4,18 +4,23 @@ using TourismMVC.ViewModels;
 
 namespace TourismMVC.Helpers
 {
-	public class MappingProfiles :Profile
-	{
+    public class MappingProfiles : Profile
+    {
+
 
 		public MappingProfiles()
 		{
 			CreateMap<PlaceViewModel,Place>().ReverseMap();
+			CreateMap<City, CityViewModel>().ReverseMap();
+
+			CreateMap<Category, CategoryViewModel>().ReverseMap();
+
 			CreateMap<CityPhotosViewModel,CityPhotos>().ReverseMap();
+
             CreateMap<PlacePhotoViewModel, PlacePhotos>().ReverseMap();
-            CreateMap<NotificationModel,Notification>().ReverseMap();
             CreateMap<Place_TripModel, Place_Trip>().ReverseMap();
-            CreateMap<RoleViewModel,ApplicationRole >()
-                .ForMember(AR=> AR.Name,RV=> RV.MapFrom(v=>v.RoleName)).ReverseMap();
+            CreateMap<RoleViewModel, ApplicationRole>()
+                .ForMember(AR => AR.Name, RV => RV.MapFrom(v => v.RoleName)).ReverseMap();
 
         }
     }

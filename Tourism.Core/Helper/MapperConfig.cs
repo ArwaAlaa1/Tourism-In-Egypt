@@ -1,17 +1,12 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tourism.Core.Entities;
 using Tourism.Core.Helper.DTO;
 
 namespace Tourism.Core.Helper
 {
-    public class MapperConfig :Profile
+    public class MapperConfig : Profile
     {
-        
+
         public MapperConfig()
         {
             CreateMap<Place, PlaceDTO>().ForMember(b => b.Category, o => o.MapFrom(b => b.Category.Name))
@@ -21,8 +16,11 @@ namespace Tourism.Core.Helper
             CreateMap<Category, CategoryDTO>();
 
             CreateMap<City, CityDTO>()
-              .ForMember(c=>c.cityPhotos, o => o.MapFrom<PhotoCityResolved>());
+              .ForMember(c => c.cityPhotos, o => o.MapFrom<PhotoCityResolved>());
+
+            CreateMap<Review, ReviewDTO>().ReverseMap();
+            CreateMap<Review, AddReviewDTO>().ReverseMap();
         }
-        
+
     }
 }

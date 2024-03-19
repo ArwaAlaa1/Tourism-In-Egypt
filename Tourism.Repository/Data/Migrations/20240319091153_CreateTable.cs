@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Tourism.Repository.Data.Migrations
 {
-    public partial class init : Migration
+    public partial class CreateTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -265,32 +265,6 @@ namespace Tourism.Repository.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Notifications",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ReadStatus = table.Column<bool>(type: "bit", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Notifications", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Notifications_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "User_Trips",
                 columns: table => new
                 {
@@ -410,11 +384,11 @@ namespace Tourism.Repository.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Rating = table.Column<float>(type: "real", nullable: false),
                     Time = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    Placeid = table.Column<int>(type: "int", nullable: false),
+                    PlaceId = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
@@ -424,8 +398,8 @@ namespace Tourism.Repository.Data.Migrations
                 {
                     table.PrimaryKey("PK_Reviews", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Reviews_Places_Placeid",
-                        column: x => x.Placeid,
+                        name: "FK_Reviews_Places_PlaceId",
+                        column: x => x.PlaceId,
                         principalTable: "Places",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -453,11 +427,6 @@ namespace Tourism.Repository.Data.Migrations
                 column: "UsersId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Notifications_UserId",
-                table: "Notifications",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Place_Trips_PlaceId",
                 table: "Place_Trips",
                 column: "PlaceId");
@@ -483,9 +452,9 @@ namespace Tourism.Repository.Data.Migrations
                 column: "CityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reviews_Placeid",
+                name: "IX_Reviews_PlaceId",
                 table: "Reviews",
-                column: "Placeid");
+                column: "PlaceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reviews_UserId",
@@ -510,9 +479,6 @@ namespace Tourism.Repository.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Favorites");
-
-            migrationBuilder.DropTable(
-                name: "Notifications");
 
             migrationBuilder.DropTable(
                 name: "Place_Trips");

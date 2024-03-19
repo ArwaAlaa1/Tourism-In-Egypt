@@ -1,18 +1,12 @@
-﻿ using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Tourism.Core.Entities;
 
 namespace Tourism.Repository.Data
 {
-    public class TourismContext : IdentityDbContext<ApplicationUser , ApplicationRole ,int>
+    public class TourismContext : IdentityDbContext<ApplicationUser, ApplicationRole, int>
     {
 
         public TourismContext()
@@ -23,7 +17,7 @@ namespace Tourism.Repository.Data
         public TourismContext(DbContextOptions<TourismContext> options)
             : base(options)
         {
-            
+
         }
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
@@ -54,14 +48,13 @@ namespace Tourism.Repository.Data
         public DbSet<Favorite> Favorites { get; set; }
         public DbSet<UserFav> UserFavs { get; set; }
 
-        public DbSet<Notification> Notifications { get; set; }
         public DbSet<Review> Reviews { get; set; }
 
-        
-       
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-          modelBuilder.Entity<IdentityUserLogin<int>>().HasKey(t => new {t.ProviderKey , t.LoginProvider });
+            modelBuilder.Entity<IdentityUserLogin<int>>().HasKey(t => new { t.ProviderKey, t.LoginProvider });
             modelBuilder.Entity<IdentityUserRole<int>>().HasKey(t => new { t.RoleId, t.UserId });
             modelBuilder.Entity<IdentityUserToken<int>>().HasKey(t => new { t.UserId, t.LoginProvider });
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

@@ -1,25 +1,24 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using Tourism.Core.Entities;
+using Tourism.Core.Helper;
 using Tourism.Core.Repositories.Contract;
 using Tourism.Repository;
 using Tourism.Repository.Data;
 using Tourism.Repository.Repository;
 using Tourism.Service;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Tourism.Core.Helper;
-using Microsoft.AspNetCore.Identity;
 
 namespace Tourism_Egypt
 {
     public class Program
     {
-        public static  async Task Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
-           
+
             #region Add services to the container.
 
             builder.Services.AddControllers();
@@ -31,6 +30,7 @@ namespace Tourism_Egypt
             builder.Services.AddScoped(typeof(ICityRepository), typeof(CityRepository));
             builder.Services.AddScoped(typeof(IPlaceRepository), typeof(PlaceRepository));
             builder.Services.AddScoped(typeof(ICategoryRepository), typeof(CategoryRepository));
+            builder.Services.AddScoped(typeof(IReviewRepository), typeof(ReviewRepository));
 
             builder.Services.AddAutoMapper(typeof(MapperConfig));
 
@@ -50,7 +50,8 @@ namespace Tourism_Egypt
                 .AddEntityFrameworkStores<TourismContext>();
 
             //Authentication Schema
-            builder.Services.AddAuthentication(options => {
+            builder.Services.AddAuthentication(options =>
+            {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).
@@ -66,7 +67,7 @@ namespace Tourism_Egypt
                     ValidateLifetime = true,
                     ClockSkew = TimeSpan.FromDays(double.Parse(builder.Configuration["JWT:Duration"]))
                 }
-                ) ;
+                );
 
             builder.Services.AddCors(options =>
             {
@@ -89,16 +90,16 @@ namespace Tourism_Egypt
             #region Update DB
 
             //Explicitly
-           using  var scope = app.Services.CreateScope();
+            using var scope = app.Services.CreateScope();
             var services = scope.ServiceProvider;
 
             var loggerfactury = services.GetRequiredService<ILoggerFactory>();
             var dbContext = services.GetRequiredService<TourismContext>();
             try
             {
-              
-                 await dbContext.Database.MigrateAsync();
-            
+
+                await dbContext.Database.MigrateAsync();
+
             }
             catch (Exception ex)
             {
@@ -114,7 +115,7 @@ namespace Tourism_Egypt
             //if (app.Environment.IsDevelopment())
             //{
             app.UseSwagger();
-               app.UseSwaggerUI();
+            app.UseSwaggerUI();
             //}
 
             app.UseHttpsRedirection();

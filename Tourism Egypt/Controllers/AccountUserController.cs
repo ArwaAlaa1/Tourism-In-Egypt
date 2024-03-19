@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using System.Security.Claims;
 using Tourism.Core.Entities;
 using Tourism.Core.Helper.DTO;
@@ -82,16 +83,14 @@ namespace Tourism_Egypt.Controllers
 
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterUserDTO registerUser)
-        { 
+        {
             if (ModelState.IsValid)
             {
-                if(CheckEmail(registerUser.Email).Result.Value)
+                if (CheckEmail(registerUser.Email).Result.Value)
                     return BadRequest("This email already exist");
 
-                var username = _userManager.FindByNameAsync(registerUser.Username);
-
                 ApplicationUser user = new ApplicationUser();
-                    user.Email= registerUser.Email;
+                user.Email = registerUser.Email;
                 user.FName = registerUser.Name.Split(" ")[0];
                 user.Id = registerUser.Id;
                 user.PhoneNumber = registerUser.Phone;
@@ -99,26 +98,37 @@ namespace Tourism_Egypt.Controllers
                 user.DisplayName = registerUser.Name;
                 try
                 {
-                    user.LName= registerUser.Name.Split(" ")[1];
-                }catch
+                    user.LName = registerUser.Name.Split(" ")[1];
+                }
+                catch
                 {
                     return BadRequest("Enter Full Name");
                 }
-                    var result = await _userManager.CreateAsync(user, registerUser.Password);
-                    if (result.Succeeded)
+                var result = await _userManager.CreateAsync(user, registerUser.Password);
+
+                if (result.Succeeded)
+                {
+
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return Ok(new UserDTO
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return Ok(new UserDTO
-                        {
-                            DisplayName = user.DisplayName,
-                            Email = user.Email,
-                            Username = user.UserName,
-                            Token = await _authService.CreateTokenAsync(user, _userManager)
-                        });
+                        DisplayName = user.DisplayName,
+                        Email = user.Email,
+                        Username = user.UserName,
+                        Token = await _authService.CreateTokenAsync(user, _userManager)
+                    });
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        return BadRequest(error.Description);
                     }
-                    return BadRequest("Password must have 1 non alphanumeric and at least 6 characters and 1 number  or username is already tooken");
- 
+                }
+
             }
+
+
             return BadRequest();
         }
 

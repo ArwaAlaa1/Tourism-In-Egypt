@@ -27,7 +27,7 @@ namespace Tourism_Egypt
             //dbcontext
             #region Container Services
             builder.Services.AddDbContext<TourismContext>(
-                   options => options.UseSqlServer(builder.Configuration.GetConnectionString("conn")));
+                   options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddScoped(typeof(ICityRepository), typeof(CityRepository));
             builder.Services.AddScoped(typeof(IPlaceRepository), typeof(PlaceRepository));
             builder.Services.AddScoped(typeof(ICategoryRepository), typeof(CategoryRepository));

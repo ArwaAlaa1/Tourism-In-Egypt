@@ -71,10 +71,8 @@ namespace TourismMVC.Controllers
                 }
                 else
                 {
-                    foreach (var ErrorItem in result.Errors)
-                    {
-                        ModelState.AddModelError("", ErrorItem.Description);
-                    }
+                    ModelState.AddModelError("Username" , "Is already Token");
+                    ModelState.AddModelError("Password", "Password must contain at least 8 characters, including at least 1 uppercase letter, at least 1 lowercase letter, at least one number and a special character");
                 }
 
             }

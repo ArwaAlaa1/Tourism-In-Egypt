@@ -35,9 +35,9 @@ namespace TourismMVC
             builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(
             config =>
             {
-                config.Password.RequireUppercase = false;
-                config.Lockout.MaxFailedAccessAttempts = 3;
-                config.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                //config.Password.RequireUppercase = false;
+                //config.Lockout.MaxFailedAccessAttempts = 3;
+                //config.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
 
 
             })//configuration

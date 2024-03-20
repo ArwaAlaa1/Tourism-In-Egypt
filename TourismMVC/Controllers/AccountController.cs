@@ -66,7 +66,13 @@ namespace TourismMVC.Controllers
                     await _signInManager.SignInAsync(RUM, false);
                     return RedirectToAction(nameof(Login));
                 }
-              
+
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("" , error.Description);
+                }
+
 
             }
             return View(registerUser);

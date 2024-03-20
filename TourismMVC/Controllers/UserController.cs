@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections;
 using Tourism.Core.Entities;
+using Tourism.Core.Helper.DTO;
 using TourismMVC.ViewModels;
 
 namespace TourismMVC.Controllers
@@ -106,18 +108,20 @@ namespace TourismMVC.Controllers
         }
 
         // GET: UserController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            
             return View();
         }
 
         // POST: UserController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public  ActionResult Delete(int id , ICollection collection)
         {
             try
             {
+               
                 return RedirectToAction(nameof(Index));
             }
             catch

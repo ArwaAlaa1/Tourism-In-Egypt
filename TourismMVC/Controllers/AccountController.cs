@@ -66,11 +66,7 @@ namespace TourismMVC.Controllers
                     await _signInManager.SignInAsync(RUM, false);
                     return RedirectToAction(nameof(Login));
                 }
-                //else
-                //{
-                //    //ModelState.AddModelError("Username" , "Is already Token");
-                //    ModelState.AddModelError("Password", "Password must contain at least 8 characters, including at least 1 uppercase letter, at least 1 lowercase letter, at least one number and a special character");
-                //}
+              
 
             }
             return View(registerUser);

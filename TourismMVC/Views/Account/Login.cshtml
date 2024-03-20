@@ -12,13 +12,15 @@
 
     <!-- Email input -->
                 <div class="form-outline mb-4 ">
-                    <input Class="text w3lpass" asp-for="UserName" placeholder="UserName" class="form-control" />
+                <label class="fs-3">UserName</label>
+                <input Class="text " style="margin: 1em 0;" asp-for="UserName" placeholder="UserName" class="form-control" />
                      <span asp-validation-for="UserName" class="text-danger"></span>
                 </div>
 
     <!-- Password input -->
                 <div class="form-outline mb-4 ">
-                    <input Class="text w3lpass" type="password" asp-for="Password" placeholder="Password"  class="form-control" />
+                <label class="fs-3">password</label>
+                <input Class="text " style="margin: 1em 0;" type="password" asp-for="Password" placeholder="Password" class="form-control" />
        
             <span asp-validation-for="Password" class="text-danger"></span>
     </div>

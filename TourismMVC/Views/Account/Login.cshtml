@@ -8,7 +8,8 @@
     <div class="agileits-top">
 <form method="post" asp-action="Login"> 
 
-    <div asp-validation-summary="All" >
+    
+
     <!-- Email input -->
                 <div class="form-outline mb-4 ">
                     <input Class="text w3lpass" asp-for="UserName" placeholder="UserName" class="form-control" />
@@ -32,14 +33,12 @@
 
             <input type="submit" value="Sign In"   />
         
-
-       
     <!-- Register buttons -->
     <div class="text-center">
         <p>Not a member? <a asp-controller="Account" asp-action="Register">Register</a></p>
-        
-    </div>
-    </div>
+   </div>
+
+   
 </form>
 </div>
 </div>

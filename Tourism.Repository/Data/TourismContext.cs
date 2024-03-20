@@ -26,7 +26,7 @@ namespace Tourism.Repository.Data
 
             //optionsBuilder.UseSqlServer("Data Source=SQL5109.site4now.net;Initial Catalog=db_aa6718_tourism;User Id=db_aa6718_tourism_admin;Password=DotNetDev1;MultipleActiveResultSets=true;");
         
-           optionsBuilder.UseSqlServer("Server = DESKTOP-9IISLS5; Database = Tourism ; Trusted_Connection = true ;MultipleActiveResultSets=true ");
+           optionsBuilder.UseSqlServer("Data Source=SQL5109.site4now.net;Initial Catalog=db_aa6718_tourism;User Id=db_aa6718_tourism_admin;Password=DotNetDev1");
           //  optionsBuilder.UseSqlServer("Data Source=SQL5109.site4now.net;Initial Catalog=db_aa6718_tourism;User Id=db_aa6718_tourism_admin;Password=DotNetDev1");
 
         }

@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Tourism.Core.Entities;
 using Tourism.Core.Repositories.Contract;
 using Tourism.Repository;
@@ -21,16 +20,16 @@ namespace TourismMVC
             builder.Services.AddDbContext<TourismContext>(
                options =>
                {
-               options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("conn"));
-               options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                   options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("conn"));
+                   options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
                });
-        
-           builder.Services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
 
-			builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            builder.Services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
+
+            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             builder.Services.AddScoped(typeof(IAuthService), typeof(AuthService));
 
-            builder.Services.AddAutoMapper(m=> m.AddProfile(new MappingProfiles()));
+            builder.Services.AddAutoMapper(m => m.AddProfile(new MappingProfiles()));
 
             builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(
             config =>
@@ -49,8 +48,8 @@ namespace TourismMVC
                 //config.ExpireTimeSpan= TimeSpan.FromMinutes(5);
             });
 
-            
-			var app = builder.Build();
+
+            var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

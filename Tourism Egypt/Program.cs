@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -26,12 +27,12 @@ namespace Tourism_Egypt
             //dbcontext
             #region Container Services
             builder.Services.AddDbContext<TourismContext>(
-                   options => options.UseSqlServer(builder.Configuration.GetConnectionString("conn")));
+                   options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddScoped(typeof(ICityRepository), typeof(CityRepository));
             builder.Services.AddScoped(typeof(IPlaceRepository), typeof(PlaceRepository));
             builder.Services.AddScoped(typeof(ICategoryRepository), typeof(CategoryRepository));
             builder.Services.AddScoped(typeof(IReviewRepository), typeof(ReviewRepository));
-
+            
             builder.Services.AddAutoMapper(typeof(MapperConfig));
 
             #endregion
@@ -68,7 +69,7 @@ namespace Tourism_Egypt
                     ClockSkew = TimeSpan.FromDays(double.Parse(builder.Configuration["JWT:Duration"]))
                 }
                 );
-
+          
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("MyPolicy", options =>

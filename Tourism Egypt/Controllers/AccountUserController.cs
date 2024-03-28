@@ -227,7 +227,7 @@ namespace Tourism_Egypt.Controllers
 
         //}
      
-        [HttpPost(Name = "SendEmail")]
+        [HttpPost("SendEmail")]
         public void SendEmail(SendEmailDto emailDto)
         {
             _emailService.SendEmail(emailDto);

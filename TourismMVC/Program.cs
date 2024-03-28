@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Tourism.Core.Entities;
@@ -43,6 +44,22 @@ namespace TourismMVC
             })//configuration
                 .AddEntityFrameworkStores<TourismContext>();
 
+
+            builder.Services.AddAuthentication(o =>
+            {
+                o.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
+                o.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+
+            })
+                .AddGoogle(options=>
+                {
+                    IConfigurationSection GoogleAuthSec = builder.Configuration.GetSection("Authentication:Google");
+                   options.ClientId=GoogleAuthSec["ClientId"];
+                    options.ClientSecret = GoogleAuthSec["ClientSecret"];
+                    options.CallbackPath = "/auth/google-callback";
+
+
+                });
             builder.Services.ConfigureApplicationCookie(config =>
             {
                 config.LoginPath = "/Account/Login";

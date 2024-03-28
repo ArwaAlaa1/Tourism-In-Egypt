@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -26,14 +28,33 @@ namespace Tourism_Egypt
             //dbcontext
             #region Container Services
             builder.Services.AddDbContext<TourismContext>(
-                   options => options.UseSqlServer(builder.Configuration.GetConnectionString("conn")));
+                   options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddScoped(typeof(ICityRepository), typeof(CityRepository));
             builder.Services.AddScoped(typeof(IPlaceRepository), typeof(PlaceRepository));
             builder.Services.AddScoped(typeof(ICategoryRepository), typeof(CategoryRepository));
             builder.Services.AddScoped(typeof(IReviewRepository), typeof(ReviewRepository));
-
+        
             builder.Services.AddAutoMapper(typeof(MapperConfig));
 
+            var configuration = builder.Configuration;
+
+            // Add services to the container.
+            builder.Services.Configure<EmailConfiguration>(configuration.GetSection("EmailConfiguration"));
+            builder.Services.AddScoped<IEmailService, EmailService>();
+            //builder.Services.AddAuthentication(o =>
+            //{
+            //    o.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
+            //    o.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+
+            //})
+            //    .AddGoogle(options=>
+            //    {
+            //        IConfigurationSection GoogleAuthSec = builder.Configuration.GetSection("Authentication:Google");
+            //       options.ClientId=GoogleAuthSec["ClientId"];
+            //        options.ClientSecret = GoogleAuthSec["ClientSecret"];
+
+
+            //    });
             #endregion
             #region Identity Services
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -47,7 +68,8 @@ namespace Tourism_Egypt
 
 
             })//configuration
-                .AddEntityFrameworkStores<TourismContext>();
+                .AddEntityFrameworkStores<TourismContext>()
+                .AddDefaultTokenProviders();
 
             //Authentication Schema
             builder.Services.AddAuthentication(options =>
@@ -67,7 +89,17 @@ namespace Tourism_Egypt
                     ValidateLifetime = true,
                     ClockSkew = TimeSpan.FromDays(double.Parse(builder.Configuration["JWT:Duration"]))
                 }
-                );
+                ).AddGoogle(options =>
+                {
+                    IConfigurationSection GoogleAuthSec = builder.Configuration.GetSection("Authentication:Google");
+                    options.ClientId = GoogleAuthSec["ClientId"];
+                    options.ClientSecret = GoogleAuthSec["ClientSecret"];
+                    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+                    options.ClientId = builder.Configuration["Authentication:Google:ClientId"]; ;
+
+                    options.CallbackPath = "/auth/google-callback";
+
+                }); ;
 
             builder.Services.AddCors(options =>
             {
@@ -117,10 +149,10 @@ namespace Tourism_Egypt
             app.UseSwagger();
             app.UseSwaggerUI();
             //}
-
+            app.UseCors("MyPolicy");
             app.UseHttpsRedirection();
 
-            app.UseCors("MyPolicy");
+          
             app.UseAuthentication();
             app.UseAuthorization();
 

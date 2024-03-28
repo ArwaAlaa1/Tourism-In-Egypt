@@ -149,7 +149,19 @@ namespace Tourism_Egypt
             app.UseSwagger();
             app.UseSwaggerUI();
             //}
+<<<<<<< HEAD
             app.UseCors("MyPolicy");
+=======
+            app.Use(async (context, next) =>
+            {
+                if (context.Request.Path == "/")
+                {
+                    context.Response.Redirect("/swagger/index.html");
+                    return;
+                }
+                await next();
+            });
+>>>>>>> 7edf03a0e8c962282a46de23c891172b8206f9ab
             app.UseHttpsRedirection();
 
           

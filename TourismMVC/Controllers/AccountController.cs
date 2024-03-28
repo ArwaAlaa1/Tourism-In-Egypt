@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Tourism.Core.Entities;
 using TourismMVC.Helpers;
 using TourismMVC.ViewModels;
@@ -67,10 +70,12 @@ namespace TourismMVC.Controllers
                     return RedirectToAction(nameof(Login));
                 }
 
+
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError("" , error.Description);
                 }
+
 
             }
             return View(registerUser);
@@ -84,7 +89,7 @@ namespace TourismMVC.Controllers
         public IActionResult SaveLogOut()
         {
             _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
         }
         [HttpGet]
 
@@ -129,7 +134,37 @@ namespace TourismMVC.Controllers
 
         }
 
+        public IActionResult GoogleLogin()
+        {
+            var authenticationProperties = new AuthenticationProperties
+            {
+                RedirectUri = Url.Action("GoogleResponse")
+            };
 
+            return Challenge(authenticationProperties, GoogleDefaults.AuthenticationScheme);
+        }
+
+        //[HttpGet("google-response")]
+        public async Task<IActionResult> GoogleResponse()
+        {
+            var authenticateResult = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
+
+            if (!authenticateResult.Succeeded)
+            {
+                // Handle authentication failure
+                return BadRequest();
+            }
+
+            // Here you can get user information from authenticateResult.Principal
+            var userInfo = new
+            {
+                Email = authenticateResult.Principal.FindFirstValue(ClaimTypes.Email),
+                Name = authenticateResult.Principal.FindFirstValue(ClaimTypes.Name)
+                // Add more fields as needed
+            };
+
+            return Ok(userInfo);
+        }
 
     } 
 }

@@ -1,5 +1,5 @@
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Tourism.Core.Entities;
 using Tourism.Core.Repositories.Contract;
 using Tourism.Repository;
@@ -21,16 +21,16 @@ namespace TourismMVC
             builder.Services.AddDbContext<TourismContext>(
                options =>
                {
-               options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("conn"));
-               options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                   options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("conn"));
+                   options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
                });
-        
-           builder.Services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
 
-			builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            builder.Services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
+
+            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             builder.Services.AddScoped(typeof(IAuthService), typeof(AuthService));
 
-            builder.Services.AddAutoMapper(m=> m.AddProfile(new MappingProfiles()));
+            builder.Services.AddAutoMapper(m => m.AddProfile(new MappingProfiles()));
 
             builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(
             config =>
@@ -43,14 +43,30 @@ namespace TourismMVC
             })//configuration
                 .AddEntityFrameworkStores<TourismContext>();
 
+
+            builder.Services.AddAuthentication(o =>
+            {
+                o.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
+                o.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+
+            })
+                .AddGoogle(options=>
+                {
+                    IConfigurationSection GoogleAuthSec = builder.Configuration.GetSection("Authentication:Google");
+                   options.ClientId=GoogleAuthSec["ClientId"];
+                    options.ClientSecret = GoogleAuthSec["ClientSecret"];
+                    options.CallbackPath = "/auth/google-callback";
+
+
+                });
             builder.Services.ConfigureApplicationCookie(config =>
             {
                 config.LoginPath = "/Account/Login";
                 //config.ExpireTimeSpan= TimeSpan.FromMinutes(5);
             });
 
-            
-			var app = builder.Build();
+
+            var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

@@ -1,13 +1,20 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
-using System.ComponentModel.DataAnnotations;
+using MimeKit.Text;
+using MimeKit;
 using System.Security.Claims;
 using Tourism.Core.Entities;
+using Tourism.Core.Helper;
 using Tourism.Core.Helper.DTO;
 using Tourism.Core.Repositories.Contract;
+using static System.Net.Mime.MediaTypeNames;
+using System.Net.Mail;
+using MailKit.Security;
 
 namespace Tourism_Egypt.Controllers
 {
@@ -17,14 +24,14 @@ namespace Tourism_Egypt.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IAuthService _authService;
 
-
-
-        public AccountUserController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IAuthService authService)
+        private IEmailService _emailService;
+        public AccountUserController(IEmailService emailService,UserManager<ApplicationUser> userManager , SignInManager<ApplicationUser> signInManager,IAuthService authService)
 
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _authService = authService;
+            _emailService = emailService;
         }
 
 
@@ -156,18 +163,74 @@ namespace Tourism_Egypt.Controllers
             return await _userManager.FindByEmailAsync(email) != null;
         }
 
-
-        //    [HttpPost]
-        //    [AllowAnonymous]
-        //    public async Task<IActionResult> ForgetPassword([Required] string email)
+        //[HttpGet("google")]
+        //public IActionResult GoogleLogin()
+        //{
+        //    var authenticationProperties = new AuthenticationProperties
         //    {
-        //        var user = await _userManager.FindByEmailAsync(email);
-        //        if(user != null)
-        //        {
-        //            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-        //            var link = Url.Action("ResetPassword", "Authentication", new { token, email = user.Email }, Request.Scheme);
-        //        }
-        //    }
+        //        RedirectUri = Url.Action("GoogleResponse")
+        //    };
+
+        //    return Challenge(authenticationProperties, GoogleDefaults.AuthenticationScheme);
         //}
+
+        //[HttpGet("google-response")]
+        //public async Task<IActionResult> GoogleResponse()
+        //{
+        //    var authenticateResult = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
+
+        //    if (!authenticateResult.Succeeded)
+        //    {
+        //        // Handle authentication failure
+        //        return BadRequest();
+        //    }
+
+        //    // Here you can get user information from authenticateResult.Principal
+        //    var userInfo = new
+        //    {
+        //        Email = authenticateResult.Principal.FindFirstValue(ClaimTypes.Email),
+        //        Name = authenticateResult.Principal.FindFirstValue(ClaimTypes.Name)
+        //        // Add more fields as needed
+        //    };
+
+        //    return Ok(userInfo);
+        //}
+
+        //[HttpGet("ForgetPass")]
+        //public async Task<IActionResult> ForgetPassWord(string email)
+        //{
+        //    var user = await _userManager.FindByEmailAsync(email);
+        //    if (user is not null)
+        //    {
+        //        var token =await _userManager.GeneratePasswordResetTokenAsync(user);
+        //        var RestPasswordUrl = Url.Action("RestPssword", "AccountUser", new { email = email, token=token}, "https", "lacalhost:44317");
+        //        var emaill = new Email()
+        //        {
+        //            Subject="Reset Your PassWord",
+        //            Recipients= email,
+        //            Body=RestPasswordUrl
+        //        };
+        //        EmailSetting.SendEmail(emaill);
+        //        // return RedirectToAction("CheckYourInbox");
+        //        return Ok(new 
+        //        {
+        //           email=email,
+        //        }) ;
+        //    }
+        //    ModelState.AddModelError(string.Empty, "Invalid Email");
+        //    return BadRequest();
+        //}
+
+
+        //public IActionResult CheckYourInbox()
+        //{
+
+        //}
+     
+        [HttpPost("SendEmail")]
+        public void SendEmail(SendEmailDto emailDto)
+        {
+            _emailService.SendEmail(emailDto);
+        }
     }
 }

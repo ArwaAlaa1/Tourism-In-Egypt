@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -32,9 +33,28 @@ namespace Tourism_Egypt
             builder.Services.AddScoped(typeof(IPlaceRepository), typeof(PlaceRepository));
             builder.Services.AddScoped(typeof(ICategoryRepository), typeof(CategoryRepository));
             builder.Services.AddScoped(typeof(IReviewRepository), typeof(ReviewRepository));
-            
+        
             builder.Services.AddAutoMapper(typeof(MapperConfig));
 
+            var configuration = builder.Configuration;
+
+            // Add services to the container.
+            builder.Services.Configure<EmailConfiguration>(configuration.GetSection("EmailConfiguration"));
+            builder.Services.AddScoped<IEmailService, EmailService>();
+            //builder.Services.AddAuthentication(o =>
+            //{
+            //    o.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
+            //    o.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+
+            //})
+            //    .AddGoogle(options=>
+            //    {
+            //        IConfigurationSection GoogleAuthSec = builder.Configuration.GetSection("Authentication:Google");
+            //       options.ClientId=GoogleAuthSec["ClientId"];
+            //        options.ClientSecret = GoogleAuthSec["ClientSecret"];
+
+
+            //    });
             #endregion
             #region Identity Services
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -48,7 +68,8 @@ namespace Tourism_Egypt
 
 
             })//configuration
-                .AddEntityFrameworkStores<TourismContext>();
+                .AddEntityFrameworkStores<TourismContext>()
+                .AddDefaultTokenProviders();
 
             //Authentication Schema
             builder.Services.AddAuthentication(options =>
@@ -68,8 +89,18 @@ namespace Tourism_Egypt
                     ValidateLifetime = true,
                     ClockSkew = TimeSpan.FromDays(double.Parse(builder.Configuration["JWT:Duration"]))
                 }
-                );
-          
+                ).AddGoogle(options =>
+                {
+                    IConfigurationSection GoogleAuthSec = builder.Configuration.GetSection("Authentication:Google");
+                    options.ClientId = GoogleAuthSec["ClientId"];
+                    options.ClientSecret = GoogleAuthSec["ClientSecret"];
+                    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+                    options.ClientId = builder.Configuration["Authentication:Google:ClientId"]; ;
+
+                    options.CallbackPath = "/auth/google-callback";
+
+                }); ;
+
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("MyPolicy", options =>
@@ -119,9 +150,21 @@ namespace Tourism_Egypt
             app.UseSwaggerUI();
             //}
 
+            app.UseCors("MyPolicy");
+
+            app.Use(async (context, next) =>
+            {
+                if (context.Request.Path == "/")
+                {
+                    context.Response.Redirect("/swagger/index.html");
+                    return;
+                }
+                await next();
+            });
+
             app.UseHttpsRedirection();
 
-            app.UseCors("MyPolicy");
+          
             app.UseAuthentication();
             app.UseAuthorization();
 

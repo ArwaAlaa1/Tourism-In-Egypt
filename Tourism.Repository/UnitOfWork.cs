@@ -9,7 +9,7 @@ namespace Tourism.Repository
     {
         public IGenericRepository<T> generic { get; set; }
         public IReviewRepository review { get; set; }
-
+        public IChangePassword changePassword { get; set; }
         public IPlace_TripRepository placeTrip { get; set; }
         private readonly TourismContext _context;
 
@@ -20,6 +20,7 @@ namespace Tourism.Repository
             generic = new GenericRepository<T>(_context);
             review = new ReviewRepository(_context);
             placeTrip = new Place_TripRepository(_context);
+            changePassword = new ChangePassword(_context); 
         }
 
 

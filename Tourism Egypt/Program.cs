@@ -28,12 +28,12 @@ namespace Tourism_Egypt
             //dbcontext
             #region Container Services
             builder.Services.AddDbContext<TourismContext>(
-                   options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+                   options => options.UseSqlServer(builder.Configuration.GetConnectionString("conn")));
             builder.Services.AddScoped(typeof(ICityRepository), typeof(CityRepository));
             builder.Services.AddScoped(typeof(IPlaceRepository), typeof(PlaceRepository));
             builder.Services.AddScoped(typeof(ICategoryRepository), typeof(CategoryRepository));
             builder.Services.AddScoped(typeof(IReviewRepository), typeof(ReviewRepository));
-        
+            builder.Services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
             builder.Services.AddAutoMapper(typeof(MapperConfig));
 
             var configuration = builder.Configuration;
@@ -99,7 +99,11 @@ namespace Tourism_Egypt
 
                     options.CallbackPath = "/auth/google-callback";
 
-                }); ;
+                });
+
+            builder.Services.Configure<DataProtectionTokenProviderOptions>(
+                opt => opt.TokenLifespan = TimeSpan.FromHours(10));
+
 
             builder.Services.AddCors(options =>
             {

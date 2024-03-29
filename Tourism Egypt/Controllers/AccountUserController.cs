@@ -4,17 +4,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
-using MimeKit.Text;
-using MimeKit;
 using System.Security.Claims;
 using Tourism.Core.Entities;
 using Tourism.Core.Helper;
 using Tourism.Core.Helper.DTO;
 using Tourism.Core.Repositories.Contract;
-using static System.Net.Mime.MediaTypeNames;
-using System.Net.Mail;
-using MailKit.Security;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
+using Microsoft.AspNetCore.WebUtilities;
+using Tourism.Repository.Data;
 
 namespace Tourism_Egypt.Controllers
 {
@@ -23,14 +21,22 @@ namespace Tourism_Egypt.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IAuthService _authService;
-
+        private readonly IUnitOfWork<ResetPassword> _resetpassword;
+        private readonly IConfiguration _configuration;
+        private readonly TourismContext _context;
         private IEmailService _emailService;
-        public AccountUserController(IEmailService emailService,UserManager<ApplicationUser> userManager , SignInManager<ApplicationUser> signInManager,IAuthService authService)
+        public AccountUserController(IEmailService emailService,UserManager<ApplicationUser> userManager 
+            , SignInManager<ApplicationUser> signInManager
+            ,IAuthService authService,IUnitOfWork<ResetPassword> resetpassword
+            ,IConfiguration configuration)
 
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _authService = authService;
+            _resetpassword = resetpassword;
+            _configuration = configuration;
+           
             _emailService = emailService;
         }
 
@@ -226,7 +232,63 @@ namespace Tourism_Egypt.Controllers
         //{
 
         //}
-     
+
+        [HttpGet("ForgetPassword")]
+        public async Task<IActionResult> ForgetPassword([Required] string email)
+        {
+            if (email == null) return BadRequest("Please enter Your email");
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user == null) return BadRequest("Invalid Email");
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var encodedtoken = Encoding.UTF8.GetBytes(token);
+            var validtoken = WebEncoders.Base64UrlEncode(encodedtoken);
+
+            string url = $"{_configuration["ApiBaseUrl"]}/ResetPassword?email={email}&token={validtoken}";
+            var OTP = RandomGenerator.Generate(1000, 9999);
+
+            var Reset = new ResetPassword()
+            {
+                Email = email,
+                OTP = OTP,
+                Token = validtoken,
+                UserId = user.Id,
+                Date = DateTime.UtcNow
+            };
+             _resetpassword.generic.Add(Reset);
+            _resetpassword.Complet();
+
+            var SendEmail = new SendEmailDto()
+            {
+                Subject = "Here's Your Password Reset Link",
+                To = email,
+                
+                Html = $"<h1>Hello {user.DisplayName}<h1>" +
+                    $"<p>Looks Like you've forgotten your password .Don't worry ,we've got you!</p>" +
+                    $"Code Verification :{OTP}",
+               
+            };
+             _emailService.SendEmail(SendEmail);
+            return Ok(Reset);
+           }
+
+        [HttpGet("CheckCode")]
+        public async Task<IActionResult> CheckCode(int otp , string email)
+        {
+           var User = await _resetpassword.changePassword.GetPasswordofOTP(otp, email);
+            if (User == null) return BadRequest("Code is invalid");
+            return Ok(User);
+        }
+
+
+        //[HttpPost("ResetPassword")]
+        //public async Task<IActionResult> ResetPassword()
+        //{
+            
+
+        //}
+
+
         [HttpPost("SendEmail")]
         public void SendEmail(SendEmailDto emailDto)
         {

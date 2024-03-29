@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Tourism.Core.Helper.DTO
 {
-    internal class ResetPassword
+    public class ChangPasswordDto
     {
+        public string NewPassword { get; set; }
+        public string OldPassword { get; set; }
     }
 }

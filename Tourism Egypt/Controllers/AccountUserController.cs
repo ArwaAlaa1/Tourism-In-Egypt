@@ -251,71 +251,133 @@ namespace Tourism_Egypt.Controllers
         [HttpGet("ForgetPassword")]
         public async Task<IActionResult> ForgetPassword([Required] string email)
         {
-            if (email == null)
-                return BadRequest("Please enter Your email");
-
-             user = await _userManager.FindByEmailAsync(email);
-
-            if (user == null)
-                return BadRequest("Invalid Email");
-           
-             token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var encodedtoken = Encoding.UTF8.GetBytes(token);
-             var validtoken = WebEncoders.Base64UrlEncode(encodedtoken);
-           
-            //var RestPasswordUrl = Url.Action("ResetPassword", "AccountUser", new { email = user.Email, token = token }, Request.Scheme);
-            string url = $"{_configuration["ApiBaseUrl"]}/ResetPassword?email={email}&token={token}";
-            var OTP = RandomGenerator.Generate(1000, 9999);
-           
-            var Reset = new ResetPassword()
+            try
             {
-                Email = email,
-                OTP = OTP,
-                Token = validtoken,
-                UserId = user.Id,
-                Date = DateTime.UtcNow
-            };
-             _resetpassword.generic.Add(Reset);
-            _resetpassword.Complet();
+                if (email == null)
+                    return BadRequest("Please enter Your email");
 
-            var SendEmail = new SendEmailDto()
+                user = await _userManager.FindByEmailAsync(email);
+
+                if (user == null)
+                    return BadRequest("Invalid Email");
+
+                token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                //var encodedtoken = Encoding.UTF8.GetBytes(token);
+                // var validtoken = WebEncoders.Base64UrlEncode(encodedtoken);
+
+                //var RestPasswordUrl = Url.Action("ResetPassword", "AccountUser", new { email = user.Email, token = token }, Request.Scheme);
+               // string url = $"{_configuration["ApiBaseUrl"]}/ResetPassword?email={email}&token={token}";
+                var OTP = RandomGenerator.Generate(1000, 9999);
+
+                var Reset = new ResetPassword()
+                {
+                    Email = email,
+                    OTP = OTP,
+                    Token = token,
+                    UserId = user.Id,
+                    Date = DateTime.UtcNow
+                };
+                _resetpassword.generic.Add(Reset);
+                _resetpassword.Complet();
+
+                var SendEmail = new SendEmailDto()
+                {
+                    Subject = "Here's Your Password Reset Link",
+                    To = email,
+                    Code = OTP.ToString(),
+                    //ResetUrl= url,
+                    Html = $"<h1>Hello {user.DisplayName}<h1>" +
+                        $"<p>Looks Like you've forgotten your password .Don't worry ,we've got you!</p>" +
+                        $"Code Verification :{OTP}" 
+                        ,
+
+                };
+
+                _emailService.SendEmail(SendEmail);
+                return Ok(Reset);
+            }catch (Exception ex)
             {
-                Subject = "Here's Your Password Reset Link",
-                To = email,
-                Code = OTP.ToString(),
-                //ResetUrl= url,
-                Html = $"<h1>Hello {user.DisplayName}<h1>" +
-                    $"<p>Looks Like you've forgotten your password .Don't worry ,we've got you!</p>" +
-                    $"Code Verification :{OTP}"+
-                    $" ResetUrl :{url}"
-                    ,
-               
-            };
-           
-             _emailService.SendEmail(SendEmail);
-            return Ok(Reset);
+                return BadRequest(ex.Message);
+            }
            }
 
-        [HttpGet("CheckCode")]
-        public async Task<IActionResult> CheckCode(int otp )
+        [HttpGet("VerifyCode")]
+       
+        public async Task<IActionResult> VerifyCode(int otp )
         {
            var User = await _resetpassword.changePassword.GetPasswordofOTP(otp, user.Email);
-            if (User == null) return BadRequest("Code is invalid");
+            if (User == null) return BadRequest("Invalid Code");
+
             return Ok(User);
         }
+        [HttpGet("ResendCode")]
+        public async Task<IActionResult> ResendCode()
+        {
+            try
+            {
+                var user2 = await _userManager.FindByEmailAsync(user.Email);
+                if (user2 == null)
+                    return BadRequest("Invalid Email");
 
+                token = await _userManager.GeneratePasswordResetTokenAsync(user2);
+                var OTP = RandomGenerator.Generate(1000, 9999);
+
+                var Reset = new ResetPassword()
+                {
+                    Email = user.Email,
+                    OTP = OTP,
+                    Token = token,
+                    UserId = user.Id,
+                    Date = DateTime.UtcNow
+                };
+                _resetpassword.generic.Add(Reset);
+                _resetpassword.Complet();
+
+                var SendEmail = new SendEmailDto()
+                {
+                    Subject = "Here's Your Password Reset Link",
+                    To = user2.Email,
+                    Code = OTP.ToString(),
+                    //ResetUrl= url,
+                    Html = $"<h1>Hello {user.DisplayName}<h1>" +
+                        $"<p>Looks Like you've forgotten your password .Don't worry ,we've got you!</p>" +
+                        $"Code Verification :{OTP}"
+                        ,
+
+                };
+
+                _emailService.SendEmail(SendEmail);
+                return Ok(Reset);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         [HttpPost("ResetPassword")]
         public async Task<IActionResult> ResetPassword(PasswordResetDto passwordDto)
         {
-            
-            var user1 =await _userManager.FindByEmailAsync(user.Email);
-            var result =await _userManager.ResetPasswordAsync(user1, token, passwordDto.NewPassword);
-            if (result.Succeeded)
-                return Ok(user1);
-            
-            return BadRequest("New PassWOrd Not valid");
-            
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var user1 = await _userManager.FindByEmailAsync(user.Email);
+                    var result = await _userManager.ResetPasswordAsync(user1, token, passwordDto.NewPassword);
+                    if (result.Succeeded)
+                        return Ok(user1);
+                    
+                        foreach (var error in result.Errors)
+                        {
+                            return BadRequest(error.Description);
+                        }
+                }
+                catch(Exception ex) 
+                {
+                    return BadRequest(ex.InnerException.Message);
+                }
+            }
+            return BadRequest();
         }
 
 

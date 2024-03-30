@@ -273,10 +273,10 @@ namespace Tourism_Egypt.Controllers
            }
 
         [HttpGet("CheckCode")]
-        public async Task<IActionResult> CheckCode(int otp , string email)
+        public async Task<IActionResult> CheckCode(int otp)
         {
-           var User = await _resetpassword.changePassword.GetPasswordofOTP(otp, email);
-            if (User == null) return BadRequest("Code is invalid");
+           var email = User.FindFirstValue(ClaimTypes.Email);
+            var user = await _userManager.FindByEmailAsync(email);
             return Ok(User);
         }
 

@@ -9,17 +9,18 @@ using Tourism.Core.Entities;
 using Tourism.Core.Helper;
 using Tourism.Core.Helper.DTO;
 using Tourism.Core.Repositories.Contract;
-<<<<<<< HEAD
+
 using static System.Net.Mime.MediaTypeNames;
 using System.Net.Mail;
 using MailKit.Security;
 using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
-=======
+
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using Microsoft.AspNetCore.WebUtilities;
 using Tourism.Repository.Data;
->>>>>>> e2a1d3f4fbc3d18badcd510cb7b490783e7bee63
+using Org.BouncyCastle.Ocsp;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Tourism_Egypt.Controllers
 {
@@ -32,6 +33,9 @@ namespace Tourism_Egypt.Controllers
         private readonly IConfiguration _configuration;
         private readonly TourismContext _context;
         private IEmailService _emailService;
+
+        private static ApplicationUser user;
+        private static string validtoken;
         public AccountUserController(IEmailService emailService,UserManager<ApplicationUser> userManager 
             , SignInManager<ApplicationUser> signInManager
             ,IAuthService authService,IUnitOfWork<ResetPassword> resetpassword
@@ -70,24 +74,15 @@ namespace Tourism_Egypt.Controllers
                         {
                             return Ok(new UserDTO()
                             {
-<<<<<<< HEAD
-                                return Ok(new UserDTO()
-                                {
-                                    DisplayName = email.DisplayName,
-                                    
-                                    Email = email.Email,
-                                    Token = await _authService.CreateTokenAsync(email, _userManager)
-                                });
-                            }
-                        return BadRequest();
-=======
+
+                        
+
                                 DisplayName = email.DisplayName,
                                 Email = email.Email,
                                 Username = email.UserName,
                                 Token = await _authService.CreateTokenAsync(email, _userManager)
                             });
-                        }
->>>>>>> e2a1d3f4fbc3d18badcd510cb7b490783e7bee63
+                        }return BadRequest();
                     }
 
                     if (username != null)
@@ -221,49 +216,57 @@ namespace Tourism_Egypt.Controllers
         //    return Ok(userInfo);
         //}
 
-        [HttpGet("ForgetPass")]
-        public async Task<IActionResult> ForgetPassWord(string email)
-        {
-            var user = await _userManager.FindByEmailAsync(email);
-            if (user is not null)
-            {    
-                Random rand = new Random();
-                int randomNumber = rand.Next(1000, 10000);
+        //[HttpGet("ForgetPass")]
+        //public async Task<IActionResult> ForgetPassWord(string email)
+        //{
+        //    var user = await _userManager.FindByEmailAsync(email);
+        //    if (user is not null)
+        //    {    
+        //        Random rand = new Random();
+        //        int randomNumber = rand.Next(1000, 10000);
                 
-                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                //var RestPasswordUrl = Url.Action("RestPssword", "AccountUser", new { email = email, token = token }, "https", "lacalhost:44317");
+        //        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+        //        //var RestPasswordUrl = Url.Action("RestPssword", "AccountUser", new { email = email, token = token }, "https", "lacalhost:44317");
                 
-                var emaill = new SendEmailDto()
-                {
-                    Subject = "Here's Your Password Reset Link",
-                    To=email,
-                    Code= randomNumber.ToString(),
-                    Html=$"<h1>Hello {user.DisplayName}<h1>" +
-                    $"<p>Looks Like you've forgotten your password .Don't worry ,we've got you!</p>" +
-                    $"Code Verification :{randomNumber}",
-                };
-                SendEmail(emaill);
-                return Ok(emaill);
+        //        var emaill = new SendEmailDto()
+        //        {
+        //            Subject = "Here's Your Password Reset Link",
+        //            To=email,
+        //            Code= randomNumber.ToString(),
+        //            Html=$"<h1>Hello {user.DisplayName}<h1>" +
+        //            $"<p>Looks Like you've forgotten your password .Don't worry ,we've got you!</p>" +
+        //            $"Code Verification :{randomNumber}",
+        //        };
+        //        SendEmail(emaill);
+        //        return Ok(emaill);
                
+        //    }
+        //    ModelState.AddModelError(string.Empty, "Invalid Email");
+        //    return BadRequest();
+        //}
 
 
       
 
-
         [HttpGet("ForgetPassword")]
         public async Task<IActionResult> ForgetPassword([Required] string email)
         {
-            if (email == null) return BadRequest("Please enter Your email");
-            var user = await _userManager.FindByEmailAsync(email);
+            if (email == null)
+                return BadRequest("Please enter Your email");
 
-            if (user == null) return BadRequest("Invalid Email");
+             user = await _userManager.FindByEmailAsync(email);
+
+            if (user == null)
+                return BadRequest("Invalid Email");
+           
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var encodedtoken = Encoding.UTF8.GetBytes(token);
-            var validtoken = WebEncoders.Base64UrlEncode(encodedtoken);
-
+             validtoken = WebEncoders.Base64UrlEncode(encodedtoken);
+           
+            //var RestPasswordUrl = Url.Action("ResetPassword", "AccountUser", new { email = user.Email, token = token }, Request.Scheme);
             string url = $"{_configuration["ApiBaseUrl"]}/ResetPassword?email={email}&token={validtoken}";
             var OTP = RandomGenerator.Generate(1000, 9999);
-
+           
             var Reset = new ResetPassword()
             {
                 Email = email,
@@ -279,37 +282,42 @@ namespace Tourism_Egypt.Controllers
             {
                 Subject = "Here's Your Password Reset Link",
                 To = email,
-                
+                Code = OTP.ToString(),
+                //ResetUrl= url,
                 Html = $"<h1>Hello {user.DisplayName}<h1>" +
                     $"<p>Looks Like you've forgotten your password .Don't worry ,we've got you!</p>" +
-                    $"Code Verification :{OTP}",
+                    $"Code Verification :{OTP}"+
+                    $" ResetUrl :{url}"
+                    ,
                
             };
+           
              _emailService.SendEmail(SendEmail);
             return Ok(Reset);
            }
 
         [HttpGet("CheckCode")]
-        public async Task<IActionResult> CheckCode(int otp , string email)
+        public async Task<IActionResult> CheckCode(int otp )
         {
-           var User = await _resetpassword.changePassword.GetPasswordofOTP(otp, email);
+           var User = await _resetpassword.changePassword.GetPasswordofOTP(otp, user.Email);
             if (User == null) return BadRequest("Code is invalid");
             return Ok(User);
         }
 
 
-        //[HttpPost("ResetPassword")]
-        //public async Task<IActionResult> ResetPassword()
-        //{
-            
-
-        //}
-
-
-        [HttpPost("SendEmail")]
-        public void SendEmail(SendEmailDto emailDto)
+        [HttpPost("ResetPassword")]
+        public async Task<IActionResult> ResetPassword(PasswordResetDto passwordDto)
         {
-            _emailService.SendEmail(emailDto);
+
+            var user1 =await _userManager.FindByEmailAsync(user.Email);
+            var result =await _userManager.ResetPasswordAsync(user1, validtoken, passwordDto.NewPassword);
+            if (result.Succeeded)
+                return Ok(user1);
+            
+            return BadRequest("New PassWOrd Not valid");
+            
         }
+
+
     }
 }

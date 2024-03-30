@@ -16,4 +16,8 @@
     <ProjectReference Include="..\Tourism.Service\Tourism.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\Migrations\" />
+  </ItemGroup>
+
 </Project>

@@ -35,7 +35,7 @@ namespace Tourism_Egypt.Controllers
         private IEmailService _emailService;
 
         private static ApplicationUser user;
-        private static string validtoken;
+        private static string token;
         public AccountUserController(IEmailService emailService,UserManager<ApplicationUser> userManager 
             , SignInManager<ApplicationUser> signInManager
             ,IAuthService authService,IUnitOfWork<ResetPassword> resetpassword
@@ -259,12 +259,12 @@ namespace Tourism_Egypt.Controllers
             if (user == null)
                 return BadRequest("Invalid Email");
            
-            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+             token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var encodedtoken = Encoding.UTF8.GetBytes(token);
-             validtoken = WebEncoders.Base64UrlEncode(encodedtoken);
+             var validtoken = WebEncoders.Base64UrlEncode(encodedtoken);
            
             //var RestPasswordUrl = Url.Action("ResetPassword", "AccountUser", new { email = user.Email, token = token }, Request.Scheme);
-            string url = $"{_configuration["ApiBaseUrl"]}/ResetPassword?email={email}&token={validtoken}";
+            string url = $"{_configuration["ApiBaseUrl"]}/ResetPassword?email={email}&token={token}";
             var OTP = RandomGenerator.Generate(1000, 9999);
            
             var Reset = new ResetPassword()
@@ -308,9 +308,9 @@ namespace Tourism_Egypt.Controllers
         [HttpPost("ResetPassword")]
         public async Task<IActionResult> ResetPassword(PasswordResetDto passwordDto)
         {
-
+            
             var user1 =await _userManager.FindByEmailAsync(user.Email);
-            var result =await _userManager.ResetPasswordAsync(user1, validtoken, passwordDto.NewPassword);
+            var result =await _userManager.ResetPasswordAsync(user1, token, passwordDto.NewPassword);
             if (result.Succeeded)
                 return Ok(user1);
             

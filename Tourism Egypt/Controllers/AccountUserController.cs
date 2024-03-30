@@ -15,6 +15,7 @@ using Tourism.Core.Repositories.Contract;
 using static System.Net.Mime.MediaTypeNames;
 using System.Net.Mail;
 using MailKit.Security;
+using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
 namespace Tourism_Egypt.Controllers
 {
@@ -58,6 +59,7 @@ namespace Tourism_Egypt.Controllers
                                 return Ok(new UserDTO()
                                 {
                                     DisplayName = email.DisplayName,
+                                    
                                     Email = email.Email,
                                     Token = await _authService.CreateTokenAsync(email, _userManager)
                                 });
@@ -196,37 +198,38 @@ namespace Tourism_Egypt.Controllers
         //    return Ok(userInfo);
         //}
 
-        //[HttpGet("ForgetPass")]
-        //public async Task<IActionResult> ForgetPassWord(string email)
-        //{
-        //    var user = await _userManager.FindByEmailAsync(email);
-        //    if (user is not null)
-        //    {
-        //        var token =await _userManager.GeneratePasswordResetTokenAsync(user);
-        //        var RestPasswordUrl = Url.Action("RestPssword", "AccountUser", new { email = email, token=token}, "https", "lacalhost:44317");
-        //        var emaill = new Email()
-        //        {
-        //            Subject="Reset Your PassWord",
-        //            Recipients= email,
-        //            Body=RestPasswordUrl
-        //        };
-        //        EmailSetting.SendEmail(emaill);
-        //        // return RedirectToAction("CheckYourInbox");
-        //        return Ok(new 
-        //        {
-        //           email=email,
-        //        }) ;
-        //    }
-        //    ModelState.AddModelError(string.Empty, "Invalid Email");
-        //    return BadRequest();
-        //}
+        [HttpGet("ForgetPass")]
+        public async Task<IActionResult> ForgetPassWord(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user is not null)
+            {    
+                Random rand = new Random();
+                int randomNumber = rand.Next(1000, 10000);
+                
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                //var RestPasswordUrl = Url.Action("RestPssword", "AccountUser", new { email = email, token = token }, "https", "lacalhost:44317");
+                
+                var emaill = new SendEmailDto()
+                {
+                    Subject = "Here's Your Password Reset Link",
+                    To=email,
+                    Code= randomNumber.ToString(),
+                    Html=$"<h1>Hello {user.DisplayName}<h1>" +
+                    $"<p>Looks Like you've forgotten your password .Don't worry ,we've got you!</p>" +
+                    $"Code Verification :{randomNumber}",
+                };
+                SendEmail(emaill);
+                return Ok(emaill);
+               
+            }
+            ModelState.AddModelError(string.Empty, "Invalid Email");
+            return BadRequest();
+        }
 
 
-        //public IActionResult CheckYourInbox()
-        //{
+      
 
-        //}
-     
         [HttpPost("SendEmail")]
         public void SendEmail(SendEmailDto emailDto)
         {

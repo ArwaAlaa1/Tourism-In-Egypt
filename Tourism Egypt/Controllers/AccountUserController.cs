@@ -262,7 +262,7 @@ namespace Tourism_Egypt.Controllers
                 };
 
                 _emailService.SendEmail(SendEmail);
-                return Ok(Reset);
+                return Ok();
             }catch (Exception ex)
             {
                 return BadRequest(ex.Message);
@@ -276,7 +276,7 @@ namespace Tourism_Egypt.Controllers
            var User = await _resetpassword.changePassword.GetPasswordofOTP(otp, user.Email);
             if (User == null) return BadRequest("Invalid Code");
 
-            return Ok(User);
+            return Ok("Verification Done");
         }
 
         [HttpGet("ResendCode")]

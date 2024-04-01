@@ -225,29 +225,7 @@ namespace Tourism_Egypt.Controllers
         //        Random rand = new Random();
         //        int randomNumber = rand.Next(1000, 10000);
                 
-        //        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-        //        //var RestPasswordUrl = Url.Action("RestPssword", "AccountUser", new { email = email, token = token }, "https", "lacalhost:44317");
                 
-        //        var emaill = new SendEmailDto()
-        //        {
-        //            Subject = "Here's Your Password Reset Link",
-        //            To=email,
-        //            Code= randomNumber.ToString(),
-        //            Html=$"<h1>Hello {user.DisplayName}<h1>" +
-        //            $"<p>Looks Like you've forgotten your password .Don't worry ,we've got you!</p>" +
-        //            $"Code Verification :{randomNumber}",
-        //        };
-        //        SendEmail(emaill);
-        //        return Ok(emaill);
-               
-        //    }
-        //    ModelState.AddModelError(string.Empty, "Invalid Email");
-        //    return BadRequest();
-        //}
-
-
-      
-
         [HttpGet("ForgetPassword")]
         public async Task<IActionResult> ForgetPassword([Required] string email)
         {

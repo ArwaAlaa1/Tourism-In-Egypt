@@ -31,11 +31,11 @@ namespace Tourism_Egypt.Controllers
         private readonly IAuthService _authService;
         private readonly IUnitOfWork<ResetPassword> _resetpassword;
         private readonly IConfiguration _configuration;
-        private readonly TourismContext _context;
+      
         private IEmailService _emailService;
 
-        private static ApplicationUser user;
-        private static string token;
+        private static ApplicationUser? user;
+        private static string? token;
         public AccountUserController(IEmailService emailService,UserManager<ApplicationUser> userManager 
             , SignInManager<ApplicationUser> signInManager
             ,IAuthService authService,IUnitOfWork<ResetPassword> resetpassword
@@ -55,7 +55,7 @@ namespace Tourism_Egypt.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginUserDTO loginUser)
         {
-
+          
             var email = await _userManager.FindByEmailAsync(loginUser.Email);
             var username = await _userManager.FindByNameAsync(loginUser.Username);
             if (email == null && username == null)
@@ -75,14 +75,12 @@ namespace Tourism_Egypt.Controllers
                             return Ok(new UserDTO()
                             {
 
-                        
-
                                 DisplayName = email.DisplayName,
                                 Email = email.Email,
                                 Username = email.UserName,
                                 Token = await _authService.CreateTokenAsync(email, _userManager)
                             });
-                        }return BadRequest();
+                        }return BadRequest("Incorrect PassWord");
                     }
 
                     if (username != null)
@@ -161,7 +159,7 @@ namespace Tourism_Egypt.Controllers
             return BadRequest();
         }
 
-        [HttpGet]
+        [HttpGet("YourDetails")]
         [Authorize]
         public async Task<IActionResult> GetUser()
         {
@@ -216,16 +214,8 @@ namespace Tourism_Egypt.Controllers
         //    return Ok(userInfo);
         //}
 
-        //[HttpGet("ForgetPass")]
-        //public async Task<IActionResult> ForgetPassWord(string email)
-        //{
-        //    var user = await _userManager.FindByEmailAsync(email);
-        //    if (user is not null)
-        //    {    
-        //        Random rand = new Random();
-        //        int randomNumber = rand.Next(1000, 10000);
-                
-                
+      
+
         [HttpGet("ForgetPassword")]
         public async Task<IActionResult> ForgetPassword([Required] string email)
         {
@@ -288,12 +278,14 @@ namespace Tourism_Egypt.Controllers
 
             return Ok(User);
         }
+
         [HttpGet("ResendCode")]
         public async Task<IActionResult> ResendCode()
         {
             try
             {
                 var user2 = await _userManager.FindByEmailAsync(user.Email);
+
                 if (user2 == null)
                     return BadRequest("Invalid Email");
 
@@ -317,7 +309,7 @@ namespace Tourism_Egypt.Controllers
                     To = user2.Email,
                     Code = OTP.ToString(),
                     //ResetUrl= url,
-                    Html = $"<h1>Hello {user.DisplayName}<h1>" +
+                    Html = $"Hello {user.DisplayName}" +
                         $"<p>Looks Like you've forgotten your password .Don't worry ,we've got you!</p>" +
                         $"Code Verification :{OTP}"
                         ,
@@ -325,7 +317,7 @@ namespace Tourism_Egypt.Controllers
                 };
 
                 _emailService.SendEmail(SendEmail);
-                return Ok(Reset);
+                return Ok("Check Your Inbox");
             }
             catch (Exception ex)
             {
@@ -343,17 +335,46 @@ namespace Tourism_Egypt.Controllers
                     var user1 = await _userManager.FindByEmailAsync(user.Email);
                     var result = await _userManager.ResetPasswordAsync(user1, token, passwordDto.NewPassword);
                     if (result.Succeeded)
-                        return Ok(user1);
+                        return Ok("PassWord Updated");
                     
-                        foreach (var error in result.Errors)
-                        {
+                    foreach (var error in result.Errors)
+                      {
                             return BadRequest(error.Description);
-                        }
+                      }
                 }
                 catch(Exception ex) 
                 {
                     return BadRequest(ex.InnerException.Message);
                 }
+            }
+            return BadRequest();
+        }
+
+        [HttpPost("ChangePassWord")]
+        public async Task<IActionResult> ChangePassWord(ChangPasswordDto changPassword,string email )
+        {
+            try
+            {
+                
+                if (changPassword.OldPassword == changPassword.NewPassword)
+                    return BadRequest("We're sorry, but the new password you entered is the same as your current password.");
+                else
+                {
+                    var user1 = await _userManager.FindByEmailAsync(email);
+                    var result = await _userManager.ChangePasswordAsync(user1, changPassword.OldPassword, changPassword.NewPassword);
+                    if (result.Succeeded)
+                        return Ok("PassWord Updated");
+
+                    foreach (var error in result.Errors)
+                    {
+                        return BadRequest(error.Description);
+                    }
+                }
+            
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.InnerException.Message);
             }
             return BadRequest();
         }

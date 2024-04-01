@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using AutoMapper.Configuration.Conventions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Numerics;
 using Tourism.Core.Entities;
 using Tourism.Core.Helper;
 using Tourism.Core.Helper.DTO;
@@ -24,9 +26,21 @@ namespace Tourism_Egypt.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CityDTO>>> GetAllCities()
+        public async Task<ActionResult<IEnumerable<CityDTO>>> GetAllCities(string? cityName)
         {
             var cities = await _cityrepo.GetAllAsync();
+            if (!string.IsNullOrEmpty(cityName))
+            {
+                var results = cities.Where(e => e.Name.ToLower().Contains(cityName.ToLower())).ToList();
+                if (results.Count()==0)
+                    return NotFound("This City Not Existing");
+                else
+                {
+ var placesearch = mapper.Map<IEnumerable<City>, IEnumerable<CityDTO>>(results);
+                return Ok(placesearch);
+                }
+               
+            }
             var data = mapper.Map<IEnumerable<City>, IEnumerable<CityDTO>>(cities);
 
             return Ok(data);

@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Tourism.Core.Entities;
-using Tourism.Core.Repositories.Contract;
 using Tourism.Repository.Data;
 using TourismMVC.ViewModels;
 
@@ -11,13 +9,13 @@ namespace TourismMVC.Helpers
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
             var CityPh = (CityPhotosViewModel)validationContext.ObjectInstance;
-            if (CityPh.PhotoFile != null) 
+            if (CityPh.PhotoFile != null)
             {
-            CityPh.Photo = DocumentSetting.UploadFile(CityPh.PhotoFile, "Images");
+                CityPh.Photo = DocumentSetting.UploadFile(CityPh.PhotoFile, "Images");
 
             }
 
-           
+
 
             TourismContext context = new TourismContext();
 

@@ -1,26 +1,23 @@
 ﻿using AutoMapper;
-using AutoMapper.Configuration.Conventions;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Numerics;
 using Tourism.Core.Entities;
 using Tourism.Core.Helper.DTO;
 using Tourism.Core.Repositories.Contract;
-using Tourism.Repository.Repository;
 
 namespace Tourism_Egypt.Controllers
 {
-
+    [Authorize]
     public class CategoryController : BaseApiController
     {
-  
+
         private readonly ICategoryRepository _categoryRepository;
         private readonly IMapper mapper;
 
-        public CategoryController(ICategoryRepository categoryRepository,IMapper mapper)
+        public CategoryController(ICategoryRepository categoryRepository, IMapper mapper)
         {
-           
-           _categoryRepository = categoryRepository;
+
+            _categoryRepository = categoryRepository;
             this.mapper = mapper;
         }
 
@@ -36,10 +33,10 @@ namespace Tourism_Egypt.Controllers
                     return NotFound("This Category Not Existing");
                 else
                 {
-                   var placesearch = mapper.Map<IEnumerable<Category>, IEnumerable< CategoryDTO >>(results);
-                return Ok(placesearch);
+                    var placesearch = mapper.Map<IEnumerable<Category>, IEnumerable<CategoryDTO>>(results);
+                    return Ok(placesearch);
                 }
-                
+
             }
             var data = mapper.Map<IEnumerable<Category>, IEnumerable<CategoryDTO>>(categories);
 
@@ -49,15 +46,16 @@ namespace Tourism_Egypt.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CategoryDTO>> GetCategory(int id)
         {
-           var category = await _categoryRepository.GetAsync(id);
+            var category = await _categoryRepository.GetAsync(id);
 
             if (category == null)
-                return NotFound();
-           // var places = await _categoryRepository.GetAllPlacesBySpecificCategory(id);
-           //var placemapped =mapper.Map<ICollection<Place>,ICollection<PlaceDTO>>(places);
+                return NotFound("This Category Not Existing");
+
+            // var places = await _categoryRepository.GetAllPlacesBySpecificCategory(id);
+            //var placemapped =mapper.Map<ICollection<Place>,ICollection<PlaceDTO>>(places);
             var data = mapper.Map<Category, CategoryDTO>(category);
             //data.Places = placemapped;
-        
+
 
             return Ok(data);
         }

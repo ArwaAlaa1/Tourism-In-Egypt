@@ -12,10 +12,10 @@ namespace TourismMVC.ViewModels
         [Required]
         [MaxLength(15)]
         public string LName { get; set; }
-       
+
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public DateTime UpdatedDate { get; set; } = DateTime.Now;
-		
+
 
         [Required]
         [DataType(DataType.Password)]
@@ -31,9 +31,9 @@ namespace TourismMVC.ViewModels
         [UniqueUserName]
         public string UserName { get; set; }
 
-        public string Email {  get; set; }
-      
+        public string Email { get; set; }
 
 
-	}
+
+    }
 }

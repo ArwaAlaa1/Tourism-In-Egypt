@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Tourism.Core.Entities;
 using Tourism.Core.Repositories.Contract;
@@ -12,7 +11,7 @@ namespace TourismMVC.Controllers
         private readonly IUnitOfWork<City> _unitOfWork;
         private readonly IMapper mapper;
 
-        public CityController(IUnitOfWork<City> unitOfWork,IMapper mapper)
+        public CityController(IUnitOfWork<City> unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             this.mapper = mapper;
@@ -22,7 +21,7 @@ namespace TourismMVC.Controllers
         public async Task<IActionResult> Index()
         {
             IEnumerable<City> cities;
-             cities = await _unitOfWork.generic.GetAllAsync();
+            cities = await _unitOfWork.generic.GetAllAsync();
 
             if (cities is not null)
                 return View(cities);
@@ -38,10 +37,10 @@ namespace TourismMVC.Controllers
                 return BadRequest();
 
             var city = await _unitOfWork.generic.GetAsync(id.Value);
-            var citymapped=mapper.Map<City,CityViewModel>(city);
-           
+            var citymapped = mapper.Map<City, CityViewModel>(city);
+
             if (citymapped is null)
-                return NotFound();  
+                return NotFound();
 
             return View(viewname, citymapped);
         }
@@ -58,8 +57,8 @@ namespace TourismMVC.Controllers
         public async Task<IActionResult> Create(CityViewModel city)
         {
             var citymapped = mapper.Map<CityViewModel, City>(city);
-            var allcity =await _unitOfWork.generic.GetAllAsync();
-            bool exists = allcity.Any(e => e.Name == citymapped.Name); 
+            var allcity = await _unitOfWork.generic.GetAllAsync();
+            bool exists = allcity.Any(e => e.Name == citymapped.Name);
 
             if (exists)
             {
@@ -81,20 +80,20 @@ namespace TourismMVC.Controllers
                     return RedirectToAction("Index");
                 }
             }
-          
+
             return View(city);
         }
 
         // GET: CityController/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            return await Details(id,"Edit");
+            return await Details(id, "Edit");
         }
 
         // POST: CityController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([FromRoute]int id, CityViewModel city)
+        public async Task<IActionResult> Edit([FromRoute] int id, CityViewModel city)
         {
             if (id != city.Id)
                 return BadRequest();
@@ -106,7 +105,7 @@ namespace TourismMVC.Controllers
             if (exists)
             {
                 TempData["message"] = $"{citymapped.Name}'already exists in the database.'";
-              
+
                 return View(city);
             }
             else
@@ -129,20 +128,20 @@ namespace TourismMVC.Controllers
         }
 
         // GET: CityController/Delete/5
-        public async  Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            return await Details(id,"Delete");
+            return await Details(id, "Delete");
         }
 
         // POST: CityController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete([FromRoute]int id, CityViewModel city)
+        public ActionResult Delete([FromRoute] int id, CityViewModel city)
         {
             if (id != city.Id)
                 return BadRequest();
-			var citymapped = mapper.Map<CityViewModel, City>(city);
-			if (ModelState.IsValid)  //server side validation
+            var citymapped = mapper.Map<CityViewModel, City>(city);
+            if (ModelState.IsValid)  //server side validation
             {
                 try
                 {

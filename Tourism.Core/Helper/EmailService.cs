@@ -1,16 +1,9 @@
-﻿using MailKit.Security;
+﻿using MailKit.Net.Smtp;
+using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using MimeKit.Text;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 using Tourism.Core.Entities;
-using MailKit.Net.Smtp;
 
 
 namespace Tourism.Core.Helper

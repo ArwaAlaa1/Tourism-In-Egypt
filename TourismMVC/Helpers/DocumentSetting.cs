@@ -4,15 +4,15 @@
     {
         public static string UploadFile(IFormFile file, string folderName)
         {
-          
+
             string folderpath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Files", folderName);
 
             string filename = file.FileName;
 
-           
+
             string filePath = Path.Combine(folderpath, filename);
 
-          
+
             using var filestream = new FileStream(filePath, FileMode.Create);
             file.CopyTo(filestream);
 

@@ -1,5 +1,6 @@
 ﻿
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tourism.Core.Entities;
 using Tourism.Core.Helper.DTO;
@@ -7,6 +8,7 @@ using Tourism.Core.Repositories.Contract;
 
 namespace Tourism_Egypt.Controllers
 {
+    [Authorize]
     public class ReviewController : BaseApiController
     {
         public IReviewRepository _reviewRepository;
@@ -60,7 +62,7 @@ namespace Tourism_Egypt.Controllers
 
                 if (existingReview == null)
                 {
-                    throw new InvalidOperationException("This Review No Existing");
+                    return NotFound("This Review No Existing");
 
                 }
                 await _reviewRepository.DeleteReviewAsync(id);
@@ -82,7 +84,7 @@ namespace Tourism_Egypt.Controllers
 
                 if (review == null)
                 {
-                    return NotFound();
+                    return NotFound("This Review No Existing");
                 }
                 return Ok(_mapper.Map<Review, ReviewDTO>(review));
             }
@@ -91,5 +93,26 @@ namespace Tourism_Egypt.Controllers
                 return NotFound("This Review Not Found");
             }
         }
+
+        [HttpGet("[action]{PlaceId}")]
+        public async Task<ActionResult<ReviewDTO>> GetAllReviewByPlaceId(int PlaceId)
+        {
+            try
+            {
+
+                var review = await _reviewRepository.GetAllReviewByPlaceIdAsync(PlaceId);
+
+                if (review == null)
+                {
+                    return NotFound("No Review on this Place");
+                }
+                return Ok(review);
+            }
+            catch
+            {
+                return NotFound("This Place Not Found");
+            }
+        }
+
     }
 }

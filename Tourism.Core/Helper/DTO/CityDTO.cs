@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tourism.Core.Entities;
-
-namespace Tourism.Core.Helper.DTO
+﻿namespace Tourism.Core.Helper.DTO
 {
     public class CityDTO
     {
@@ -16,9 +9,9 @@ namespace Tourism.Core.Helper.DTO
 
         public virtual IEnumerable<PhotoDTO> cityPhotos { get; set; }
 
-        public virtual IEnumerable<PlaceDTO> Places { get; set; } 
+        public virtual IEnumerable<PlaceDTO> Places { get; set; }
 
 
-       
+
     }
 }

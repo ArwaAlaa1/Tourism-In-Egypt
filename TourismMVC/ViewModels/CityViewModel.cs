@@ -1,6 +1,4 @@
-﻿using Tourism.Core.Entities;
-
-namespace TourismMVC.ViewModels
+﻿namespace TourismMVC.ViewModels
 {
     public class CityViewModel
     {

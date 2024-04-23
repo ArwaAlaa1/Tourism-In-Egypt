@@ -85,5 +85,22 @@ namespace Tourism.Repository.Repository
             return await _context.Reviews.FirstOrDefaultAsync(R => R.Id == id);
         }
 
+        public async Task<IEnumerable<Review>> GetAllReviewByPlaceIdAsync(int PlaceId)
+        {
+            return await _context.Reviews
+                .Include(p => p.Place)
+                .Include(u => u.User)
+                .Where(p => p.PlaceId == PlaceId).Select(r => new Review
+                {
+                    Message = r.Message,
+                    Rating = r.Rating,
+                    PlaceId = r.PlaceId,
+                    UserId = r.UserId,
+                    Time = r.Time,
+                    CreatedDate = r.CreatedDate,
+                    ModifiedDate = r.ModifiedDate,
+                })
+                .ToListAsync();
+        }
     }
 }

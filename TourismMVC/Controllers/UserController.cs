@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections;
 using Tourism.Core.Entities;
-using Tourism.Core.Helper.DTO;
 using TourismMVC.ViewModels;
 
 namespace TourismMVC.Controllers
@@ -14,9 +12,9 @@ namespace TourismMVC.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> roleManager;
 
-        public UserController(UserManager<ApplicationUser> userManager,RoleManager<ApplicationRole> roleManager)
+        public UserController(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
         {
-			_userManager = userManager;
+            _userManager = userManager;
             this.roleManager = roleManager;
         }
 
@@ -25,10 +23,10 @@ namespace TourismMVC.Controllers
         {
             var users = await _userManager.Users.Select(u => new UserViewModel()
             {
-                Id= u.Id,
-                UserName= u.UserName,
-                DisplayName= u.DisplayName,
-                Email= u.Email,
+                Id = u.Id,
+                UserName = u.UserName,
+                DisplayName = u.DisplayName,
+                Email = u.Email,
                 //PhoneNumber= u.PhoneNumber,
                 Roles = _userManager.GetRolesAsync(u).Result
 
@@ -89,11 +87,11 @@ namespace TourismMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(UserRoleViewModel userRoleView)
         {
-            var user=await _userManager.FindByIdAsync(userRoleView.Id.ToString());  
-            var rolesuser=await _userManager.GetRolesAsync(user);
+            var user = await _userManager.FindByIdAsync(userRoleView.Id.ToString());
+            var rolesuser = await _userManager.GetRolesAsync(user);
             foreach (var role in userRoleView.Roles)
             {
-                if (rolesuser.Any(r=>r==role.RoleName) && !role.IsSelected)
+                if (rolesuser.Any(r => r == role.RoleName) && !role.IsSelected)
                 {
                     await _userManager.RemoveFromRoleAsync(user, role.RoleName);
 
@@ -103,25 +101,26 @@ namespace TourismMVC.Controllers
                     await _userManager.AddToRoleAsync(user, role.RoleName);
 
                 }
-                
-            }return RedirectToAction(nameof(Index));
+
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: UserController/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            
+
             return View();
         }
 
         // POST: UserController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public  ActionResult Delete(int id , ICollection collection)
+        public ActionResult Delete(int id, ICollection collection)
         {
             try
             {
-               
+
                 return RedirectToAction(nameof(Index));
             }
             catch

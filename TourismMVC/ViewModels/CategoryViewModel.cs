@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Tourism.Core.Entities;
-
-namespace TourismMVC.ViewModels
+﻿namespace TourismMVC.ViewModels
 {
     public class CategoryViewModel
     {

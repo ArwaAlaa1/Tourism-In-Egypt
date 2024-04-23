@@ -1,24 +1,19 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Tourism.Core.Entities;
 using Tourism.Core.Helper.DTO;
-using Tourism.Core.Helper;
 using Tourism.Core.Repositories.Contract;
-using Tourism.Repository.Data;
-using AutoMapper;
-using System.Numerics;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Tourism_Egypt.Controllers
 {
-  
+    [Authorize]
     public class PlaceController : BaseApiController
     {
         private readonly IPlaceRepository _placerepo;
         private readonly IMapper mapper;
-       
-        public PlaceController(IPlaceRepository placerepo,IMapper mapper)
+
+        public PlaceController(IPlaceRepository placerepo, IMapper mapper)
         {
             _placerepo = placerepo;
             this.mapper = mapper;
@@ -28,7 +23,7 @@ namespace Tourism_Egypt.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PlaceDTO>>> GetAllPlaces(string? placeName)
         {
-            
+
             var places = await _placerepo.GetAllAsync();
             if (!string.IsNullOrEmpty(placeName))
             {
@@ -38,15 +33,15 @@ namespace Tourism_Egypt.Controllers
                     return NotFound("This Place Not Existing");
                 else
                 {
-                   var placesearch = mapper.Map<IEnumerable<Place>, IEnumerable<PlaceDTO>>(results);
-                return Ok(placesearch);
+                    var placesearch = mapper.Map<IEnumerable<Place>, IEnumerable<PlaceDTO>>(results);
+                    return Ok(placesearch);
 
                 }
 
-                
+
             }
 
-      
+
             var data = mapper.Map<IEnumerable<Place>, IEnumerable<PlaceDTO>>(places);
 
             return Ok(data);

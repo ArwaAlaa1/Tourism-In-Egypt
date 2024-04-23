@@ -13,7 +13,7 @@ namespace TourismMVC.Controllers
         private readonly IUnitOfWork<Place> _placeUnit;
         private readonly IUnitOfWork<Trip> _tripUnit;
 
-        public Place_TripController(IUnitOfWork<Place_Trip> placetripunit , IMapper mapper , IUnitOfWork<Place> placeUnit , IUnitOfWork<Trip> tripUnit)
+        public Place_TripController(IUnitOfWork<Place_Trip> placetripunit, IMapper mapper, IUnitOfWork<Place> placeUnit, IUnitOfWork<Trip> tripUnit)
         {
             _placetripunit = placetripunit;
             this.mapper = mapper;
@@ -35,12 +35,12 @@ namespace TourismMVC.Controllers
 
             if (one == null)
             {
-                return NotFound();  
+                return NotFound();
             }
-            else 
+            else
                 return View(one);
         }
-        
+
         //Get : Open form of create
         public async Task<IActionResult> Create()
         {
@@ -51,7 +51,7 @@ namespace TourismMVC.Controllers
 
             tripModel.places = PlaceList;
             tripModel.trips = TripList;
-            return View(tripModel);  
+            return View(tripModel);
         }
 
         //post : Create 
@@ -59,22 +59,22 @@ namespace TourismMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Place_TripModel model)
         {
-           
-            if(ModelState.IsValid)
+
+            if (ModelState.IsValid)
             {
-               var ptMapper = mapper.Map<Place_TripModel,Place_Trip>(model);
-                
-                    try
-                    {
-                        
-                        _placetripunit.generic.Add(ptMapper);
-                        _placetripunit.Complet();
-                        return RedirectToAction("Index");
-                    }
-                    catch (Exception ex)
-                    {
-                        ModelState.AddModelError(string.Empty, ex.InnerException.Message);
-                    }
+                var ptMapper = mapper.Map<Place_TripModel, Place_Trip>(model);
+
+                try
+                {
+
+                    _placetripunit.generic.Add(ptMapper);
+                    _placetripunit.Complet();
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                }
             }
             var PlaceList = await _placeUnit.generic.GetAllAsync();
             var TripList = await _tripUnit.generic.GetAllAsync();
@@ -92,52 +92,52 @@ namespace TourismMVC.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-			var edited = await _placetripunit.generic.GetAsync(id);
-			if (edited == null)
-			{
+            var edited = await _placetripunit.generic.GetAsync(id);
+            if (edited == null)
+            {
 
-				return RedirectToAction("Index");
-			}
-			else
-			{
-				var PlaceList = await _placeUnit.generic.GetAllAsync();
-				var TripList = await _tripUnit.generic.GetAllAsync();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                var PlaceList = await _placeUnit.generic.GetAllAsync();
+                var TripList = await _tripUnit.generic.GetAllAsync();
 
                 var PTmapper = mapper.Map<Place_Trip, Place_TripModel>(edited);
                 PTmapper.places = PlaceList;
                 PTmapper.trips = TripList;
-				return View(PTmapper);
-			}
+                return View(PTmapper);
+            }
         }
 
-		//Post : Save Edit
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id , Place_TripModel tripModel)
+        //Post : Save Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Place_TripModel tripModel)
         {
-			var PLModel = mapper.Map<Place_TripModel, Place_Trip>(tripModel);
+            var PLModel = mapper.Map<Place_TripModel, Place_Trip>(tripModel);
 
-			if (ModelState.IsValid)
-			{
-				try
-				{
-					_placetripunit.generic.Update(PLModel);
-					_placetripunit.Complet();
-					return RedirectToAction(nameof(Index));
-				}
-				catch (Exception ex)
-				{
-					ModelState.AddModelError(string.Empty, ex.InnerException.Message);
-				}
-			}
-			var PlaceList = await _placeUnit.generic.GetAllAsync();
-			var TripList = await _tripUnit.generic.GetAllAsync();
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _placetripunit.generic.Update(PLModel);
+                    _placetripunit.Complet();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                }
+            }
+            var PlaceList = await _placeUnit.generic.GetAllAsync();
+            var TripList = await _tripUnit.generic.GetAllAsync();
 
-			tripModel.places = PlaceList;
-			tripModel.trips = TripList;
-			return View(tripModel);
+            tripModel.places = PlaceList;
+            tripModel.trips = TripList;
+            return View(tripModel);
 
-		}
+        }
 
         //Get : Open Form Of Delete
         public async Task<IActionResult> Delete(int id)
@@ -153,27 +153,27 @@ namespace TourismMVC.Controllers
         }
 
 
-		//Post : Save Delete
+        //Post : Save Delete
 
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public IActionResult Delete(Place_Trip place_Trip)
-		{
-			if (place_Trip == null)
-			{
-				return BadRequest();
-			}
-			else
-				try
-				{
-					_placetripunit.generic.Delete(place_Trip);
-					_placetripunit.Complet();
-					return RedirectToAction(nameof(Index));
-				}
-				catch
-				{
-					return View(place_Trip);
-				}
-		}
-	}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(Place_Trip place_Trip)
+        {
+            if (place_Trip == null)
+            {
+                return BadRequest();
+            }
+            else
+                try
+                {
+                    _placetripunit.generic.Delete(place_Trip);
+                    _placetripunit.Complet();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch
+                {
+                    return View(place_Trip);
+                }
+        }
+    }
 }

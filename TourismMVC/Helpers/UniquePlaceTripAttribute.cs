@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Tourism.Core.Entities;
-using Tourism.Core.Repositories.Contract;
 using Tourism.Repository.Data;
 using TourismMVC.ViewModels;
 
@@ -18,8 +16,8 @@ namespace TourismMVC.Helpers
             if (value != null && Trip.TripId != null)
             {
                 int idofPlace = (int)value;
-                var pt = TourismContext.Place_Trips.Where(x=> x.PlaceId == idofPlace && x.TripId == Trip.TripId).FirstOrDefault();
-                if(pt == null)
+                var pt = TourismContext.Place_Trips.Where(x => x.PlaceId == idofPlace && x.TripId == Trip.TripId).FirstOrDefault();
+                if (pt == null)
                 {
                     return ValidationResult.Success;
                 }

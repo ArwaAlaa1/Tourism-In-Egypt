@@ -9,7 +9,7 @@ namespace Tourism.Repository.Data.Configurations
         public void Configure(EntityTypeBuilder<UserFav> builder)
         {
             builder.HasKey(x => x.Id);
- 
+
         }
 
     }

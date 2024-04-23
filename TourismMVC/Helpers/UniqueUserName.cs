@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.Web;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using Tourism.Repository.Data;
-using TourismMVC.ViewModels;
 
 namespace TourismMVC.Helpers
 {

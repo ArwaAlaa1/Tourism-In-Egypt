@@ -1,25 +1,20 @@
 ﻿using AutoMapper;
-using AutoMapper.Configuration.Conventions;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Numerics;
 using Tourism.Core.Entities;
-using Tourism.Core.Helper;
 using Tourism.Core.Helper.DTO;
 using Tourism.Core.Repositories.Contract;
-using Tourism.Repository.Data;
 
 namespace Tourism_Egypt.Controllers
 {
-   
+    [Authorize]
     public class CityController : BaseApiController
     {
 
         private readonly ICityRepository _cityrepo;
         private readonly IMapper mapper;
 
-        public CityController(ICityRepository cityrepo,IMapper mapper)
+        public CityController(ICityRepository cityrepo, IMapper mapper)
         {
             _cityrepo = cityrepo;
             this.mapper = mapper;
@@ -32,14 +27,14 @@ namespace Tourism_Egypt.Controllers
             if (!string.IsNullOrEmpty(cityName))
             {
                 var results = cities.Where(e => e.Name.ToLower().Contains(cityName.ToLower())).ToList();
-                if (results.Count()==0)
+                if (results.Count() == 0)
                     return NotFound("This City Not Existing");
                 else
                 {
- var placesearch = mapper.Map<IEnumerable<City>, IEnumerable<CityDTO>>(results);
-                return Ok(placesearch);
+                    var placesearch = mapper.Map<IEnumerable<City>, IEnumerable<CityDTO>>(results);
+                    return Ok(placesearch);
                 }
-               
+
             }
             var data = mapper.Map<IEnumerable<City>, IEnumerable<CityDTO>>(cities);
 

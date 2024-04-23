@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Tourism.Core.Entities;
 using Tourism.Core.Repositories.Contract;
 using TourismMVC.ViewModels;
@@ -10,14 +9,14 @@ namespace TourismMVC.Controllers
     public class PlaceController : Controller
     {
         private readonly IUnitOfWork<Place> _unitOfWork;
-		private readonly IMapper mapper;
-		
-		public PlaceController(IUnitOfWork<Place> unitOfWork,IMapper mapper )
+        private readonly IMapper mapper;
+
+        public PlaceController(IUnitOfWork<Place> unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
-			this.mapper = mapper;
-			
-		}
+            this.mapper = mapper;
+
+        }
 
         // GET: CityController
         public async Task<IActionResult> Index()
@@ -25,9 +24,9 @@ namespace TourismMVC.Controllers
             IEnumerable<Place> places;
             places = await _unitOfWork.generic.GetAllAsync();
 
-			var placeviewModelList = mapper.Map<IEnumerable<Place>, IEnumerable<PlaceViewModel> >(places);
+            var placeviewModelList = mapper.Map<IEnumerable<Place>, IEnumerable<PlaceViewModel>>(places);
 
-			if (placeviewModelList is not null)
+            if (placeviewModelList is not null)
                 return View(placeviewModelList);
             else
                 return BadRequest();
@@ -42,7 +41,7 @@ namespace TourismMVC.Controllers
 
             var place = await _unitOfWork.generic.GetAsync(id.Value);
 
-            var placemapped = mapper.Map<Place,PlaceViewModel >(place);
+            var placemapped = mapper.Map<Place, PlaceViewModel>(place);
 
             if (placemapped is null)
                 return NotFound();
@@ -53,22 +52,22 @@ namespace TourismMVC.Controllers
         // GET: CityController/Create
         public IActionResult Create()
         {
-         
-			return View();
-		}
+
+            return View();
+        }
 
         // POST: CityController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(PlaceViewModel place)
         {
-            
-            var placemapped=mapper.Map< PlaceViewModel,Place>(place);
-            
-			if (ModelState.IsValid)
-            { 
-              
-               
+
+            var placemapped = mapper.Map<PlaceViewModel, Place>(place);
+
+            if (ModelState.IsValid)
+            {
+
+
                 _unitOfWork.generic.Add(placemapped);
                 var count = _unitOfWork.Complet();
 
@@ -79,7 +78,7 @@ namespace TourismMVC.Controllers
 
                 return RedirectToAction("Index");
             }
-           
+
             return View(place);
         }
 
@@ -137,7 +136,7 @@ namespace TourismMVC.Controllers
             {
                 try
                 {
-                    
+
                     _unitOfWork.generic.Delete(placemapped);
                     var count = _unitOfWork.Complet();
 

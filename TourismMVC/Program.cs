@@ -50,10 +50,10 @@ namespace TourismMVC
                 o.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
 
             })
-                .AddGoogle(options=>
+                .AddGoogle(options =>
                 {
                     IConfigurationSection GoogleAuthSec = builder.Configuration.GetSection("Authentication:Google");
-                   options.ClientId=GoogleAuthSec["ClientId"];
+                    options.ClientId = GoogleAuthSec["ClientId"];
                     options.ClientSecret = GoogleAuthSec["ClientSecret"];
                     options.CallbackPath = "/auth/google-callback";
 

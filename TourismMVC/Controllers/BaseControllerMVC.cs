@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace TourismMVC.Controllers
 {
     [Authorize]
-    public class BaseControllerMVC:Controller
+    public class BaseControllerMVC : Controller
     {
     }
 }

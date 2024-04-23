@@ -1,13 +1,11 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tourism.Core.Entities;
 using Tourism.Core.Repositories.Contract;
 
 namespace Tourism_Egypt.Controllers
 {
-   
+    [Authorize]
     public class TripController : BaseApiController
     {
         private readonly IGenericRepository<Trip> _trip;

@@ -24,6 +24,7 @@ namespace Tourism.Repository.Data
         {
             base.OnConfiguring(optionsBuilder);
             optionsBuilder.UseSqlServer("Server=TourismInEgypt.mssql.somee.com;Database=TourismInEgypt;user id=Sabry_SQLLogin_1;pwd=vf4uin2fa8;MultipleActiveResultSets=true;TrustServerCertificate=True");
+ 
 
         }
         public DbSet<Trip> Trips { get; set; }

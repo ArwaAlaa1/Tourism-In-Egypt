@@ -24,6 +24,7 @@ namespace Tourism_Egypt
 
 
             #region Add services to the container.
+            builder.Services.AddControllers();
 
             #region Notification Service
             builder.Services.AddTransient<INotificationService, NotificationService>();
@@ -125,7 +126,6 @@ namespace Tourism_Egypt
                 });
             });
             //-----------------------------------
-            builder.Services.AddControllers();
             builder.Services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Tourism", Version = "v1" });

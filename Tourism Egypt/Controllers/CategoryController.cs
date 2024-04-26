@@ -7,7 +7,7 @@ using Tourism.Core.Repositories.Contract;
 
 namespace Tourism_Egypt.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class CategoryController : BaseApiController
     {
 

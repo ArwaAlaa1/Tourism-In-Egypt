@@ -221,10 +221,10 @@ namespace Tourism_Egypt
 
             app.UseHttpsRedirection();
 
-
+            app.UseStaticFiles();
             app.UseAuthentication();
             app.UseAuthorization();
-
+           
 
             app.MapControllers();
 

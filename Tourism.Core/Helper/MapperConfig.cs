@@ -13,7 +13,7 @@ namespace Tourism.Core.Helper
                 .ForMember(t => t.City, o => o.MapFrom(t => t.City.Name))
                .ForMember(p => p.Photos, o => o.MapFrom<PhotoPlaceResolved>());
 
-            CreateMap<Category, CategoryDTO>();
+            CreateMap<Category, CategoryDTO>().ForMember(i =>i.ImgUrl,i=>i.MapFrom<CategoryPhotoResolved>());
 
             CreateMap<City, CityDTO>()
               .ForMember(c => c.cityPhotos, o => o.MapFrom<PhotoCityResolved>());

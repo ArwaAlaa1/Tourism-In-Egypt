@@ -69,6 +69,7 @@ namespace TourismMVC.Controllers
             {
                 if (ModelState.IsValid)
                 {
+
                     _unitOfWork.generic.Add(citymapped);
                     var count = _unitOfWork.Complet();
 

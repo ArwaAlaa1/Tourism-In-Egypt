@@ -75,6 +75,7 @@ namespace TourismMVC.Controllers
 
                 try
                 {
+                    Citymapped.Photo = $"images/cities/{Citymapped.Photo}";
                     unitOfWork.generic.Add(Citymapped);
                     unitOfWork.Complet();
                     return RedirectToAction(nameof(Index));

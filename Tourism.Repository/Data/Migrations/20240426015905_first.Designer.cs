@@ -12,8 +12,8 @@ using Tourism.Repository.Data;
 namespace Tourism.Repository.Data.Migrations
 {
     [DbContext(typeof(TourismContext))]
-    [Migration("20240328231957_init")]
-    partial class init
+    [Migration("20240426015905_first")]
+    partial class first
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -226,6 +226,10 @@ namespace Tourism.Repository.Data.Migrations
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("ImgUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");

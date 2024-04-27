@@ -380,6 +380,12 @@ namespace Tourism_Egypt.Controllers
             return BadRequest();
         }
 
-
+        [HttpPost("LogOut")]
+        public async Task<IActionResult> LogOut()
+        {
+           await _signInManager.SignOutAsync();
+            return Ok("Loged out successfully");
+        }
+        
     }
 }

@@ -10,7 +10,7 @@ namespace Tourism.Core.Entities
     {
        
         public string Name { get; set; }
-
+     //   public string Icon { get; set; }
         public virtual IEnumerable<Place> Places { get; set; }
 
     }

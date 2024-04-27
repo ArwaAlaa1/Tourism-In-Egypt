@@ -22,7 +22,7 @@ namespace TourismMVC
                options =>
                {
                    options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("conn"));
-                   options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                  // options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
                });
 
             builder.Services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));

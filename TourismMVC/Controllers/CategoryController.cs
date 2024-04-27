@@ -55,9 +55,10 @@ namespace TourismMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(CategoryViewModel category)
         {
-
+           category.ImgUrl = category.PhotoFile.FileName;
             var categorymapped = mapper.Map<CategoryViewModel, Category>(category);
-            var allcategory = await _unitOfWork.generic.GetAllAsync();
+           // categorymapped.ImgUrl= category.PhotoFile.FileName;
+			var allcategory = await _unitOfWork.generic.GetAllAsync();
             bool exists = allcategory.Any(e => e.Name == categorymapped.Name);
 
             if (exists)
@@ -69,6 +70,8 @@ namespace TourismMVC.Controllers
             {
                 if (ModelState.IsValid)
                 {
+
+                    categorymapped.ImgUrl= $"images/category/{categorymapped.ImgUrl}";
                     _unitOfWork.generic.Add(categorymapped);
                     var count = _unitOfWork.Complet();
 

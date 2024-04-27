@@ -75,6 +75,7 @@ namespace TourismMVC.Controllers
 
                 try
                 {
+                   Placemapped.Photo = $"images/places/{Placemapped.Photo}";
                     unitOfWork.generic.Add(Placemapped);
                     unitOfWork.Complet();
                     return RedirectToAction(nameof(Index));

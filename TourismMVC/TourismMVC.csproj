@@ -1208,6 +1208,7 @@
   <ItemGroup>
     <Folder Include="Views\Trip\PartialViews\" />
     <Folder Include="wwwroot\Files\Images\" />
+    <Folder Include="wwwroot\Images\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,17 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Buffers.Text;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tourism.Core.Entities;
 using Tourism.Core.Helper.DTO;
 
 namespace Tourism.Core.Helper
 {
-    public class PhotoCityResolved : IValueResolver<City,CityDTO,IEnumerable<PhotoDTO>>
+    public class PhotoCityResolved : IValueResolver<City, CityDTO, IEnumerable<PhotoDTO>>
     {
         private readonly IConfiguration configuration;
 
@@ -19,8 +13,8 @@ namespace Tourism.Core.Helper
         {
             this.configuration = configuration;
         }
-    
-       
+
+
         public IEnumerable<PhotoDTO> Resolve(City source, CityDTO destination, IEnumerable<PhotoDTO> destMember, ResolutionContext context)
         {
             List<PhotoDTO> dtoList = new List<PhotoDTO>();
@@ -37,5 +31,5 @@ namespace Tourism.Core.Helper
             return dtoList;
         }
     }
-   
+
 }

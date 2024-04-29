@@ -20,7 +20,7 @@ namespace Tourism.Repository
             generic = new GenericRepository<T>(_context);
             review = new ReviewRepository(_context);
             placeTrip = new Place_TripRepository(_context);
-            changePassword = new ChangePassword(_context); 
+            changePassword = new ChangePassword(_context);
         }
 
 

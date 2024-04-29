@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tourism.Core.Entities;
-
-namespace Tourism.Core.Helper.DTO
+﻿namespace Tourism.Core.Helper.DTO
 {
     public class CategoryDTO
     {
         public int Id { get; set; }
         public string Name { get; set; }
-
-        public virtual ICollection<PlaceDTO> Places { get; set; } 
+        public string ImgUrl { get; set; }
+        public virtual ICollection<PlaceDTO> Places { get; set; }
     }
 }

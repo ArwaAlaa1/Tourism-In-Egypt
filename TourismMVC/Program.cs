@@ -22,7 +22,7 @@ namespace TourismMVC
                options =>
                {
                    options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("conn"));
-                   options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                  // options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
                });
 
             builder.Services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
@@ -50,10 +50,10 @@ namespace TourismMVC
                 o.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
 
             })
-                .AddGoogle(options=>
+                .AddGoogle(options =>
                 {
                     IConfigurationSection GoogleAuthSec = builder.Configuration.GetSection("Authentication:Google");
-                   options.ClientId=GoogleAuthSec["ClientId"];
+                    options.ClientId = GoogleAuthSec["ClientId"];
                     options.ClientSecret = GoogleAuthSec["ClientSecret"];
                     options.CallbackPath = "/auth/google-callback";
 

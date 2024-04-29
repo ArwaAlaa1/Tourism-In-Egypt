@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tourism.Core.Entities;
-
-namespace Tourism.Core.Helper.DTO
+﻿namespace Tourism.Core.Helper.DTO
 {
     public class PlaceDTO
     {
@@ -19,8 +12,8 @@ namespace Tourism.Core.Helper.DTO
 
         public string Category { get; set; }
         public string City { get; set; }
-      
-        
-        public virtual IEnumerable<PhotoDTO> Photos { get; set; } 
+
+
+        public virtual IEnumerable<PhotoDTO> Photos { get; set; }
     }
 }

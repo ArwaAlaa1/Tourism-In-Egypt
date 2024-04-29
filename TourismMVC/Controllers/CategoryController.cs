@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Tourism.Core.Entities;
 using Tourism.Core.Repositories.Contract;
@@ -12,7 +11,7 @@ namespace TourismMVC.Controllers
         private readonly IUnitOfWork<Category> _unitOfWork;
         private readonly IMapper mapper;
 
-        public CategoryController(IUnitOfWork<Category> unitOfWork,IMapper mapper)
+        public CategoryController(IUnitOfWork<Category> unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             this.mapper = mapper;
@@ -21,18 +20,18 @@ namespace TourismMVC.Controllers
         public async Task<IActionResult> Index()
         {
             IEnumerable<Category> categories;
-            categories= await _unitOfWork.generic.GetAllAsync();
+            categories = await _unitOfWork.generic.GetAllAsync();
 
             if (categories is not null)
-                 return View(categories);
-            else 
+                return View(categories);
+            else
                 return BadRequest();
-            
-          
+
+
         }
 
         // GET: CategoryController/Details/5
-        public async  Task<IActionResult> Details(int? id,string viewname="Details")
+        public async Task<IActionResult> Details(int? id, string viewname = "Details")
         {
             if (id is null)
                 return BadRequest();
@@ -41,8 +40,8 @@ namespace TourismMVC.Controllers
             var categorymapped = mapper.Map<Category, CategoryViewModel>(category);
             if (category is null)
                 return NotFound();
-            
-            return View(viewname , categorymapped);
+
+            return View(viewname, categorymapped);
         }
 
         // GET: CategoryController/Create
@@ -56,9 +55,10 @@ namespace TourismMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(CategoryViewModel category)
         {
-
+           category.ImgUrl = category.PhotoFile.FileName;
             var categorymapped = mapper.Map<CategoryViewModel, Category>(category);
-            var allcategory = await _unitOfWork.generic.GetAllAsync();
+           // categorymapped.ImgUrl= category.PhotoFile.FileName;
+			var allcategory = await _unitOfWork.generic.GetAllAsync();
             bool exists = allcategory.Any(e => e.Name == categorymapped.Name);
 
             if (exists)
@@ -70,6 +70,8 @@ namespace TourismMVC.Controllers
             {
                 if (ModelState.IsValid)
                 {
+
+                    categorymapped.ImgUrl= $"images/category/{categorymapped.ImgUrl}";
                     _unitOfWork.generic.Add(categorymapped);
                     var count = _unitOfWork.Complet();
 
@@ -99,7 +101,7 @@ namespace TourismMVC.Controllers
 
             //return View(category);
 
-            return await Details(id,"Edit");
+            return await Details(id, "Edit");
         }
 
         // POST: CategoryController/Edit/5
@@ -119,30 +121,31 @@ namespace TourismMVC.Controllers
                 TempData["message"] = $"{categorymapped.Name} already exists in the database.";
                 return View(category);
             }
-            else { 
-            if (ModelState.IsValid)  //server side validation
+            else
             {
-                try
+                if (ModelState.IsValid)  //server side validation
                 {
+                    try
+                    {
 
-                    _unitOfWork.generic.Update(categorymapped);
-                    var count = _unitOfWork.Complet();
+                        _unitOfWork.generic.Update(categorymapped);
+                        var count = _unitOfWork.Complet();
 
-                    return RedirectToAction(nameof(Index));
+                        return RedirectToAction(nameof(Index));
+                    }
+                    catch (Exception ex)
+                    {
+                        ModelState.AddModelError(string.Empty, ex.Message);
+                    }
+
                 }
-                catch (Exception ex)
-                {
-                    ModelState.AddModelError(string.Empty, ex.Message);
-                }
-
-               }
             }
-       
+
             return View(category);
         }
 
         // GET: CategoryController/Delete/5
-        public async  Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             return await Details(id, "Delete");
         }
@@ -150,7 +153,7 @@ namespace TourismMVC.Controllers
         // POST: CategoryController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete([FromRoute]int id, CategoryViewModel category)
+        public IActionResult Delete([FromRoute] int id, CategoryViewModel category)
         {
             if (id != category.Id)
                 return BadRequest();
@@ -160,7 +163,7 @@ namespace TourismMVC.Controllers
                 try
                 {
 
-                     _unitOfWork.generic.Delete(categorymapped);
+                    _unitOfWork.generic.Delete(categorymapped);
                     var count = _unitOfWork.Complet();
 
                     return RedirectToAction(nameof(Index));

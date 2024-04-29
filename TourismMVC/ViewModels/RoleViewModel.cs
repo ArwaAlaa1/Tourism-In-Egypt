@@ -6,7 +6,7 @@ namespace TourismMVC.ViewModels
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage ="Name is required")]
+        [Required(ErrorMessage = "Name is required")]
         public string RoleName { get; set; }
     }
 }

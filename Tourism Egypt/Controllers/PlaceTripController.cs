@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tourism.Core.Entities;
 using Tourism.Core.Repositories.Contract;
 
 namespace Tourism_Egypt.Controllers
 {
-   
+    [Authorize]
     public class PlaceTripController : BaseApiController
     {
         private readonly IGenericRepository<Place_Trip> _placetrip;
@@ -37,7 +37,7 @@ namespace Tourism_Egypt.Controllers
                 return NotFound();
             }
             else
-            return Ok(PT);
+                return Ok(PT);
         }
     }
 }

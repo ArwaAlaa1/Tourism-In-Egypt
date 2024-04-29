@@ -1,26 +1,14 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+//using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
+
+using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using Tourism.Core.Entities;
 using Tourism.Core.Helper;
 using Tourism.Core.Helper.DTO;
 using Tourism.Core.Repositories.Contract;
-
-using static System.Net.Mime.MediaTypeNames;
-using System.Net.Mail;
-using MailKit.Security;
-using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
-
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-using Microsoft.AspNetCore.WebUtilities;
-using Tourism.Repository.Data;
-using Org.BouncyCastle.Ocsp;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Tourism_Egypt.Controllers
 {
@@ -31,15 +19,15 @@ namespace Tourism_Egypt.Controllers
         private readonly IAuthService _authService;
         private readonly IUnitOfWork<ResetPassword> _resetpassword;
         private readonly IConfiguration _configuration;
-        private readonly TourismContext _context;
+
         private IEmailService _emailService;
 
-        private static ApplicationUser user;
-        private static string token;
-        public AccountUserController(IEmailService emailService,UserManager<ApplicationUser> userManager 
+        private static ApplicationUser? user;
+        private static string? token;
+        public AccountUserController(IEmailService emailService, UserManager<ApplicationUser> userManager
             , SignInManager<ApplicationUser> signInManager
-            ,IAuthService authService,IUnitOfWork<ResetPassword> resetpassword
-            ,IConfiguration configuration)
+            , IAuthService authService, IUnitOfWork<ResetPassword> resetpassword
+            , IConfiguration configuration)
 
         {
             _userManager = userManager;
@@ -47,67 +35,27 @@ namespace Tourism_Egypt.Controllers
             _authService = authService;
             _resetpassword = resetpassword;
             _configuration = configuration;
-           
+
             _emailService = emailService;
         }
 
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginUserDTO loginUser)
+        public async Task<ActionResult<UserDTO>> Login(LoginDTO loginDto)
         {
+            var user = await _userManager.FindByEmailAsync(loginDto.Email);
+            if (user == null) return Unauthorized("This User Not Register");
+            var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
+            if (!result.Succeeded) return BadRequest("Enter Correct PassWord");
 
-            var email = await _userManager.FindByEmailAsync(loginUser.Email);
-            var username = await _userManager.FindByNameAsync(loginUser.Username);
-            if (email == null && username == null)
+
+            return Ok(new UserDTO()
             {
-                return NotFound("Incorrect UserName Or Email ");
-            }
-            else
-            {
-                if (email != null || username != null)
-                {
-                    if (email != null)
-                    {
-                        var result = await _signInManager.CheckPasswordSignInAsync(email, loginUser.Password, false);
-
-                        if (result.Succeeded is true)
-                        {
-                            return Ok(new UserDTO()
-                            {
-
-                        
-
-                                DisplayName = email.DisplayName,
-                                Email = email.Email,
-                                Username = email.UserName,
-                                Token = await _authService.CreateTokenAsync(email, _userManager)
-                            });
-                        }return BadRequest();
-                    }
-
-                    if (username != null)
-                    {
-                        var result = await _signInManager.CheckPasswordSignInAsync(username, loginUser.Password, false);
-                        if (result.Succeeded is true)
-                        {
-                            return Ok(new UserDTO()
-                            {
-                                DisplayName = username.DisplayName,
-                                Email = username.Email,
-                                Username = username.UserName,
-                                Token = await _authService.CreateTokenAsync(username, _userManager)
-                            });
-                        }
-
-                    }
-
-                    return BadRequest("Incorrect Password");
-                }
-
-            }
-            return BadRequest();
-
-
+                DisplayName = user.DisplayName,
+                Email = user.Email,
+                Username = user.UserName,
+                Token = await _authService.CreateTokenAsync(user, _userManager)
+            });
         }
 
         [HttpPost("register")]
@@ -161,7 +109,7 @@ namespace Tourism_Egypt.Controllers
             return BadRequest();
         }
 
-        [HttpGet]
+        [HttpGet("YourDetails")]
         [Authorize]
         public async Task<IActionResult> GetUser()
         {
@@ -216,37 +164,7 @@ namespace Tourism_Egypt.Controllers
         //    return Ok(userInfo);
         //}
 
-        //[HttpGet("ForgetPass")]
-        //public async Task<IActionResult> ForgetPassWord(string email)
-        //{
-        //    var user = await _userManager.FindByEmailAsync(email);
-        //    if (user is not null)
-        //    {    
-        //        Random rand = new Random();
-        //        int randomNumber = rand.Next(1000, 10000);
-                
-        //        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-        //        //var RestPasswordUrl = Url.Action("RestPssword", "AccountUser", new { email = email, token = token }, "https", "lacalhost:44317");
-                
-        //        var emaill = new SendEmailDto()
-        //        {
-        //            Subject = "Here's Your Password Reset Link",
-        //            To=email,
-        //            Code= randomNumber.ToString(),
-        //            Html=$"<h1>Hello {user.DisplayName}<h1>" +
-        //            $"<p>Looks Like you've forgotten your password .Don't worry ,we've got you!</p>" +
-        //            $"Code Verification :{randomNumber}",
-        //        };
-        //        SendEmail(emaill);
-        //        return Ok(emaill);
-               
-        //    }
-        //    ModelState.AddModelError(string.Empty, "Invalid Email");
-        //    return BadRequest();
-        //}
 
-
-      
 
         [HttpGet("ForgetPassword")]
         public async Task<IActionResult> ForgetPassword([Required] string email)
@@ -266,7 +184,7 @@ namespace Tourism_Egypt.Controllers
                 // var validtoken = WebEncoders.Base64UrlEncode(encodedtoken);
 
                 //var RestPasswordUrl = Url.Action("ResetPassword", "AccountUser", new { email = user.Email, token = token }, Request.Scheme);
-               // string url = $"{_configuration["ApiBaseUrl"]}/ResetPassword?email={email}&token={token}";
+                // string url = $"{_configuration["ApiBaseUrl"]}/ResetPassword?email={email}&token={token}";
                 var OTP = RandomGenerator.Generate(1000, 9999);
 
                 var Reset = new ResetPassword()
@@ -288,34 +206,37 @@ namespace Tourism_Egypt.Controllers
                     //ResetUrl= url,
                     Html = $"<h1>Hello {user.DisplayName}<h1>" +
                         $"<p>Looks Like you've forgotten your password .Don't worry ,we've got you!</p>" +
-                        $"Code Verification :{OTP}" 
+                        $"Code Verification :{OTP}"
                         ,
 
                 };
 
                 _emailService.SendEmail(SendEmail);
-                return Ok(Reset);
-            }catch (Exception ex)
+                return Ok();
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-           }
+        }
 
         [HttpGet("VerifyCode")]
-       
-        public async Task<IActionResult> VerifyCode(int otp )
+
+        public async Task<IActionResult> VerifyCode(int otp)
         {
-           var User = await _resetpassword.changePassword.GetPasswordofOTP(otp, user.Email);
+            var User = await _resetpassword.changePassword.GetPasswordofOTP(otp, user.Email);
             if (User == null) return BadRequest("Invalid Code");
 
-            return Ok(User);
+            return Ok("Verification Done");
         }
+
         [HttpGet("ResendCode")]
         public async Task<IActionResult> ResendCode()
         {
             try
             {
                 var user2 = await _userManager.FindByEmailAsync(user.Email);
+
                 if (user2 == null)
                     return BadRequest("Invalid Email");
 
@@ -339,7 +260,7 @@ namespace Tourism_Egypt.Controllers
                     To = user2.Email,
                     Code = OTP.ToString(),
                     //ResetUrl= url,
-                    Html = $"<h1>Hello {user.DisplayName}<h1>" +
+                    Html = $"Hello {user.DisplayName}" +
                         $"<p>Looks Like you've forgotten your password .Don't worry ,we've got you!</p>" +
                         $"Code Verification :{OTP}"
                         ,
@@ -347,7 +268,7 @@ namespace Tourism_Egypt.Controllers
                 };
 
                 _emailService.SendEmail(SendEmail);
-                return Ok(Reset);
+                return Ok("Check Your Inbox");
             }
             catch (Exception ex)
             {
@@ -356,6 +277,7 @@ namespace Tourism_Egypt.Controllers
         }
 
         [HttpPost("ResetPassword")]
+        [Authorize]
         public async Task<IActionResult> ResetPassword(PasswordResetDto passwordDto)
         {
             if (ModelState.IsValid)
@@ -365,17 +287,47 @@ namespace Tourism_Egypt.Controllers
                     var user1 = await _userManager.FindByEmailAsync(user.Email);
                     var result = await _userManager.ResetPasswordAsync(user1, token, passwordDto.NewPassword);
                     if (result.Succeeded)
-                        return Ok(user1);
-                    
-                        foreach (var error in result.Errors)
-                        {
-                            return BadRequest(error.Description);
-                        }
+                        return Ok("PassWord Updated");
+
+                    foreach (var error in result.Errors)
+                    {
+                        return BadRequest(error.Description);
+                    }
                 }
-                catch(Exception ex) 
+                catch (Exception ex)
                 {
                     return BadRequest(ex.InnerException.Message);
                 }
+            }
+            return BadRequest();
+        }
+
+        [HttpPost("ChangePassWord")]
+        [Authorize]
+        public async Task<IActionResult> ChangePassWord(ChangPasswordDto changPassword, string email)
+        {
+            try
+            {
+
+                if (changPassword.OldPassword == changPassword.NewPassword)
+                    return BadRequest("We're sorry, but the new password you entered is the same as your current password.");
+                else
+                {
+                    var user1 = await _userManager.FindByEmailAsync(email);
+                    var result = await _userManager.ChangePasswordAsync(user1, changPassword.OldPassword, changPassword.NewPassword);
+                    if (result.Succeeded)
+                        return Ok("PassWord Updated");
+
+                    foreach (var error in result.Errors)
+                    {
+                        return BadRequest(error.Description);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.InnerException.Message);
             }
             return BadRequest();
         }

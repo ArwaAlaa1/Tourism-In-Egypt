@@ -8,5 +8,6 @@ namespace Tourism.Core.Repositories.Contract
         Task<Review> UpdateReviewAsync(int id, Review review);
         Task DeleteReviewAsync(int id);
         Task<Review> GetReviewByIdAsync(int Id);
+        Task<IEnumerable<Review>> GetAllReviewByPlaceIdAsync(int PlaceId);
     }
 }

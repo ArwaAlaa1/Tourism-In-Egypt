@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tourism.Core.Entities;
+﻿using Tourism.Core.Entities;
 using Tourism.Core.Repositories.Contract;
 using Tourism.Repository.Data;
 
@@ -13,15 +8,15 @@ namespace Tourism.Repository.Repository
     {
         private readonly TourismContext _context;
 
-        public ChangePassword(TourismContext context):base(context) 
+        public ChangePassword(TourismContext context) : base(context)
         {
             _context = context;
         }
-        
+
         public async Task<ResetPassword> GetPasswordofOTP(int otp, string email)
         {
-           var User =  _context.Passwords.Where(x => x.Email == email && x.OTP == otp)
-                .OrderByDescending(x => x.Date).FirstOrDefault();
+            var User = _context.Passwords.Where(x => x.Email == email && x.OTP == otp)
+                 .OrderByDescending(x => x.Date).FirstOrDefault();
             return User;
         }
     }

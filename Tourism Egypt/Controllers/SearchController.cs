@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Tourism.Repository.Data;
 
 namespace Tourism_Egypt.Controllers
 {
+    [Authorize]
     public class SearchController : BaseApiController
     {
         private readonly TourismContext _context;

@@ -6,7 +6,7 @@ namespace Tourism.Core.Helper
 {
     public class PlaceResolved : IValueResolver<Category, CategoryDTO, IEnumerable<PlaceDTO>>
     {
- 
+
 
         public IEnumerable<PlaceDTO> Resolve(Category source, CategoryDTO destination, IEnumerable<PlaceDTO> destMember, ResolutionContext context)
         {

@@ -1,13 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 using Tourism.Core.Entities;
 using Tourism.Core.Repositories.Contract;
 
@@ -52,8 +48,8 @@ namespace Tourism.Service
                 issuer: _configuration["JWT:ValidIssuer"],
                 expires: DateTime.UtcNow.AddDays(double.Parse(_configuration["JWT:Duration"])),
                 claims: authClaims,
-                signingCredentials: new SigningCredentials(authKey ,SecurityAlgorithms.HmacSha256Signature )
-                ) ;
+                signingCredentials: new SigningCredentials(authKey, SecurityAlgorithms.HmacSha256Signature)
+                );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }

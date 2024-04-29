@@ -12,7 +12,7 @@ namespace TourismMVC.ViewModels
         public int PlaceId { get; set; }
         [DisplayName("Trip Name")]
         public int TripId { get; set; }
-      
+
         public IEnumerable<Place> places { get; set; } = new List<Place>();
         public IEnumerable<Trip> trips { get; set; } = new List<Trip>();
 

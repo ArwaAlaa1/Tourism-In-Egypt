@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tourism.Core.Entities;
 using Tourism.Core.Repositories.Contract;
 
 namespace Tourism_Egypt.Controllers
 {
-    
+    [Authorize]
     public class UserTripController : BaseApiController
     {
         private readonly IGenericRepository<User_Trip> _userTrip;
@@ -17,7 +17,7 @@ namespace Tourism_Egypt.Controllers
         public async Task<IActionResult> GetAll()
         {
             var List = await _userTrip.GetAllAsync();
-            if(List == null)
+            if (List == null)
             {
                 return BadRequest();
             }
@@ -28,7 +28,7 @@ namespace Tourism_Egypt.Controllers
         public async Task<IActionResult> GetOne(int id)
         {
             var UT = await _userTrip.GetAsync(id);
-            if(UT == null)
+            if (UT == null)
             {
                 return NotFound();
             }

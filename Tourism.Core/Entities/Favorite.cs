@@ -1,7 +1,7 @@
 ﻿namespace Tourism.Core.Entities
 {
-    public class Favorite :BaseEntity
+    public class Favorite : BaseEntity
     {
-       
+
     }
 }

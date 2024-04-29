@@ -10,7 +10,7 @@
 
         public virtual ICollection<ApplicationUser> Users { get; set; } = new List<ApplicationUser>();
 
-        public  virtual ICollection <Place> Places { get; set; } = new List <Place>();
+        public virtual ICollection<Place> Places { get; set; } = new List<Place>();
     }
 
 }

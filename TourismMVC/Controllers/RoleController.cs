@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +12,7 @@ namespace TourismMVC.Controllers
         private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly IMapper mapper;
 
-        public RoleController(RoleManager<ApplicationRole> roleManager,IMapper mapper)
+        public RoleController(RoleManager<ApplicationRole> roleManager, IMapper mapper)
         {
             _roleManager = roleManager;
             this.mapper = mapper;
@@ -21,13 +20,13 @@ namespace TourismMVC.Controllers
         // GET: RoleController
         public async Task<IActionResult> Index()
         {
-                var roles = await _roleManager.Roles.ToListAsync();
-                return View(roles);
-         
+            var roles = await _roleManager.Roles.ToListAsync();
+            return View(roles);
+
         }
 
         // GET: RoleController/Details/5
-        public async Task<IActionResult> Details(int? id,string viewname ="Details")
+        public async Task<IActionResult> Details(int? id, string viewname = "Details")
         {
             if (id is null)
                 return BadRequest();
@@ -37,7 +36,7 @@ namespace TourismMVC.Controllers
             if (role is null)
                 return NotFound();
 
-            var mappedrole=mapper.Map<ApplicationRole,RoleViewModel>(role);
+            var mappedrole = mapper.Map<ApplicationRole, RoleViewModel>(role);
             return View(viewname, mappedrole);
         }
 
@@ -59,48 +58,48 @@ namespace TourismMVC.Controllers
                 {
                     if (!roleExist)
                     {
-                    var mappedrole = mapper.Map<RoleViewModel, ApplicationRole>(roleViewModel);
-                    await _roleManager.CreateAsync(mappedrole);
-                   
+                        var mappedrole = mapper.Map<RoleViewModel, ApplicationRole>(roleViewModel);
+                        await _roleManager.CreateAsync(mappedrole);
+
                     }
                     else
                     {
-						ModelState.AddModelError("Name", "Role Name Is Exist");
+                        ModelState.AddModelError("Name", "Role Name Is Exist");
                         return View(roleViewModel);
-					}
-					
-				}
+                    }
+
+                }
                 catch (Exception ex)
                 {
                     ModelState.AddModelError(string.Empty, ex.Message);
                 }
             }
-			return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index));
 
-		}
+        }
 
         // GET: RoleController/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-			if (id is null)
-				return BadRequest();
+            if (id is null)
+                return BadRequest();
 
-			var role = await _roleManager.FindByIdAsync(id.Value.ToString());
+            var role = await _roleManager.FindByIdAsync(id.Value.ToString());
 
-			if (role is null)
-				return NotFound();
+            if (role is null)
+                return NotFound();
 
-			var mappedrole = new RoleEditViewModel()
+            var mappedrole = new RoleEditViewModel()
             {
                 RoleName = role.Name,
             };
-			return View( mappedrole);
-		}
+            return View(mappedrole);
+        }
 
         // POST: RoleController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([FromRoute]int id, RoleEditViewModel roleEditView)
+        public async Task<IActionResult> Edit([FromRoute] int id, RoleEditViewModel roleEditView)
         {
             if (id != roleEditView.Id)
                 return BadRequest();
@@ -114,9 +113,9 @@ namespace TourismMVC.Controllers
                     if (!roleExist)
                     {
                         var role = await _roleManager.FindByIdAsync(id.ToString());
-                    role.Name = roleEditView.RoleName;
-                    await _roleManager.UpdateAsync(role);  
-                    return RedirectToAction(nameof(Index));
+                        role.Name = roleEditView.RoleName;
+                        await _roleManager.UpdateAsync(role);
+                        return RedirectToAction(nameof(Index));
                     }
                     else
                     {
@@ -144,21 +143,21 @@ namespace TourismMVC.Controllers
         // POST: RoleController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete([FromRoute]int? id)
+        public async Task<IActionResult> Delete([FromRoute] int? id)
         {
             try
-               {
-                    var role = await _roleManager.FindByIdAsync(id.ToString());
-                   
-                    await _roleManager.DeleteAsync(role);
-                    return RedirectToAction(nameof(Index));
-                    
-                    
-               }
-                catch (Exception ex)
-                {
-                    ModelState.AddModelError(string.Empty, ex.Message);
-                    return RedirectToAction("Error","Home");
+            {
+                var role = await _roleManager.FindByIdAsync(id.ToString());
+
+                await _roleManager.DeleteAsync(role);
+                return RedirectToAction(nameof(Index));
+
+
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return RedirectToAction("Error", "Home");
 
             }
 

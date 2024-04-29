@@ -48,12 +48,17 @@ namespace Tourism_Egypt.Controllers
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
             if (!result.Succeeded) return BadRequest("Enter Correct PassWord");
 
+            SimpleUserDTO User1 = new SimpleUserDTO()
+            {
+                Id = user.Id,
+                Email = user.Email,
+                DisplayName = user.DisplayName,
+                Username = user.FName,
 
+            };
             return Ok(new UserDTO()
             {
-                DisplayName = user.DisplayName,
-                Email = user.Email,
-                Username = user.UserName,
+                User = User1,
                 Token = await _authService.CreateTokenAsync(user, _userManager)
             });
         }
@@ -87,11 +92,17 @@ namespace Tourism_Egypt.Controllers
                 {
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
+                    SimpleUserDTO User1 = new SimpleUserDTO()
+                    {
+                        Id = user.Id,
+                        Email = user.Email,
+                        DisplayName = user.DisplayName,
+                        Username = user.FName,
+
+                    };
                     return Ok(new UserDTO
                     {
-                        DisplayName = user.DisplayName,
-                        Email = user.Email,
-                        Username = user.UserName,
+                       User = User1,
                         Token = await _authService.CreateTokenAsync(user, _userManager)
                     });
                 }
@@ -115,12 +126,17 @@ namespace Tourism_Egypt.Controllers
         {
             var email = User.FindFirstValue(ClaimTypes.Email);
             var user = await _userManager.FindByEmailAsync(email);
+            SimpleUserDTO User1 = new SimpleUserDTO()
+            {
+                Id = user.Id,
+                Email = user.Email,
+                DisplayName = user.DisplayName,
+                Username = user.FName,
 
+            };
             return Ok(new UserDTO
             {
-                DisplayName = user.DisplayName,
-                Email = user.Email,
-                Username = user.UserName,
+                User = User1,
                 Token = await _authService.CreateTokenAsync(user, _userManager)
             });
         }

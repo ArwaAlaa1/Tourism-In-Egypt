@@ -1,8 +1,11 @@
 ﻿using CorePush.Google;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Headers;
 using Tourism.Core.Entities;
+using Tourism.Core.Helper.DTO;
 using Tourism.Core.Repositories.Contract;
+using Tourism.Repository.Data;
 using static Tourism.Core.Entities.GoogleNotification;
 
 namespace Tourism.Repository.Repository
@@ -11,9 +14,14 @@ namespace Tourism.Repository.Repository
     public class NotificationService : INotificationService
     {
         private readonly FcmNotificationSetting _fcmNotificationSetting;
-        public NotificationService(IOptions<FcmNotificationSetting> settings)
+        private readonly TourismContext _context;
+
+
+
+        public NotificationService(IOptions<FcmNotificationSetting> settings , TourismContext context)
         {
             _fcmNotificationSetting = settings.Value;
+            _context = context;
         }
 
         public async Task<ResponseModel> SendNotification(NotificationModel notificationModel)
@@ -77,5 +85,19 @@ namespace Tourism.Repository.Repository
                 return response;
             }
         }
+
+        public async Task<IEnumerable<NotificationReviewDTO>> GetAllNotificationAsync()
+        {
+            var notifications = await _context.Reviews.Select(r => new NotificationReviewDTO
+            {
+                PlaceId = r.PlaceId,
+                Time = r.Time,
+                UserName = r.User.UserName
+            }).ToListAsync();
+
+
+            return notifications;
+        }
+
     }
 }

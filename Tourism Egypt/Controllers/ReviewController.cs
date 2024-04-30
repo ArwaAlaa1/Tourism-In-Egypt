@@ -11,7 +11,7 @@ namespace Tourism_Egypt.Controllers
     [Authorize]
     public class ReviewController : BaseApiController
     {
-        public IReviewRepository _reviewRepository;
+        public readonly IReviewRepository _reviewRepository;
         private readonly IMapper _mapper;
         public ReviewController(IMapper mapper, IReviewRepository reviewRepository)
         {

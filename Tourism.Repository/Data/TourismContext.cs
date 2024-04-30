@@ -23,16 +23,7 @@ namespace Tourism.Repository.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-<<<<<<< HEAD
-           // optionsBuilder.UseSqlServer("Server=TourismInEgypt.mssql.somee.com;Database=TourismInEgypt;user id=Sabry_SQLLogin_1;pwd=vf4uin2fa8;MultipleActiveResultSets=true;TrustServerCertificate=True");
- 
-
-           // optionsBuilder.UseSqlServer("Server =ARWA-ALAA\\ARWAALAA; Initial Catalog = TourismEgypt ; Integrated Security = true ; TrustServerCertificate = true;MultipleActiveResultSets=true");
-=======
             optionsBuilder.UseSqlServer("Server=TourismInegy.mssql.somee.com;Database=TourismInegy;user id=Sabry_SQLLogin_1;pwd=vf4uin2fa8;MultipleActiveResultSets=true;TrustServerCertificate=True");
->>>>>>> 5603fc50b20a196a5aebd8b10a73d9a51f128063
-                //"Server=TourismInEgypt.mssql.somee.com;Database=TourismInEgypt;user id=Sabry_SQLLogin_1;pwd=vf4uin2fa8;MultipleActiveResultSets=true;TrustServerCertificate=True");
-
         }
         public DbSet<Trip> Trips { get; set; }
         public DbSet<ApplicationUser> Users { get; set; }

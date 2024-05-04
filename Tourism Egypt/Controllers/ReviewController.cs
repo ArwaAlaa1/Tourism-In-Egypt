@@ -8,7 +8,7 @@ using Tourism.Core.Repositories.Contract;
 
 namespace Tourism_Egypt.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class ReviewController : BaseApiController
     {
         public IReviewRepository _reviewRepository;
@@ -94,6 +94,6 @@ namespace Tourism_Egypt.Controllers
             }
         }
 
-
+      
     }
 }

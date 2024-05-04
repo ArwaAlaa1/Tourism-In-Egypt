@@ -3,10 +3,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
+using System.Text.Encodings.Web;
+using System.Text;
 using Tourism.Core.Entities;
 using Tourism.Core.Helper;
 using Tourism.Core.Helper.DTO;
 using Tourism.Core.Repositories.Contract;
+
 
 namespace Tourism_Egypt.Controllers
 {
@@ -16,7 +19,8 @@ namespace Tourism_Egypt.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IAuthService _authService;
         private readonly IUnitOfWork<ResetPassword> _resetpassword;
-
+        
+        //private readonly IEmailSender _emailSender;
         private IEmailService _emailService;
 
         private static ApplicationUser? user;
@@ -24,14 +28,15 @@ namespace Tourism_Egypt.Controllers
         public AccountUserController(IEmailService emailService, UserManager<ApplicationUser> userManager
             , SignInManager<ApplicationUser> signInManager
             , IAuthService authService, IUnitOfWork<ResetPassword> resetpassword
-            , IConfiguration configuration)
+           
+            )
 
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _authService = authService;
             _resetpassword = resetpassword;
-            _configuration = configuration;
+           
 
             _emailService = emailService;
         }
@@ -128,42 +133,45 @@ namespace Tourism_Egypt.Controllers
             return await _userManager.FindByEmailAsync(email) != null;
         }
 
-        //[HttpGet("google")]
-        //public IActionResult GoogleLogin()
-        //{
-        //    var authenticationProperties = new AuthenticationProperties
-        //    {
-        //        RedirectUri = Url.Action("GoogleResponse")
-        //    };
-
-        //    return Challenge(authenticationProperties, GoogleDefaults.AuthenticationScheme);
-        //}
-
-        //[HttpGet("google-response")]
-        //public async Task<IActionResult> GoogleResponse()
-        //{
-        //    var authenticateResult = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
-
-        //    if (!authenticateResult.Succeeded)
-        //    {
-        //        // Handle authentication failure
-        //        return BadRequest();
-        //    }
-
-        //    // Here you can get user information from authenticateResult.Principal
-        //    var userInfo = new
-        //    {
-        //        Email = authenticateResult.Principal.FindFirstValue(ClaimTypes.Email),
-        //        Name = authenticateResult.Principal.FindFirstValue(ClaimTypes.Name)
-        //        // Add more fields as needed
-        //    };
-
-        //    return Ok(userInfo);
-        //}
 
 
+     
+		//[HttpGet("google")]
+		//public IActionResult GoogleLogin()
+		//{
+		//    var authenticationProperties = new AuthenticationProperties
+		//    {
+		//        RedirectUri = Url.Action("GoogleResponse")
+		//    };
 
-        [HttpGet("ForgetPassword")]
+		//    return Challenge(authenticationProperties, GoogleDefaults.AuthenticationScheme);
+		//}
+
+		//[HttpGet("google-response")]
+		//public async Task<IActionResult> GoogleResponse()
+		//{
+		//    var authenticateResult = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
+
+		//    if (!authenticateResult.Succeeded)
+		//    {
+		//        // Handle authentication failure
+		//        return BadRequest();
+		//    }
+
+		//    // Here you can get user information from authenticateResult.Principal
+		//    var userInfo = new
+		//    {
+		//        Email = authenticateResult.Principal.FindFirstValue(ClaimTypes.Email),
+		//        Name = authenticateResult.Principal.FindFirstValue(ClaimTypes.Name)
+		//        // Add more fields as needed
+		//    };
+
+		//    return Ok(userInfo);
+		//}
+
+
+
+		[HttpGet("ForgetPassword")]
         public async Task<IActionResult> ForgetPassword([Required] string email)
         {
             try

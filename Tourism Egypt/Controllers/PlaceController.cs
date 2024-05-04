@@ -4,20 +4,25 @@ using Microsoft.AspNetCore.Mvc;
 using Tourism.Core.Entities;
 using Tourism.Core.Helper.DTO;
 using Tourism.Core.Repositories.Contract;
+using Tourism.Repository.Repository;
 
 namespace Tourism_Egypt.Controllers
 {
     [Authorize]
     public class PlaceController : BaseApiController
     {
-        private readonly IPlaceRepository _placerepo;
+	
+		private readonly IPlaceRepository _placerepo;
         private readonly IMapper mapper;
+		private readonly IReviewRepository _review;
 
-        public PlaceController(IPlaceRepository placerepo, IMapper mapper)
+		public PlaceController(IPlaceRepository placerepo, IMapper mapper,IReviewRepository review)
         {
-            _placerepo = placerepo;
+			
+			_placerepo = placerepo;
             this.mapper = mapper;
-        }
+			_review = review;
+		}
 
 
         [HttpGet]
@@ -53,16 +58,40 @@ namespace Tourism_Egypt.Controllers
         {
             var place = await _placerepo.GetAsync(id);
 
+            //var reviews =await GetAllReviewByPlaceId(id);
+            
             if (place == null)
                 return NotFound();
 
-            //var photos = await _placerepo.GetAllPhotoBySpecIdAsync(id);
-            //place.Photos= photos;
+           
             var data = mapper.Map<Place, PlaceDTO>(place);
 
+            //data.reviews = reviews;
             return Ok(data);
 
 
         }
-    }
+
+  //      [HttpGet("[action]{PlaceId}")]
+  //      public async Task<ActionResult<IEnumerable<ReviewDTO>>> GetAllReviewByPlaceId(int PlaceId)
+  //      {
+  //          try
+  //          {
+
+		//		var review = await _review.GetAllReviewByPlaceIdAsync(PlaceId);
+
+		//		if (review == null)
+		//		{
+		//			return NotFound("No Review on this Place");
+		//		}
+  //             var reviews=mapper.Map<IEnumerable<Review>,IEnumerable<ReviewDTO>>(review);
+		//		return Ok(review);
+		//	}
+		//	catch
+		//	{
+		//		return NotFound("This Place Not Found");
+		//	}
+		//}
+
+	}
 }

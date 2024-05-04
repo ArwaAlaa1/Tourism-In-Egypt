@@ -52,20 +52,7 @@ namespace Tourism_Egypt
             // Add services to the container.
             builder.Services.Configure<EmailConfiguration>(configuration.GetSection("EmailConfiguration"));
             builder.Services.AddScoped<IEmailService, EmailService>();
-            //builder.Services.AddAuthentication(o =>
-            //{
-            //    o.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
-            //    o.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
 
-            //})
-            //    .AddGoogle(options=>
-            //    {
-            //        IConfigurationSection GoogleAuthSec = builder.Configuration.GetSection("Authentication:Google");
-            //       options.ClientId=GoogleAuthSec["ClientId"];
-            //        options.ClientSecret = GoogleAuthSec["ClientSecret"];
-
-
-            //    });
             #endregion
             #region Identity Services
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -111,7 +98,6 @@ namespace Tourism_Egypt
 
                     options.CallbackPath = "/auth/google-callback";
 
-                });
 
             builder.Services.Configure<DataProtectionTokenProviderOptions>(
                 opt => opt.TokenLifespan = TimeSpan.FromHours(10));
@@ -225,7 +211,6 @@ namespace Tourism_Egypt
             app.UseAuthentication();
             app.UseAuthorization();
            
-
             app.MapControllers();
 
             app.Run();

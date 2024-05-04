@@ -94,25 +94,6 @@ namespace Tourism_Egypt.Controllers
             }
         }
 
-        [HttpGet("[action]{PlaceId}")]
-        public async Task<ActionResult<ReviewDTO>> GetAllReviewByPlaceId(int PlaceId)
-        {
-            try
-            {
-
-                var review = await _reviewRepository.GetAllReviewByPlaceIdAsync(PlaceId);
-
-                if (review == null)
-                {
-                    return NotFound("No Review on this Place");
-                }
-                return Ok(review);
-            }
-            catch
-            {
-                return NotFound("This Place Not Found");
-            }
-        }
 
     }
 }

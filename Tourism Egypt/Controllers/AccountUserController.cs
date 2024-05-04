@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-//using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
-
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using Tourism.Core.Entities;
@@ -18,7 +16,6 @@ namespace Tourism_Egypt.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IAuthService _authService;
         private readonly IUnitOfWork<ResetPassword> _resetpassword;
-        private readonly IConfiguration _configuration;
 
         private IEmailService _emailService;
 

@@ -1,4 +1,6 @@
 ﻿
+using System.ComponentModel.DataAnnotations;
+
 namespace Tourism.Core.Helper.DTO
 {
     public class ReviewDTO
@@ -6,12 +8,14 @@ namespace Tourism.Core.Helper.DTO
         public int Id { get; set; }
 
         public string Message { get; set; }
+		public DateTime Time { get; set; } = DateTime.Now;
 
-        public float Rating { get; set; }
+		[Range(1, 5)]
+		public float Rating { get; set; }
 
-        public int UserId { get; set; }
+        public string UserName { get; set; }
 
-        public int PlaceId { get; set; }
+        public string placeName { get; set; }
 
 
     }

@@ -23,8 +23,9 @@ namespace Tourism.Repository.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer();// "Data source = DESKTOP-9IISLS5 ; Database = Tourism ; integrated security = true ; trust server certificate = true"
-);
+            optionsBuilder.UseSqlServer("Server =ARWA-ALAA\\ARWAALAA; Initial Catalog = TourismEgypt ; Integrated Security = true ; TrustServerCertificate = true;MultipleActiveResultSets=true");
+            // "Data source = DESKTOP-9IISLS5 ; Database = Tourism ; integrated security = true ; trust server certificate = true"
+                                                                                       
 
 
         }

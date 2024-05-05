@@ -201,29 +201,7 @@ namespace Tourism_Egypt
 				var app = builder.Build();
 
 
-				#region Update DB
-
-				//Explicitly
-				using var scope = app.Services.CreateScope();
-				var services = scope.ServiceProvider;
-
-				var loggerfactury = services.GetRequiredService<ILoggerFactory>();
-				var dbContext = services.GetRequiredService<TourismContext>();
-				try
-				{
-
-					await dbContext.Database.MigrateAsync();
-
-				}
-				catch (Exception ex)
-				{
-					var logger = loggerfactury.CreateLogger<Program>();//return to main 
-					logger.LogError(ex, "Erro Occured during apply migration");
-
-				}
-
-				#endregion
-
+				
 
 				// Configure the HTTP request pipeline.
 				//if (app.Environment.IsDevelopment())
@@ -255,5 +233,5 @@ namespace Tourism_Egypt
 
 				app.Run();
 			}
-	}
+	    }
 	}

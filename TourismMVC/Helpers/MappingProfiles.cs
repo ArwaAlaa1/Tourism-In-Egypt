@@ -22,6 +22,8 @@ namespace TourismMVC.Helpers
             CreateMap<RoleViewModel, ApplicationRole>()
                 .ForMember(AR => AR.Name, RV => RV.MapFrom(v => v.RoleName)).ReverseMap();
 
+            CreateMap<TripViewModel, Trip>().ReverseMap();
+            CreateMap<Trip, TripViewModel>().ReverseMap();
         }
     }
 }

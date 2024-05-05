@@ -1,4 +1,4 @@
-﻿@model Trip 
+﻿@model TripViewModel 
 
 <div class="card-body">
     <h5 class="card-title">Trip Details</h5>
@@ -10,9 +10,11 @@
             : @Model.Name
         </li>
         <li class="card-text">
-            <label asp-for="StartLocation" class="col-form-label"></label>
+            <label asp-for="City" class="col-form-label"></label>
 
-           : @Model.StartLocation</li>
+            : @Model.City
+        </li>
+        
         <li class="card-text">
             <label asp-for="Description" class="col-form-label"></label>
 

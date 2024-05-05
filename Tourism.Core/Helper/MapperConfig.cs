@@ -22,6 +22,9 @@ namespace Tourism.Core.Helper
 				.ForMember(t => t.placeName, o => o.MapFrom(t => t.Place.Name)).ReverseMap();
 
             CreateMap<Review, AddReviewDTO>().ReverseMap();
+            CreateMap<ContactDTO, ContactUs>().ReverseMap();
+            CreateMap<Trip, TripDTO>().ReverseMap();
+
         }
 
     }

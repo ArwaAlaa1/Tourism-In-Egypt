@@ -58,6 +58,10 @@ namespace TourismMVC.Controllers
         public async Task<ActionResult> Create(CategoryViewModel category)
         {
            category.ImgUrl = category.PhotoFile.FileName;
+            if (category.PhotoFile != null)
+            {
+                category.ImgUrl = DocumentSetting.UploadFile(category.PhotoFile, "Images");
+            }
             var categorymapped = mapper.Map<CategoryViewModel, Category>(category);
            // categorymapped.ImgUrl= category.PhotoFile.FileName;
 			var allcategory = await _unitOfWork.generic.GetAllAsync();

@@ -33,4 +33,8 @@
     <ProjectReference Include="..\Tourism.Repository\Tourism.Repository.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\trips\" />
+  </ItemGroup>
+
 </Project>

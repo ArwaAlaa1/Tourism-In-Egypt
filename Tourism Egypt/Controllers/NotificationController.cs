@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Tourism.Core.Entities;
 using Tourism.Core.Repositories.Contract;
+using Tourism.Repository.Repository;
 
 namespace Tourism_Egypt.Controllers
 {
@@ -20,5 +21,20 @@ namespace Tourism_Egypt.Controllers
             var result = await _notificationService.SendNotification(notificationModel);
             return Ok(result);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllNotification()
+        {
+
+            var notificationReviews = await _notificationService.GetAllNotificationAsync();
+
+            if (notificationReviews == null)
+            {
+                return NotFound("No Existing Notification");
+            }
+            else
+                return Ok(notificationReviews);
+        }
+
     }
 }

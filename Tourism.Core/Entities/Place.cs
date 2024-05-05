@@ -16,7 +16,9 @@
         public int CityId { get; set; }
         public virtual City City { get; set; }
         public virtual IEnumerable<PlacePhotos> Photos { get; set; }
-        public virtual ICollection<Trip> Trips { get; set; } = new List<Trip>();
+		public virtual IEnumerable<Review> Reviews { get; set; }
+
+		public virtual ICollection<Trip> Trips { get; set; } = new List<Trip>();
         public virtual ICollection<ApplicationUser> Users { get; set; } = new List<ApplicationUser>();
 
     }

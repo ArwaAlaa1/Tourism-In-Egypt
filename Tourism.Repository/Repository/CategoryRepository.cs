@@ -22,7 +22,7 @@ namespace Tourism.Repository.Repository
         public async Task<IEnumerable<Category>> GetAllAsync()
         {
 
-            var categories = await context.Categories.Include(p => p.Places).ThenInclude(p => p.Photos).Include(p => p.Places).ThenInclude(p => p.City).ToListAsync();
+            var categories = await context.Categories.ToListAsync();
             return categories;
         }
 

@@ -2,15 +2,16 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-//using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
-
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
+using System.Text.Encodings.Web;
+using System.Text;
 using Tourism.Core.Entities;
 using Tourism.Core.Helper;
 using Tourism.Core.Helper.DTO;
 using Tourism.Core.Repositories.Contract;
 using static System.Net.WebRequestMethods;
+
 
 namespace Tourism_Egypt.Controllers
 {
@@ -156,42 +157,45 @@ namespace Tourism_Egypt.Controllers
             return await _userManager.FindByEmailAsync(email) != null;
         }
 
-        //[HttpGet("google")]
-        //public IActionResult GoogleLogin()
-        //{
-        //    var authenticationProperties = new AuthenticationProperties
-        //    {
-        //        RedirectUri = Url.Action("GoogleResponse")
-        //    };
-
-        //    return Challenge(authenticationProperties, GoogleDefaults.AuthenticationScheme);
-        //}
-
-        //[HttpGet("google-response")]
-        //public async Task<IActionResult> GoogleResponse()
-        //{
-        //    var authenticateResult = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
-
-        //    if (!authenticateResult.Succeeded)
-        //    {
-        //        // Handle authentication failure
-        //        return BadRequest();
-        //    }
-
-        //    // Here you can get user information from authenticateResult.Principal
-        //    var userInfo = new
-        //    {
-        //        Email = authenticateResult.Principal.FindFirstValue(ClaimTypes.Email),
-        //        Name = authenticateResult.Principal.FindFirstValue(ClaimTypes.Name)
-        //        // Add more fields as needed
-        //    };
-
-        //    return Ok(userInfo);
-        //}
 
 
+     
+		//[HttpGet("google")]
+		//public IActionResult GoogleLogin()
+		//{
+		//    var authenticationProperties = new AuthenticationProperties
+		//    {
+		//        RedirectUri = Url.Action("GoogleResponse")
+		//    };
 
-        [HttpGet("ForgetPassword")]
+		//    return Challenge(authenticationProperties, GoogleDefaults.AuthenticationScheme);
+		//}
+
+		//[HttpGet("google-response")]
+		//public async Task<IActionResult> GoogleResponse()
+		//{
+		//    var authenticateResult = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
+
+		//    if (!authenticateResult.Succeeded)
+		//    {
+		//        // Handle authentication failure
+		//        return BadRequest();
+		//    }
+
+		//    // Here you can get user information from authenticateResult.Principal
+		//    var userInfo = new
+		//    {
+		//        Email = authenticateResult.Principal.FindFirstValue(ClaimTypes.Email),
+		//        Name = authenticateResult.Principal.FindFirstValue(ClaimTypes.Name)
+		//        // Add more fields as needed
+		//    };
+
+		//    return Ok(userInfo);
+		//}
+
+
+
+		[HttpGet("ForgetPassword")]
         public async Task<IActionResult> ForgetPassword([Required] string email)
         {
             try

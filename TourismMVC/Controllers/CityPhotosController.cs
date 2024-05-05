@@ -104,6 +104,10 @@ namespace TourismMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, CityPhotosViewModel photosViewModel)
         {
+
+            //var city = unitOfWork.generic.GetAsync(id);
+            
+            
             if (id != photosViewModel.Id)
                 return BadRequest();
 
@@ -121,7 +125,9 @@ namespace TourismMVC.Controllers
                 {
 
                     var cityphmapped = mapper.Map<CityPhotosViewModel, CityPhotos>(photosViewModel);
-                    unitOfWork.generic.Update(cityphmapped);
+					cityphmapped.Photo = $"images/cities/{cityphmapped.Photo}";
+
+					unitOfWork.generic.Update(cityphmapped);
                     var count = unitOfWork.Complet();
 
                     return RedirectToAction(nameof(Index));

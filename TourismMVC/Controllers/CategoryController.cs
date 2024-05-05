@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Tourism.Core.Entities;
 using Tourism.Core.Repositories.Contract;
+using TourismMVC.Helpers;
 using TourismMVC.ViewModels;
 
 namespace TourismMVC.Controllers
@@ -109,6 +111,11 @@ namespace TourismMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit([FromRoute] int id, CategoryViewModel category)
         {
+
+
+           // var cat = _unitOfWork.generic.GetAsync(id);
+            
+
             if (id != category.Id)
                 return BadRequest();
 

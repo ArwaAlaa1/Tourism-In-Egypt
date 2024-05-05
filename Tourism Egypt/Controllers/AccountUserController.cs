@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 //using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
@@ -9,6 +10,7 @@ using Tourism.Core.Entities;
 using Tourism.Core.Helper;
 using Tourism.Core.Helper.DTO;
 using Tourism.Core.Repositories.Contract;
+using static System.Net.WebRequestMethods;
 
 namespace Tourism_Egypt.Controllers
 {
@@ -19,7 +21,9 @@ namespace Tourism_Egypt.Controllers
         private readonly IAuthService _authService;
         private readonly IUnitOfWork<ResetPassword> _resetpassword;
         private readonly IConfiguration _configuration;
-
+        private readonly IGenericRepository<ContactUs> _contact;
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork<ContactUs> _uniofContact;
         private IEmailService _emailService;
 
         private static ApplicationUser? user;
@@ -27,7 +31,10 @@ namespace Tourism_Egypt.Controllers
         public AccountUserController(IEmailService emailService, UserManager<ApplicationUser> userManager
             , SignInManager<ApplicationUser> signInManager
             , IAuthService authService, IUnitOfWork<ResetPassword> resetpassword
-            , IConfiguration configuration)
+            , IConfiguration configuration
+            ,IGenericRepository<ContactUs> contact
+            ,IMapper mapper,
+            IUnitOfWork<ContactUs> uniofContact)
 
         {
             _userManager = userManager;
@@ -35,7 +42,9 @@ namespace Tourism_Egypt.Controllers
             _authService = authService;
             _resetpassword = resetpassword;
             _configuration = configuration;
-
+            _contact = contact;
+           _mapper = mapper;
+            _uniofContact = uniofContact;
             _emailService = emailService;
         }
 
@@ -98,7 +107,7 @@ namespace Tourism_Egypt.Controllers
                         Email = user.Email,
                         DisplayName = user.DisplayName,
                         Username = user.FName,
-
+                        ImgURL = user.ImgURL
                     };
                     return Ok(new UserDTO
                     {
@@ -353,6 +362,40 @@ namespace Tourism_Egypt.Controllers
         {
            await _signInManager.SignOutAsync();
             return Ok("Loged out successfully");
+        }
+
+        [HttpPost("ContactUs")]
+        public async Task<IActionResult> ContactUs(ContactDTO contact)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var ContactMapper = _mapper.Map<ContactDTO, ContactUs>(contact);
+                    _contact.Add(ContactMapper);
+                    _uniofContact.Complet();
+                    var SendEmail = new SendEmailDto()
+                    {
+                        Subject = "Auto Reply",
+                        To = contact.Email,
+
+                        Html = $"<h1>Welcome to the ##### Application </h1>" +
+                        $"<p>In response to your inquiry, please be kindly informed that:</p>" +
+                        $"<p>\r\n\r\n\r\nThe complaint has been registered and the situation will be studied</p>"
+
+                    };
+
+                    _emailService.SendEmail(SendEmail);
+
+                    return Ok();
+                }
+                catch(Exception ex) 
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+
+            return BadRequest();
         }
         
     }

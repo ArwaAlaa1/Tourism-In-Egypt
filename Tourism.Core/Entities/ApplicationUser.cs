@@ -7,7 +7,7 @@ namespace Tourism.Core.Entities
         public string FName { get; set; }
         public string? LName { get; set; }
 
-        public string? ImgURL { get; set; }
+        //public string? ImgURL { get; set; }
         public string? DisplayName { get; set; }
 
         public DateTime CreatedDate { get; set; } = DateTime.Now;

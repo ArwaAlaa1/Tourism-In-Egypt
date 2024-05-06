@@ -113,8 +113,8 @@ namespace TourismMVC.Controllers
 
             if (photosViewModel.PhotoFile.FileName != null)
             {
-                DocumentSetting.DeleteFile("Images", photosViewModel.Photo);
-                photosViewModel.Photo = DocumentSetting.UploadFile(photosViewModel.PhotoFile, "Images");
+                DocumentSetting.DeleteFile("cities", photosViewModel.Photo);
+                photosViewModel.Photo = DocumentSetting.UploadFile(photosViewModel.PhotoFile, "cities");
 
             }
 
@@ -163,7 +163,7 @@ namespace TourismMVC.Controllers
                 unitOfWork.generic.Delete(Citymapped);
                 var count = unitOfWork.Complet();
                 if (count > 0)
-                    DocumentSetting.DeleteFile("Images", Citymapped.Photo);
+                    DocumentSetting.DeleteFile("cities", Citymapped.Photo);
 
                 return RedirectToAction(nameof(Index));
             }

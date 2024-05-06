@@ -61,7 +61,7 @@ namespace TourismMVC.Controllers
 
 			if (tripView.PhotoFile != null)
 			{
-				tripView.ImgUrl = DocumentSetting.UploadFile(tripView.PhotoFile, "Images");
+				tripView.ImgUrl = DocumentSetting.UploadFile(tripView.PhotoFile, "trips");
 			}
 			if (ModelState.IsValid)
             {
@@ -112,9 +112,9 @@ namespace TourismMVC.Controllers
             
             if (tripView.PhotoFile.FileName != null)
             {
-               // tripView.ImgUrl = tripView.PhotoFile.FileName;
-                DocumentSetting.DeleteFile("Images", tripView.ImgUrl);
-                tripView.ImgUrl = DocumentSetting.UploadFile(tripView.PhotoFile, "Images");
+               tripView.ImgUrl = tripView.PhotoFile.FileName;
+                DocumentSetting.DeleteFile("trips", tripView.ImgUrl);
+                tripView.ImgUrl = DocumentSetting.UploadFile(tripView.PhotoFile, "trips");
 
             }
 
@@ -162,18 +162,18 @@ namespace TourismMVC.Controllers
         // post : Delete 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id, TripViewModel tripView)
+        public async Task<IActionResult> Delete([FromRoute]int id, TripViewModel tripView)
         {
             
                
-                    var tripMapper = _mapper.Map<TripViewModel, Trip>(tripView);
+                 var tripMapper = _mapper.Map<TripViewModel, Trip>(tripView);
                  try
                     {
-                _unitOfWork.generic.Delete(tripMapper);
+                   _unitOfWork.generic.Delete(tripMapper);
                     var count = _unitOfWork.Complet();
                     if (count > 0)
                     {
-                        DocumentSetting.DeleteFile("Images", tripMapper.ImgUrl);
+                        DocumentSetting.DeleteFile("trips", tripMapper.ImgUrl);
                     }
                     return RedirectToAction(nameof(Index));
 

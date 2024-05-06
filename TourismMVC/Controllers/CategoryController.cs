@@ -60,7 +60,7 @@ namespace TourismMVC.Controllers
            category.ImgUrl = category.PhotoFile.FileName;
             if (category.PhotoFile != null)
             {
-                category.ImgUrl = DocumentSetting.UploadFile(category.PhotoFile, "Images");
+                category.ImgUrl = DocumentSetting.UploadFile(category.PhotoFile, "category");
             }
             var categorymapped = mapper.Map<CategoryViewModel, Category>(category);
            // categorymapped.ImgUrl= category.PhotoFile.FileName;
@@ -123,21 +123,23 @@ namespace TourismMVC.Controllers
             if (id != category.Id)
                 return BadRequest();
 
-            var categorymapped = mapper.Map<CategoryViewModel, Category>(category);
-            var allcategory = await _unitOfWork.generic.GetAllAsync();
-            bool exists = allcategory.Any(e => e.Name == categorymapped.Name);
+           
+            if (category.PhotoFile != null)
+            { 
+                category.ImgUrl = category.PhotoFile.FileName;
+                DocumentSetting.DeleteFile("category", category.ImgUrl);
 
-            if (exists)
-            {
-                TempData["message"] = $"{categorymapped.Name} already exists in the database.";
-                return View(category);
+                category.ImgUrl = DocumentSetting.UploadFile(category.PhotoFile, "category");
             }
-            else
-            {
+
+            var categorymapped = mapper.Map<CategoryViewModel, Category>(category);
+       
+          
                 if (ModelState.IsValid)  //server side validation
                 {
                     try
                     {
+                        categorymapped.ImgUrl = $"images/category/{categorymapped.ImgUrl}";
 
                         _unitOfWork.generic.Update(categorymapped);
                         var count = _unitOfWork.Complet();
@@ -150,7 +152,7 @@ namespace TourismMVC.Controllers
                     }
 
                 }
-            }
+            
 
             return View(category);
         }
@@ -176,7 +178,10 @@ namespace TourismMVC.Controllers
 
                     _unitOfWork.generic.Delete(categorymapped);
                     var count = _unitOfWork.Complet();
-
+                    if (count > 0)
+                    {
+                        DocumentSetting.DeleteFile("category", categorymapped.ImgUrl);
+                    }
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)

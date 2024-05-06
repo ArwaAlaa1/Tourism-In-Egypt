@@ -366,8 +366,9 @@
 									@Html.DisplayNameFor(model => model.ModifiedDate)
 								</th>
 								<th>
-									@Html.DisplayNameFor(model => model.IsActive)
+									Photo
 								</th>
+								
 
 								<th>
 									Details
@@ -394,6 +395,12 @@
 									</td>
 									<td>
 											@Html.DisplayFor(modelItem => item.Name)
+									</td>
+									<td>
+											@Html.DisplayFor(modelItem => item.CreatedDate)
+									</td>
+									<td>
+											@Html.DisplayFor(modelItem => item.ModifiedDate)
 									</td>
 									<td>
 										<img src="~/Files/Images/@item.ImgUrl" width="90" height="90" class="rounded-2 img-fluid" />

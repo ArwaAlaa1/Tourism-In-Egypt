@@ -24,7 +24,7 @@ namespace Tourism.Repository.Data
         {
             base.OnConfiguring(optionsBuilder);
             optionsBuilder.UseSqlServer();// "Data source = DESKTOP-9IISLS5 ; Database = Tourism ; integrated security = true ; trust server certificate = true"
-);
+
 
 
         }

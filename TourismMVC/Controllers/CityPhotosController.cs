@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Tourism.Core.Entities;
+using Tourism.Core.Helper;
 using Tourism.Core.Repositories.Contract;
 using TourismMVC.Helpers;
 using TourismMVC.ViewModels;
@@ -50,9 +51,10 @@ namespace TourismMVC.Controllers
 
             if (cityPh is null)
                 return NotFound();
+            
+
 
             var cityPhmapped = mapper.Map<CityPhotos, CityPhotosViewModel>(cityPh);
-
             return View(viewname, cityPhmapped);
         }
 
@@ -95,6 +97,7 @@ namespace TourismMVC.Controllers
         // GET: CityPhotosController/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+           
 
             return await Details(id, "Edit");
         }
@@ -106,7 +109,7 @@ namespace TourismMVC.Controllers
         {
 
             //var city = unitOfWork.generic.GetAsync(id);
-            
+         //photosViewModel.PhotoFile.FileName = photosViewModel.Photo;
             
             if (id != photosViewModel.Id)
                 return BadRequest();

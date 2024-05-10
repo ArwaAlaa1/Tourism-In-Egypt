@@ -92,6 +92,7 @@ namespace Tourism.Repository.Repository
             {
                 PlaceId = r.PlaceId,
                 Time = r.Time,
+                
                 UserName = r.User.UserName
             }).ToListAsync();
 

@@ -22,10 +22,8 @@ namespace Tourism_Egypt
 		{
 			var builder = WebApplication.CreateBuilder(args);
 
-
-			#region Add services to the container.
+			
 			builder.Services.AddControllers();
-			#region Add services to the container.
 
 
 			#region Notification Service
@@ -70,6 +68,7 @@ namespace Tourism_Egypt
 
 			//    });
 			#endregion
+
 			#region Identity Services
 			builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 			builder.Services.AddScoped(typeof(IAuthService), typeof(AuthService));
@@ -115,41 +114,19 @@ namespace Tourism_Egypt
 					options.CallbackPath = "/auth/google-callback";
 
 				});
+			#endregion
+
+
+
 
 			builder.Services.Configure<DataProtectionTokenProviderOptions>(
 				opt => opt.TokenLifespan = TimeSpan.FromHours(10));
 
-			builder.Services.AddCors(corsOptions =>
-			{
-				corsOptions.AddPolicy("MyPolicy", corsPolicyBuilder =>
-				{
-					corsPolicyBuilder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
-				});
-			});
-			//-----------------------------------
-			builder.Services.AddSwaggerGen(c =>
-			{
-				c.SwaggerDoc("v1", new OpenApiInfo { Title = "Tourism", Version = "v1" });
-			});
-			builder.Services.AddSwaggerGen(swagger =>
-			{
-				//This is to generate the Default UI of Swagger Documentation    
-				swagger.SwaggerDoc("v2", new OpenApiInfo
-				{
-					Version = "v1",
-					Title = "Tourism In Egypt",
-					Description = "Different types of tourism in Egypt"
-				});
-
-				builder.Services.AddCors(corsOptions =>
-				{
-					corsOptions.AddPolicy("MyPolicy", corsPolicyBuilder =>
-					{
-						corsPolicyBuilder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
-					});
-				});
-				//-----------------------------------
+			
+			
+		
 				builder.Services.AddControllers();
+
 				builder.Services.AddSwaggerGen(c =>
 				{
 					c.SwaggerDoc("v1", new OpenApiInfo { Title = "Tourism", Version = "v1" });
@@ -190,40 +167,24 @@ namespace Tourism_Egypt
 					}
 					});
 				});
-
-				#endregion
+			
 
 				// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 				builder.Services.AddEndpointsApiExplorer();
 				builder.Services.AddSwaggerGen();
-				#endregion
+			
+				builder.Services.AddCors(corsOptions =>
+				{
+					corsOptions.AddPolicy("MyPolicy", corsPolicyBuilder =>
+					{
+						corsPolicyBuilder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+					});
+				});
 
 				var app = builder.Build();
 
 
-				#region Update DB
-
-				//Explicitly
-				using var scope = app.Services.CreateScope();
-				var services = scope.ServiceProvider;
-
-				var loggerfactury = services.GetRequiredService<ILoggerFactory>();
-				var dbContext = services.GetRequiredService<TourismContext>();
-				try
-				{
-
-					await dbContext.Database.MigrateAsync();
-
-				}
-				catch (Exception ex)
-				{
-					var logger = loggerfactury.CreateLogger<Program>();//return to main 
-					logger.LogError(ex, "Erro Occured during apply migration");
-
-				}
-
-				#endregion
-
+				
 
 				// Configure the HTTP request pipeline.
 				//if (app.Environment.IsDevelopment())
@@ -255,5 +216,5 @@ namespace Tourism_Egypt
 
 				app.Run();
 			}
-	}
+	    }
 	}

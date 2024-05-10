@@ -100,18 +100,7 @@ namespace TourismMVC.Controllers
                 return BadRequest();
             var citymapped = mapper.Map<CityViewModel, City>(city);
 
-            var allcity = await _unitOfWork.generic.GetAllAsync();
-            bool exists = allcity.Any(e => e.Name == citymapped.Name);
-
-            if (exists)
-            {
-                TempData["message"] = $"{citymapped.Name}'already exists in the database.'";
-
-                return View(city);
-            }
-            else
-            {
-                if (ModelState.IsValid)
+            if (ModelState.IsValid)
                 {
                     _unitOfWork.generic.Update(citymapped);
                     var count = _unitOfWork.Complet();
@@ -123,7 +112,7 @@ namespace TourismMVC.Controllers
 
                     return RedirectToAction("Index");
                 }
-            }
+            
 
             return View(city);
         }

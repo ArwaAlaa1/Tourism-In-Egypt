@@ -104,13 +104,17 @@ namespace TourismMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, CityPhotosViewModel photosViewModel)
         {
+
+            //var city = unitOfWork.generic.GetAsync(id);
+            
+            
             if (id != photosViewModel.Id)
                 return BadRequest();
 
             if (photosViewModel.PhotoFile.FileName != null)
             {
-                DocumentSetting.DeleteFile("Images", photosViewModel.Photo);
-                photosViewModel.Photo = DocumentSetting.UploadFile(photosViewModel.PhotoFile, "Images");
+                DocumentSetting.DeleteFile("cities", photosViewModel.Photo);
+                photosViewModel.Photo = DocumentSetting.UploadFile(photosViewModel.PhotoFile, "cities");
 
             }
 
@@ -121,7 +125,9 @@ namespace TourismMVC.Controllers
                 {
 
                     var cityphmapped = mapper.Map<CityPhotosViewModel, CityPhotos>(photosViewModel);
-                    unitOfWork.generic.Update(cityphmapped);
+					cityphmapped.Photo = $"images/cities/{cityphmapped.Photo}";
+
+					unitOfWork.generic.Update(cityphmapped);
                     var count = unitOfWork.Complet();
 
                     return RedirectToAction(nameof(Index));
@@ -157,7 +163,7 @@ namespace TourismMVC.Controllers
                 unitOfWork.generic.Delete(Citymapped);
                 var count = unitOfWork.Complet();
                 if (count > 0)
-                    DocumentSetting.DeleteFile("Images", Citymapped.Photo);
+                    DocumentSetting.DeleteFile("cities", Citymapped.Photo);
 
                 return RedirectToAction(nameof(Index));
             }

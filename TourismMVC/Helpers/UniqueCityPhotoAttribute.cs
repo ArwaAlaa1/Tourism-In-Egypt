@@ -11,7 +11,7 @@ namespace TourismMVC.Helpers
             var CityPh = (CityPhotosViewModel)validationContext.ObjectInstance;
             if (CityPh.PhotoFile != null)
             {
-                CityPh.Photo = DocumentSetting.UploadFile(CityPh.PhotoFile, "Images");
+                CityPh.Photo = DocumentSetting.UploadFile(CityPh.PhotoFile, "cities");
 
             }
 

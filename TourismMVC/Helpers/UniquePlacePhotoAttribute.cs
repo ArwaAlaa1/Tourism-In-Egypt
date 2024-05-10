@@ -11,7 +11,7 @@ namespace TourismMVC.Helpers
             var placePh = (PlacePhotoViewModel)validationContext.ObjectInstance;
             if (placePh.PhotoFile != null)
             {
-                placePh.Photo = DocumentSetting.UploadFile(placePh.PhotoFile, "Images");
+                placePh.Photo = DocumentSetting.UploadFile(placePh.PhotoFile, "places");
 
             }
 

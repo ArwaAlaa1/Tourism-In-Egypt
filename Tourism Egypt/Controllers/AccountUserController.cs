@@ -108,7 +108,7 @@ namespace Tourism_Egypt.Controllers
                         Email = user.Email,
                         DisplayName = user.DisplayName,
                         Username = user.FName,
-                        ImgURL = user.ImgURL
+                        //ImgURL = user.ImgURL
                     };
                     return Ok(new UserDTO
                     {

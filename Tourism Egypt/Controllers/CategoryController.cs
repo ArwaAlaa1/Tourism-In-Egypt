@@ -22,7 +22,7 @@ namespace Tourism_Egypt.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetAllCategories(string? categoryName)
+        public async Task<ActionResult<IEnumerable<CategoryDetailsDTO>>> GetAllCategories(string? categoryName)
         {
             var categories = await _categoryRepository.GetAllAsync();
             if (!string.IsNullOrEmpty(categoryName))
@@ -33,18 +33,18 @@ namespace Tourism_Egypt.Controllers
                     return NotFound("This Category Not Existing");
                 else
                 {
-                    var placesearch = mapper.Map<IEnumerable<Category>, IEnumerable<CategoryDTO>>(results);
+                    var placesearch = mapper.Map<IEnumerable<Category>, IEnumerable<CategoryDetailsDTO>>(results);
                     return Ok(placesearch);
                 }
 
             }
-            var data = mapper.Map<IEnumerable<Category>, IEnumerable<CategoryDTO>>(categories);
+            var data = mapper.Map<IEnumerable<Category>, IEnumerable<CategoryDetailsDTO>>(categories);
 
             return Ok(data);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<CategoryDTO>> GetCategory(int id)
+        public async Task<ActionResult<CategorySpecificWithPlaceDTO>> GetCategory(int id)
         {
             var category = await _categoryRepository.GetAsync(id);
 
@@ -53,7 +53,7 @@ namespace Tourism_Egypt.Controllers
 
             // var places = await _categoryRepository.GetAllPlacesBySpecificCategory(id);
             //var placemapped =mapper.Map<ICollection<Place>,ICollection<PlaceDTO>>(places);
-            var data = mapper.Map<Category, CategoryDTO>(category);
+            var data = mapper.Map<Category, CategorySpecificWithPlaceDTO>(category);
             //data.Places = placemapped;
 
 

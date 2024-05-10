@@ -109,8 +109,8 @@ namespace TourismMVC.Controllers
 
             if (photosViewModel.PhotoFile.FileName != null)
             {
-                DocumentSetting.DeleteFile("Images", photosViewModel.Photo);
-                photosViewModel.Photo = DocumentSetting.UploadFile(photosViewModel.PhotoFile, "Images");
+                DocumentSetting.DeleteFile("places", photosViewModel.Photo);
+                photosViewModel.Photo = DocumentSetting.UploadFile(photosViewModel.PhotoFile, "places");
 
             }
 
@@ -119,9 +119,11 @@ namespace TourismMVC.Controllers
             {
                 try
                 {
+					
 
-                    var placephmapped = mapper.Map<PlacePhotoViewModel, PlacePhotos>(photosViewModel);
-                    unitOfWork.generic.Update(placephmapped);
+					var placephmapped = mapper.Map<PlacePhotoViewModel, PlacePhotos>(photosViewModel);
+					placephmapped.Photo = $"images/places/{placephmapped.Photo}";
+					unitOfWork.generic.Update(placephmapped);
                     var count = unitOfWork.Complet();
 
                     return RedirectToAction(nameof(Index));
@@ -157,7 +159,7 @@ namespace TourismMVC.Controllers
                 unitOfWork.generic.Delete(placemapped);
                 var count = unitOfWork.Complet();
                 if (count > 0)
-                    DocumentSetting.DeleteFile("Images", placemapped.Photo);
+                    DocumentSetting.DeleteFile("places", placemapped.Photo);
 
                 return RedirectToAction(nameof(Index));
             }

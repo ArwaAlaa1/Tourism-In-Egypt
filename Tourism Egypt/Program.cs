@@ -22,8 +22,7 @@ namespace Tourism_Egypt
 		{
 			var builder = WebApplication.CreateBuilder(args);
 
-
-			#region Add services to the container.
+			
 			builder.Services.AddControllers();
 
 
@@ -115,33 +114,32 @@ namespace Tourism_Egypt
 					options.CallbackPath = "/auth/google-callback";
 
 				});
+			#endregion
+
+
+
 
 			builder.Services.Configure<DataProtectionTokenProviderOptions>(
 				opt => opt.TokenLifespan = TimeSpan.FromHours(10));
 
-			builder.Services.AddCors(corsOptions =>
-				{
-					corsOptions.AddPolicy("MyPolicy", corsPolicyBuilder =>
-					{
-						corsPolicyBuilder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
-					});
-				});
 			
-			builder.Services.AddControllers();
-			builder.Services.AddSwaggerGen(c =>
-			{
-				c.SwaggerDoc("v1", new OpenApiInfo { Title = "Tourism", Version = "v1" });
-			});
-			builder.Services.AddSwaggerGen(swagger =>
-			{
-				//This is to generate the Default UI of Swagger Documentation    
-				swagger.SwaggerDoc("v2", new OpenApiInfo
+		
+				builder.Services.AddControllers();
+
+				builder.Services.AddSwaggerGen(c =>
 				{
-					Version = "v1",
-					Title = "Tourism In Egypt",
-					Description = "Different types of tourism in Egypt"
+					c.SwaggerDoc("v1", new OpenApiInfo { Title = "Tourism", Version = "v1" });
 				});
 
+				builder.Services.AddSwaggerGen(swagger =>
+				{
+					//This is to generate the Default UI of Swagger Documentation    
+					swagger.SwaggerDoc("v2", new OpenApiInfo
+					{
+						Version = "v1",
+						Title = "Tourism In Egypt",
+						Description = "Different types of tourism in Egypt"
+					});
 
 				// To Enable authorization using Swagger (JWT)    
 				swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
@@ -167,13 +165,49 @@ namespace Tourism_Egypt
 							},
 							new string[] { }
 						}
+
+            });
+                });
+            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddEndpointsApiExplorer();
+				builder.Services.AddSwaggerGen();
+			
+				builder.Services.AddCors(corsOptions =>
+				{
+					corsOptions.AddPolicy("MyPolicy", corsPolicyBuilder =>
+					{
+						corsPolicyBuilder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+					});
 				});
-			});
 
-            #endregion
+				var app = builder.Build();
 
-            #endregion
-            var app = builder.Build();
+
+				
+
+				// Configure the HTTP request pipeline.
+				//if (app.Environment.IsDevelopment())
+				//{
+				app.UseSwagger();
+				app.UseSwaggerUI();
+				//}
+
+				app.UseCors("MyPolicy");
+
+				app.Use(async (context, next) =>
+				{
+					if (context.Request.Path == "/")
+					{
+						context.Response.Redirect("/swagger/index.html");
+						return;
+					}
+					await next();
+
+				});
+			
+            
+
+            //var app = builder.Build();
 
 
 			#region Update DB
@@ -233,3 +267,5 @@ namespace Tourism_Egypt
 		}
 	}
 }
+   
+	

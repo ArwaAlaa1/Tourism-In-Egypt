@@ -23,8 +23,9 @@ namespace Tourism.Repository.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-
             optionsBuilder.UseSqlServer("Server=TourismInegy.mssql.somee.com;Database=TourismInegy;user id=Sabry_SQLLogin_1;pwd=vf4uin2fa8;MultipleActiveResultSets=true;TrustServerCertificate=True");
+            // "Data source = DESKTOP-9IISLS5 ; Database = Tourism ; integrated security = true ; trust server certificate = true"
+                                                                                       
 
 
         }
@@ -44,6 +45,7 @@ namespace Tourism.Repository.Data
 
         public DbSet<ResetPassword> Passwords { get; set; }
 
+        public DbSet<ContactUs> ContactUs { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<IdentityUserLogin<int>>().HasKey(t => new { t.ProviderKey, t.LoginProvider });

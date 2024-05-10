@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Tourism.Repository.Data.Migrations
 {
-    public partial class first : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -47,6 +47,24 @@ namespace Tourism.Repository.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ContactUs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ContactUs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RoleClaims",
                 columns: table => new
                 {
@@ -82,10 +100,11 @@ namespace Tourism.Repository.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    StartLocation = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StartDate = table.Column<TimeSpan>(type: "time", nullable: false),
-                    EndDate = table.Column<TimeSpan>(type: "time", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImgUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    City = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -165,6 +184,7 @@ namespace Tourism.Repository.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    ImgURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -506,6 +526,9 @@ namespace Tourism.Repository.Data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "CityPhotos");
+
+            migrationBuilder.DropTable(
+                name: "ContactUs");
 
             migrationBuilder.DropTable(
                 name: "Favorites");

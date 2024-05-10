@@ -12,8 +12,8 @@ using Tourism.Repository.Data;
 namespace Tourism.Repository.Data.Migrations
 {
     [DbContext(typeof(TourismContext))]
-    [Migration("20240426015905_first")]
-    partial class first
+    [Migration("20240505185813_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -173,6 +173,9 @@ namespace Tourism.Repository.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("ImgURL")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("LName")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
@@ -320,6 +323,39 @@ namespace Tourism.Repository.Data.Migrations
                     b.HasIndex("CityId");
 
                     b.ToTable("CityPhotos");
+                });
+
+            modelBuilder.Entity("Tourism.Core.Entities.ContactUs", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ContactUs");
                 });
 
             modelBuilder.Entity("Tourism.Core.Entities.Favorite", b =>
@@ -581,6 +617,11 @@ namespace Tourism.Repository.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -588,8 +629,11 @@ namespace Tourism.Repository.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<TimeSpan>("EndDate")
-                        .HasColumnType("time");
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ImgUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -602,15 +646,10 @@ namespace Tourism.Repository.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<TimeSpan>("StartDate")
-                        .HasColumnType("time");
-
-                    b.Property<string>("StartLocation")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 

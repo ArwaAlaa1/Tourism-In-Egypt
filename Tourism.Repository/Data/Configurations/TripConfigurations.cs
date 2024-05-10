@@ -8,10 +8,10 @@ namespace Tourism.Repository.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Trip> builder)
         {
-            builder.Property(C => C.Name).HasMaxLength(50).IsRequired();
-            builder.Property(x => x.StartDate).HasColumnType("time").IsRequired();
-            builder.Property(x => x.EndDate).HasColumnType("time").IsRequired();
-            builder.Property(x => x.StartLocation).IsRequired();
+            builder.Property(C => C.City).HasMaxLength(50).IsRequired();
+            builder.Property(x => x.StartDate).IsRequired();
+            builder.Property(x => x.EndDate).IsRequired();
+            
             builder.Property(x => x.Description).IsRequired();
 
             builder.HasMany(x => x.Users)

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Castle.Core.Internal;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Org.BouncyCastle.Tls.Crypto.Impl.BC;
@@ -33,10 +34,13 @@ namespace Tourism_Egypt.Controllers
                 return BadRequest();
             }
             else
-                return Ok(List);
+            {
+                var data = _mapper.Map<IEnumerable<Trip>, IEnumerable<SimpleTripDto>>(List);
+                return Ok(data);
+            }
         }
         [HttpGet("{id}")]
-        public async Task<IActionResult> Details(int id)
+        public async Task<ActionResult<TripDTO>> Details(int id)
         {
             var trip = await _trip.GetAsync(id);
 
@@ -45,7 +49,11 @@ namespace Tourism_Egypt.Controllers
                 return NotFound();
             }
             else
-                return Ok(trip);
+            {
+                var data = _mapper.Map<Trip, TripDTO>(trip);
+                return Ok(data);
+            }
+                
         }
 
         [HttpGet("SearchTrip")]

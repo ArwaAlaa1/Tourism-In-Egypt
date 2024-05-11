@@ -23,7 +23,8 @@ namespace Tourism.Repository.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer("Data source = DESKTOP-9IISLS5 ; Database = Tourism ; integrated security = true ; trust server certificate = true"
+            optionsBuilder.UseSqlServer("Server=TourismInEgypt.mssql.somee.com;Database=TourismInEgypt;user id=Sabry_SQLLogin_1;pwd=vf4uin2fa8;MultipleActiveResultSets=true;TrustServerCertificate=True"
+
 );
                 //"Server=TourismInegy.mssql.somee.com;Database=TourismInegy;user id=Sabry_SQLLogin_1;pwd=vf4uin2fa8;MultipleActiveResultSets=true;TrustServerCertificate=True");
                 // "Data source = DESKTOP-9IISLS5 ; Database = Tourism ; integrated security = true ; trust server certificate = true"

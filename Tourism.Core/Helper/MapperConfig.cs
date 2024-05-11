@@ -29,9 +29,8 @@ namespace Tourism.Core.Helper
             CreateMap<City, CityDTO>()
               .ForMember(c => c.cityPhotos, o => o.MapFrom<PhotoCityResolved>());
 
-            CreateMap<Review, ReviewDTO>().ForMember(b => b.UserName, o => o.MapFrom(b => b.User.FName))
-				.ForMember(t => t.placeName, o => o.MapFrom(t => t.Place.Name)).ReverseMap();
-
+            CreateMap<Review, ReviewDTO>().ReverseMap();
+            
             CreateMap<Review, AddReviewDTO>().ReverseMap();
             CreateMap<ContactDTO, ContactUs>().ReverseMap();
             CreateMap<Trip, TripDTO>().ReverseMap();

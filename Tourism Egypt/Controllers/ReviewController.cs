@@ -8,7 +8,7 @@ using Tourism.Core.Repositories.Contract;
 
 namespace Tourism_Egypt.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class ReviewController : BaseApiController
     {
         public readonly IReviewRepository _reviewRepository;
@@ -94,6 +94,27 @@ namespace Tourism_Egypt.Controllers
             }
         }
 
-      
+        [HttpGet("[action]{PlaceId}")]
+        public async Task<ActionResult<IEnumerable<ReviewDTO>>> GetAllReviewByPlaceId(int PlaceId)
+        {
+            try
+            {
+
+                var reviews = await _reviewRepository.GetAllReviewByPlaceIdAsync(PlaceId);
+
+                if (reviews == null || !reviews.Any())
+                {
+                    return NotFound("No Review on this Place");
+                }
+                
+                return Ok(reviews);
+            }
+            catch
+            {
+                return NotFound("This Place Not Found");
+            }
+        }
+
+
     }
 }

@@ -13,9 +13,9 @@ namespace Tourism.Core.Helper.DTO
 		[Range(1, 5)]
 		public float Rating { get; set; }
 
-        public string UserName { get; set; }
+        public int UserId { get; set; }
+        public int PlaceId { get; set; }
 
-        public string placeName { get; set; }
 
 
     }

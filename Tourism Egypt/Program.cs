@@ -25,17 +25,6 @@ namespace Tourism_Egypt
 			
 			builder.Services.AddControllers();
 
-
-			#region Notification Service
-			builder.Services.AddTransient<INotificationService, NotificationService>();
-			builder.Services.AddHttpClient<FcmSender>();
-			builder.Services.AddHttpClient<ApnSender>();
-
-			// Configure strongly typed settings objects
-			var appSettingsSection = builder.Configuration.GetSection("FcmNotification");
-			builder.Services.Configure<FcmNotificationSetting>(appSettingsSection);
-			#endregion
-
 			//dbcontext
 			#region Container Services
 			builder.Services.AddDbContext<TourismContext>(
@@ -43,7 +32,7 @@ namespace Tourism_Egypt
 			builder.Services.AddScoped(typeof(ICityRepository), typeof(CityRepository));
 			builder.Services.AddScoped(typeof(IPlaceRepository), typeof(PlaceRepository));
 			builder.Services.AddScoped(typeof(ICategoryRepository), typeof(CategoryRepository));
-			builder.Services.AddScoped(typeof(INotificationService), typeof(NotificationService));
+			builder.Services.AddScoped(typeof(INotificationRepository), typeof(NotificationRepository));
 			builder.Services.AddScoped(typeof(IReviewRepository), typeof(ReviewRepository));
 			builder.Services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
 			builder.Services.AddAutoMapper(typeof(MapperConfig));

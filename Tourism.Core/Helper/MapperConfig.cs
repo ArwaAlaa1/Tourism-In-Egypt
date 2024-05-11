@@ -34,6 +34,7 @@ namespace Tourism.Core.Helper
             CreateMap<Review, AddReviewDTO>().ReverseMap();
             CreateMap<ContactDTO, ContactUs>().ReverseMap();
             CreateMap<Trip, TripDTO>().ReverseMap();
+            CreateMap<Trip, SimpleTripDto>().ForMember(i => i.Photo, i => i.MapFrom<PhotoTripResolved>()).ReverseMap();
 
         }
 

@@ -366,6 +366,7 @@ namespace Tourism_Egypt.Controllers
         }
 
         [HttpPost("ContactUs")]
+        [Authorize]
         public async Task<IActionResult> ContactUs(ContactDTO contact)
         {
             if (ModelState.IsValid)

@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
-using Castle.Core.Internal;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Org.BouncyCastle.Tls.Crypto.Impl.BC;
 using System.ComponentModel.DataAnnotations;
 using Tourism.Core.Entities;
 using Tourism.Core.Helper.DTO;
@@ -10,7 +8,7 @@ using Tourism.Core.Repositories.Contract;
 
 namespace Tourism_Egypt.Controllers
 {
-    
+
     public class TripController : BaseApiController
     {
         private readonly IGenericRepository<Trip> _trip;
@@ -64,12 +62,12 @@ namespace Tourism_Egypt.Controllers
                 //}
                 return Ok(data);
             }
-                
+
         }
        
 
         [HttpGet("SearchTrip")]
-        public async Task<IActionResult> SearchTrip([Required]string _city , DateTime? _startDate , DateTime? _endDate)
+        public async Task<IActionResult> SearchTrip([Required] string _city, DateTime? _startDate, DateTime? _endDate)
         {
 
             var Trips = await _trip.GetAllAsync();
@@ -77,7 +75,7 @@ namespace Tourism_Egypt.Controllers
             if (_startDate == null || _endDate == null)
             {
                 var trps = Trips.Where(x => x.City.ToLower().Contains(_city.ToLower())).ToList();
-           var tripMapper = _mapper.Map<List<Trip> , List<TripDTO>>(trps);
+                var tripMapper = _mapper.Map<List<Trip>, List<TripDTO>>(trps);
                 return Ok(tripMapper);
             }
             var trp = Trips.Where((x => x.City.ToLower().Contains(_city.ToLower()) && x.StartDate == _startDate &&

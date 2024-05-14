@@ -18,6 +18,7 @@ namespace Tourism.Repository.Repository
 
         public async Task<Review> AddReviewAsync(Review review)
         {
+
             var findByUserIdAndPlaceId = await _context.Reviews.FirstOrDefaultAsync(r => r.UserId == review.UserId && r.PlaceId == review.PlaceId);
 
             if (findByUserIdAndPlaceId != null)
@@ -29,12 +30,12 @@ namespace Tourism.Repository.Repository
                 Place place = await _context.Places.FindAsync(review.PlaceId);
                 if (place == null)
                 {
-                    throw new ArgumentException($"Service {review.PlaceId} Doesn't Exist");
+                    throw new ArgumentException($"This Place Doesn't Exist");
                 }
                 ApplicationUser finduser = await _context.Users.FindAsync(review.UserId);
                 if (finduser == null)
                 {
-                    throw new ArgumentException($"User {review.UserId} Doesn't Exist");
+                    throw new ArgumentException($"This User Doesn't Exist");
                 }
                 if (review.Rating < 0 || review.Rating > 5)
                 {

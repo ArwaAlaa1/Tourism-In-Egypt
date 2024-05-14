@@ -75,7 +75,7 @@ namespace TourismMVC.Controllers
 
                 try
                 {
-                   Placemapped.Photo = $"images/places/{Placemapped.Photo}";
+                    Placemapped.Photo = $"images/places/{Placemapped.Photo}";
                     unitOfWork.generic.Add(Placemapped);
                     unitOfWork.Complet();
                     return RedirectToAction(nameof(Index));
@@ -119,11 +119,11 @@ namespace TourismMVC.Controllers
             {
                 try
                 {
-					
 
-					var placephmapped = mapper.Map<PlacePhotoViewModel, PlacePhotos>(photosViewModel);
-					placephmapped.Photo = $"images/places/{placephmapped.Photo}";
-					unitOfWork.generic.Update(placephmapped);
+
+                    var placephmapped = mapper.Map<PlacePhotoViewModel, PlacePhotos>(photosViewModel);
+                    placephmapped.Photo = $"images/places/{placephmapped.Photo}";
+                    unitOfWork.generic.Update(placephmapped);
                     var count = unitOfWork.Complet();
 
                     return RedirectToAction(nameof(Index));

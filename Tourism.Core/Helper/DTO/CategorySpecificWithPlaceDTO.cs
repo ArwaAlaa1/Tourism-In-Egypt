@@ -1,8 +1,6 @@
-﻿using Tourism.Core.Entities;
-
-namespace Tourism.Core.Helper.DTO
+﻿namespace Tourism.Core.Helper.DTO
 {
-    public class CategorySpecificWithPlaceDTO 
+    public class CategorySpecificWithPlaceDTO
     {
 
         public int id { get; set; }

@@ -11,7 +11,7 @@ namespace Tourism.Repository.Data.Configurations
             builder.Property(C => C.City).HasMaxLength(50).IsRequired();
             builder.Property(x => x.StartDate).IsRequired();
             builder.Property(x => x.EndDate).IsRequired();
-            
+
             builder.Property(x => x.Description).IsRequired();
 
             builder.HasMany(x => x.Users)

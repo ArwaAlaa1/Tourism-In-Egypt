@@ -15,7 +15,7 @@ namespace Tourism.Repository.Repository
         }
         public async Task<Place> GetAsync(int id)
         {
-            return await context.Places.Include(c => c.City).Include(c => c.Category).Include(c => c.Photos).Include(c => c.Reviews).ThenInclude(u=>u.User).FirstAsync(p => p.Id == id);
+            return await context.Places.Include(c => c.City).Include(c => c.Category).Include(c => c.Photos).Include(c => c.Reviews).ThenInclude(u => u.User).FirstAsync(p => p.Id == id);
 
         }
         public async Task<IEnumerable<Place>> GetAllAsync()

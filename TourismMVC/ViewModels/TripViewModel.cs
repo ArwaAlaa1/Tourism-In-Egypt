@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using TourismMVC.Helpers;
 
 namespace TourismMVC.ViewModels
 {
@@ -8,14 +7,14 @@ namespace TourismMVC.ViewModels
     {
         public int Id { get; set; }
         public string? Name { get; set; }
-        
+
         //[UniqueTripPhoto]
         public string? ImgUrl { get; set; }
-		public IFormFile? PhotoFile { get; set; }
-		[Required]
+        public IFormFile? PhotoFile { get; set; }
+        [Required]
         [DisplayName("City Name")]
         public string City { get; set; }
-      
+
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Description { get; set; }

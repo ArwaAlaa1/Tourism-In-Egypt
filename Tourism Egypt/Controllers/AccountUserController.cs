@@ -4,13 +4,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
-using System.Text.Encodings.Web;
-using System.Text;
 using Tourism.Core.Entities;
 using Tourism.Core.Helper;
 using Tourism.Core.Helper.DTO;
 using Tourism.Core.Repositories.Contract;
-using static System.Net.WebRequestMethods;
 
 
 namespace Tourism_Egypt.Controllers
@@ -33,8 +30,8 @@ namespace Tourism_Egypt.Controllers
             , SignInManager<ApplicationUser> signInManager
             , IAuthService authService, IUnitOfWork<ResetPassword> resetpassword
             , IConfiguration configuration
-            ,IGenericRepository<ContactUs> contact
-            ,IMapper mapper,
+            , IGenericRepository<ContactUs> contact
+            , IMapper mapper,
             IUnitOfWork<ContactUs> uniofContact)
 
         {
@@ -44,7 +41,7 @@ namespace Tourism_Egypt.Controllers
             _resetpassword = resetpassword;
             _configuration = configuration;
             _contact = contact;
-           _mapper = mapper;
+            _mapper = mapper;
             _uniofContact = uniofContact;
             _emailService = emailService;
         }
@@ -112,7 +109,7 @@ namespace Tourism_Egypt.Controllers
                     };
                     return Ok(new UserDTO
                     {
-                       User = User1,
+                        User = User1,
                         Token = await _authService.CreateTokenAsync(user, _userManager)
                     });
                 }
@@ -159,43 +156,43 @@ namespace Tourism_Egypt.Controllers
 
 
 
-     
-		//[HttpGet("google")]
-		//public IActionResult GoogleLogin()
-		//{
-		//    var authenticationProperties = new AuthenticationProperties
-		//    {
-		//        RedirectUri = Url.Action("GoogleResponse")
-		//    };
 
-		//    return Challenge(authenticationProperties, GoogleDefaults.AuthenticationScheme);
-		//}
+        //[HttpGet("google")]
+        //public IActionResult GoogleLogin()
+        //{
+        //    var authenticationProperties = new AuthenticationProperties
+        //    {
+        //        RedirectUri = Url.Action("GoogleResponse")
+        //    };
 
-		//[HttpGet("google-response")]
-		//public async Task<IActionResult> GoogleResponse()
-		//{
-		//    var authenticateResult = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
+        //    return Challenge(authenticationProperties, GoogleDefaults.AuthenticationScheme);
+        //}
 
-		//    if (!authenticateResult.Succeeded)
-		//    {
-		//        // Handle authentication failure
-		//        return BadRequest();
-		//    }
+        //[HttpGet("google-response")]
+        //public async Task<IActionResult> GoogleResponse()
+        //{
+        //    var authenticateResult = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
 
-		//    // Here you can get user information from authenticateResult.Principal
-		//    var userInfo = new
-		//    {
-		//        Email = authenticateResult.Principal.FindFirstValue(ClaimTypes.Email),
-		//        Name = authenticateResult.Principal.FindFirstValue(ClaimTypes.Name)
-		//        // Add more fields as needed
-		//    };
+        //    if (!authenticateResult.Succeeded)
+        //    {
+        //        // Handle authentication failure
+        //        return BadRequest();
+        //    }
 
-		//    return Ok(userInfo);
-		//}
+        //    // Here you can get user information from authenticateResult.Principal
+        //    var userInfo = new
+        //    {
+        //        Email = authenticateResult.Principal.FindFirstValue(ClaimTypes.Email),
+        //        Name = authenticateResult.Principal.FindFirstValue(ClaimTypes.Name)
+        //        // Add more fields as needed
+        //    };
+
+        //    return Ok(userInfo);
+        //}
 
 
 
-		[HttpGet("ForgetPassword")]
+        [HttpGet("ForgetPassword")]
         public async Task<IActionResult> ForgetPassword([Required] string email)
         {
             try
@@ -364,7 +361,7 @@ namespace Tourism_Egypt.Controllers
         [HttpPost("LogOut")]
         public async Task<IActionResult> LogOut()
         {
-           await _signInManager.SignOutAsync();
+            await _signInManager.SignOutAsync();
             return Ok("Loged out successfully");
         }
 
@@ -393,7 +390,7 @@ namespace Tourism_Egypt.Controllers
 
                     return Ok();
                 }
-                catch(Exception ex) 
+                catch (Exception ex)
                 {
                     return BadRequest(ex.Message);
                 }
@@ -401,6 +398,6 @@ namespace Tourism_Egypt.Controllers
 
             return BadRequest();
         }
-        
+
     }
 }

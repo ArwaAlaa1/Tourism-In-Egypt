@@ -1,12 +1,8 @@
-﻿using CorePush.Google;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using System.Net.Http.Headers;
-using Tourism.Core.Entities;
+﻿using Microsoft.EntityFrameworkCore;
 using Tourism.Core.Helper.DTO;
 using Tourism.Core.Repositories.Contract;
 using Tourism.Repository.Data;
-using static Tourism.Core.Entities.GoogleNotification;
+
 
 namespace Tourism.Repository.Repository
 {
@@ -17,7 +13,7 @@ namespace Tourism.Repository.Repository
 
 
 
-        public NotificationRepository(IOptions<FcmNotificationSetting> settings , TourismContext context)
+        public NotificationRepository(TourismContext context)
         {
             _context = context;
         }
@@ -28,7 +24,7 @@ namespace Tourism.Repository.Repository
             {
                 PlaceId = r.PlaceId,
                 Time = r.Time,
-               // UserImg = r.User.ImgURL,
+                // UserImg = r.User.ImgURL,
                 UserName = r.User.UserName
             }).ToListAsync();
 

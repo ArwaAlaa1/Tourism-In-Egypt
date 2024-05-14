@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Tourism.Repository.Data.Migrations
 {
-    public partial class init : Migration
+    public partial class CreateTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -132,25 +132,6 @@ namespace Tourism.Repository.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserFavs",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FavoriteId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    PlaceId = table.Column<int>(type: "int", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserFavs", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "UserLogins",
                 columns: table => new
                 {
@@ -184,7 +165,6 @@ namespace Tourism.Repository.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    ImgURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -340,13 +320,37 @@ namespace Tourism.Repository.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ApplicationUserPlace",
+                columns: table => new
+                {
+                    PlacesId = table.Column<int>(type: "int", nullable: false),
+                    UsersId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApplicationUserPlace", x => new { x.PlacesId, x.UsersId });
+                    table.ForeignKey(
+                        name: "FK_ApplicationUserPlace_Places_PlacesId",
+                        column: x => x.PlacesId,
+                        principalTable: "Places",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ApplicationUserPlace_Users_UsersId",
+                        column: x => x.UsersId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Favorites",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PlacesId = table.Column<int>(type: "int", nullable: false),
-                    UsersId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    PlaceId = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
@@ -356,14 +360,14 @@ namespace Tourism.Repository.Data.Migrations
                 {
                     table.PrimaryKey("PK_Favorites", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Favorites_Places_PlacesId",
-                        column: x => x.PlacesId,
+                        name: "FK_Favorites_Places_PlaceId",
+                        column: x => x.PlaceId,
                         principalTable: "Places",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Favorites_Users_UsersId",
-                        column: x => x.UsersId,
+                        name: "FK_Favorites_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -457,19 +461,24 @@ namespace Tourism.Repository.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_ApplicationUserPlace_UsersId",
+                table: "ApplicationUserPlace",
+                column: "UsersId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CityPhotos_CityId",
                 table: "CityPhotos",
                 column: "CityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Favorites_PlacesId",
+                name: "IX_Favorites_PlaceId",
                 table: "Favorites",
-                column: "PlacesId");
+                column: "PlaceId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Favorites_UsersId",
+                name: "IX_Favorites_UserId",
                 table: "Favorites",
-                column: "UsersId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Passwords_UserId",
@@ -525,6 +534,9 @@ namespace Tourism.Repository.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ApplicationUserPlace");
+
+            migrationBuilder.DropTable(
                 name: "CityPhotos");
 
             migrationBuilder.DropTable(
@@ -556,9 +568,6 @@ namespace Tourism.Repository.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserClaims");
-
-            migrationBuilder.DropTable(
-                name: "UserFavs");
 
             migrationBuilder.DropTable(
                 name: "UserLogins");

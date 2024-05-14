@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Tourism.Core.Entities;
 using Tourism.Core.Repositories.Contract;
 using TourismMVC.Helpers;
@@ -57,14 +56,14 @@ namespace TourismMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(CategoryViewModel category)
         {
-           category.ImgUrl = category.PhotoFile.FileName;
+            category.ImgUrl = category.PhotoFile.FileName;
             if (category.PhotoFile != null)
             {
                 category.ImgUrl = DocumentSetting.UploadFile(category.PhotoFile, "category");
             }
             var categorymapped = mapper.Map<CategoryViewModel, Category>(category);
-           // categorymapped.ImgUrl= category.PhotoFile.FileName;
-			var allcategory = await _unitOfWork.generic.GetAllAsync();
+            // categorymapped.ImgUrl= category.PhotoFile.FileName;
+            var allcategory = await _unitOfWork.generic.GetAllAsync();
             bool exists = allcategory.Any(e => e.Name == categorymapped.Name);
 
             if (exists)
@@ -77,7 +76,7 @@ namespace TourismMVC.Controllers
                 if (ModelState.IsValid)
                 {
 
-                    categorymapped.ImgUrl= $"images/category/{categorymapped.ImgUrl}";
+                    categorymapped.ImgUrl = $"images/category/{categorymapped.ImgUrl}";
                     _unitOfWork.generic.Add(categorymapped);
                     var count = _unitOfWork.Complet();
 
@@ -117,15 +116,15 @@ namespace TourismMVC.Controllers
         {
 
 
-           // var cat = _unitOfWork.generic.GetAsync(id);
-            
+            // var cat = _unitOfWork.generic.GetAsync(id);
+
 
             if (id != category.Id)
                 return BadRequest();
 
-           
+
             if (category.PhotoFile != null)
-            { 
+            {
                 category.ImgUrl = category.PhotoFile.FileName;
                 DocumentSetting.DeleteFile("category", category.ImgUrl);
 
@@ -133,26 +132,26 @@ namespace TourismMVC.Controllers
             }
 
             var categorymapped = mapper.Map<CategoryViewModel, Category>(category);
-       
-          
-                if (ModelState.IsValid)  //server side validation
+
+
+            if (ModelState.IsValid)  //server side validation
+            {
+                try
                 {
-                    try
-                    {
-                        categorymapped.ImgUrl = $"images/category/{categorymapped.ImgUrl}";
+                    categorymapped.ImgUrl = $"images/category/{categorymapped.ImgUrl}";
 
-                        _unitOfWork.generic.Update(categorymapped);
-                        var count = _unitOfWork.Complet();
+                    _unitOfWork.generic.Update(categorymapped);
+                    var count = _unitOfWork.Complet();
 
-                        return RedirectToAction(nameof(Index));
-                    }
-                    catch (Exception ex)
-                    {
-                        ModelState.AddModelError(string.Empty, ex.Message);
-                    }
-
+                    return RedirectToAction(nameof(Index));
                 }
-            
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                }
+
+            }
+
 
             return View(category);
         }

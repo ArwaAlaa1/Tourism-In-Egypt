@@ -1,10 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tourism.Core.Entities;
 using Tourism.Core.Helper.DTO;
 
@@ -24,7 +19,7 @@ namespace Tourism.Core.Helper
             if (!string.IsNullOrEmpty(source.ImgUrl))
                 return $"{configuration["ApiBaseUrl"]}/{source.ImgUrl}";
 
-            return string.Empty ;
+            return string.Empty;
         }
     }
 }

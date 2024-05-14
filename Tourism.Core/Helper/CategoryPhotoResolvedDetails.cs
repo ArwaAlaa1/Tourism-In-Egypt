@@ -1,10 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tourism.Core.Entities;
 using Tourism.Core.Helper.DTO;
 
@@ -19,7 +14,7 @@ namespace Tourism.Core.Helper
             this.configuration = configuration;
         }
 
-      
+
         public string Resolve(Category source, CategoryDetailsDTO destination, string destMember, ResolutionContext context)
         {
             if (!string.IsNullOrEmpty(source.ImgUrl))

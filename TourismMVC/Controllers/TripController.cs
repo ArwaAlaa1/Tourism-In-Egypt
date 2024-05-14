@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Tourism.Core.Entities;
+using Tourism.Core.Helper.DTO;
 using Tourism.Core.Repositories.Contract;
 using TourismMVC.Helpers;
 using TourismMVC.ViewModels;
@@ -37,11 +38,10 @@ namespace TourismMVC.Controllers
 
 
         //Get AllTrips
-        public async Task<IActionResult> Index()
+        public async Task<ActionResult<SimpleTripDto>> Index()
         {
             IEnumerable<Trip> trips;
             trips = await _unitOfWork.generic.GetAllAsync();
-
             return View(trips);
         }
 

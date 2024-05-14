@@ -1207,9 +1207,9 @@
 
   <ItemGroup>
     <Folder Include="Views\Trip\PartialViews\" />
-    <Folder Include="wwwroot\images\cities\" />
+    <Folder Include="wwwroot\Images\cities\" />
+    <Folder Include="wwwroot\Images\trips\" />
     <Folder Include="wwwroot\images\places\" />
-    <Folder Include="wwwroot\images\trips\" />
   </ItemGroup>
 
   <ItemGroup>

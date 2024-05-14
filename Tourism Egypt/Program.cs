@@ -25,17 +25,6 @@ namespace Tourism_Egypt
 			
 			builder.Services.AddControllers();
 
-
-			#region Notification Service
-			builder.Services.AddTransient<INotificationService, NotificationService>();
-			builder.Services.AddHttpClient<FcmSender>();
-			builder.Services.AddHttpClient<ApnSender>();
-
-			// Configure strongly typed settings objects
-			var appSettingsSection = builder.Configuration.GetSection("FcmNotification");
-			builder.Services.Configure<FcmNotificationSetting>(appSettingsSection);
-			#endregion
-
 			//dbcontext
 			#region Container Services
 			builder.Services.AddDbContext<TourismContext>(
@@ -43,7 +32,7 @@ namespace Tourism_Egypt
 			builder.Services.AddScoped(typeof(ICityRepository), typeof(CityRepository));
 			builder.Services.AddScoped(typeof(IPlaceRepository), typeof(PlaceRepository));
 			builder.Services.AddScoped(typeof(ICategoryRepository), typeof(CategoryRepository));
-			builder.Services.AddScoped(typeof(INotificationService), typeof(NotificationService));
+			builder.Services.AddScoped(typeof(INotificationRepository), typeof(NotificationRepository));
 			builder.Services.AddScoped(typeof(IReviewRepository), typeof(ReviewRepository));
 			builder.Services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
 			builder.Services.AddAutoMapper(typeof(MapperConfig));
@@ -123,7 +112,6 @@ namespace Tourism_Egypt
 				opt => opt.TokenLifespan = TimeSpan.FromHours(10));
 
 			
-			
 		
 				builder.Services.AddControllers();
 
@@ -131,6 +119,7 @@ namespace Tourism_Egypt
 				{
 					c.SwaggerDoc("v1", new OpenApiInfo { Title = "Tourism", Version = "v1" });
 				});
+
 				builder.Services.AddSwaggerGen(swagger =>
 				{
 					//This is to generate the Default UI of Swagger Documentation    
@@ -141,36 +130,35 @@ namespace Tourism_Egypt
 						Description = "Different types of tourism in Egypt"
 					});
 
-
-					// To Enable authorization using Swagger (JWT)    
-					swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
-					{
-						Name = "Authorization",
-						Type = SecuritySchemeType.ApiKey,
-						Scheme = "Bearer",
-						BearerFormat = "JWT",
-						In = ParameterLocation.Header,
-						Description = "Enter 'Bearer' [space] and then your valid token in the text input below.\r\n\r\nExample: \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\"",
-					});
-					swagger.AddSecurityRequirement(new OpenApiSecurityRequirement
-					{
-					{
-					new OpenApiSecurityScheme
-					{
-					Reference = new OpenApiReference
-					{
-					Type = ReferenceType.SecurityScheme,
-					Id = "Bearer"
-					}
-					},
-					new string[] {}
-					}
-					});
+				// To Enable authorization using Swagger (JWT)    
+				swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+				{
+					Name = "Authorization",
+					Type = SecuritySchemeType.ApiKey,
+					Scheme = "Bearer",
+					BearerFormat = "JWT",
+					In = ParameterLocation.Header,
+					Description = "Enter 'Bearer' [space] and then your valid token in the text input below.\r\n\r\nExample: \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\"",
 				});
-			
 
-				// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-				builder.Services.AddEndpointsApiExplorer();
+				swagger.AddSecurityRequirement(new OpenApiSecurityRequirement
+				{
+						{
+							new OpenApiSecurityScheme
+							{
+								Reference = new OpenApiReference
+								{
+									Type = ReferenceType.SecurityScheme,
+									Id = "Bearer"
+								}
+							},
+							new string[] { }
+						}
+
+            });
+                });
+            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddEndpointsApiExplorer();
 				builder.Services.AddSwaggerGen();
 			
 				builder.Services.AddCors(corsOptions =>
@@ -203,18 +191,70 @@ namespace Tourism_Egypt
 						return;
 					}
 					await next();
+
 				});
+			
+            
 
-				app.UseHttpsRedirection();
-
-				app.UseStaticFiles();
-				app.UseAuthentication();
-				app.UseAuthorization();
+            //var app = builder.Build();
 
 
-				app.MapControllers();
+			#region Update DB
 
-				app.Run();
+			//Explicitly
+			using var scope = app.Services.CreateScope();
+			var services = scope.ServiceProvider;
+
+			var loggerfactury = services.GetRequiredService<ILoggerFactory>();
+			var dbContext = services.GetRequiredService<TourismContext>();
+			try
+			{
+
+				await dbContext.Database.MigrateAsync();
+
 			}
-	    }
+			catch (Exception ex)
+			{
+				var logger = loggerfactury.CreateLogger<Program>();//return to main 
+				logger.LogError(ex, "Erro Occured during apply migration");
+
+			}
+
+			#endregion
+
+
+			// Configure the HTTP request pipeline.
+			//if (app.Environment.IsDevelopment())
+			//{
+			app.UseSwagger();
+			app.UseSwaggerUI();
+			//}
+
+			app.UseCors("MyPolicy");
+
+			app.Use(async (context, next) =>
+			{
+				if (context.Request.Path == "/")
+				{
+					context.Response.Redirect("/swagger/index.html");
+					return;
+				}
+				await next();
+			});
+
+			app.UseHttpsRedirection();
+
+			app.UseStaticFiles();
+			app.UseAuthentication();
+			app.UseAuthorization();
+
+
+			app.MapControllers();
+
+			app.Run();
+
+		}
 	}
+}
+   
+	

@@ -1,11 +1,12 @@
 ﻿using Tourism.Core.Entities;
+using Tourism.Core.Helper.DTO;
 
 namespace Tourism.Core.Repositories.Contract
 {
     public interface IFavoriteRepository
     {
-        Task<Favorite> AddFavorite(Favorite userFav);
+        Task AddFavorite(Favorite userFav);
         Task DeletePlaceFromFavorite(int id);
-        Task<IEnumerable<Favorite>> GetAllFavoriteByUserIdAsync(int UserId);
+        Task<IEnumerable<ReturnFavoritesDTO>> GetAllFavoriteByUserIdAsync(int UserId);
     }
 }

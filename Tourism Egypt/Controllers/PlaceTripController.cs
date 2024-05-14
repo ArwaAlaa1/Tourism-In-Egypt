@@ -5,14 +5,15 @@ using Tourism.Core.Repositories.Contract;
 
 namespace Tourism_Egypt.Controllers
 {
-    [Authorize]
+    
     public class PlaceTripController : BaseApiController
     {
         private readonly IGenericRepository<Place_Trip> _placetrip;
-
-        public PlaceTripController(IGenericRepository<Place_Trip> placetrip)
+        private readonly IPlace_TripRepository _place_trip;
+        public PlaceTripController(IGenericRepository<Place_Trip> placetrip , IPlace_TripRepository place_trip)
         {
             _placetrip = placetrip;
+            _place_trip = place_trip;
         }
         [HttpGet]
         public async Task<IActionResult> GetAll()
@@ -39,5 +40,13 @@ namespace Tourism_Egypt.Controllers
             else
                 return Ok(PT);
         }
+
+
+        //[HttpGet("TripDetails")]
+        //public async Task<IActionResult> TripDetails(int id)
+        //{
+        //    var trip = await _place_trip.GetTripWithplaces(id);
+        //    return Ok(trip);
+        //}
     }
 }

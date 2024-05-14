@@ -46,7 +46,10 @@ namespace Tourism_Egypt
 			builder.Services.AddScoped(typeof(INotificationService), typeof(NotificationService));
 			builder.Services.AddScoped(typeof(IReviewRepository), typeof(ReviewRepository));
 			builder.Services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
-			builder.Services.AddAutoMapper(typeof(MapperConfig));
+            builder.Services.AddScoped(typeof(IPlace_TripRepository), typeof(Place_TripRepository));
+            builder.Services.AddScoped(typeof(ITripRepository), typeof(TripRepository));
+
+            builder.Services.AddAutoMapper(typeof(MapperConfig));
 
 			var configuration = builder.Configuration;
 

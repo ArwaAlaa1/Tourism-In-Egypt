@@ -15,12 +15,16 @@ namespace Tourism_Egypt.Controllers
     {
         private readonly IGenericRepository<Trip> _trip;
         private readonly IMapper _mapper;
+        private readonly ITripRepository _tripRepository;
+      
 
         public TripController(IGenericRepository<Trip> trip
-            ,IMapper mapper)
+            ,IMapper mapper ,IPlace_TripRepository placetrip , ITripRepository tripRepository)
         {
             _trip = trip;
             _mapper = mapper;
+            _tripRepository = tripRepository;
+            
         }
 
 
@@ -50,11 +54,19 @@ namespace Tourism_Egypt.Controllers
             }
             else
             {
+                var places = await _tripRepository.GetplacesByIdofTrip(trip.Id);
                 var data = _mapper.Map<Trip, TripDTO>(trip);
+                //foreach (var item in places)
+                //{
+                //    var place = item.Place;
+                //    var mapedPlace = _mapper.Map<Place , placeOfTripDto>(place);
+                //    data.places.Add(mapedPlace);
+                //}
                 return Ok(data);
             }
                 
         }
+       
 
         [HttpGet("SearchTrip")]
         public async Task<IActionResult> SearchTrip([Required]string _city , DateTime? _startDate , DateTime? _endDate)

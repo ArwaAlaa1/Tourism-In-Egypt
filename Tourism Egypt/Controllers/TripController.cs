@@ -8,7 +8,7 @@ using Tourism.Core.Repositories.Contract;
 
 namespace Tourism_Egypt.Controllers
 {
-
+    [Authorize]
     public class TripController : BaseApiController
     {
         private readonly IGenericRepository<Trip> _trip;
@@ -17,7 +17,7 @@ namespace Tourism_Egypt.Controllers
       
 
         public TripController(IGenericRepository<Trip> trip
-            ,IMapper mapper ,IPlace_TripRepository placetrip , ITripRepository tripRepository)
+            ,IMapper mapper , ITripRepository tripRepository)
         {
             _trip = trip;
             _mapper = mapper;
@@ -27,7 +27,6 @@ namespace Tourism_Egypt.Controllers
 
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> ShowAll()
         {
             var List = await _trip.GetAllAsync();

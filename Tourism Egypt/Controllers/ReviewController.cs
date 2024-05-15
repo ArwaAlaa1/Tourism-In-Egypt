@@ -66,7 +66,7 @@ namespace Tourism_Egypt.Controllers
 
                 }
                 await _reviewRepository.DeleteReviewAsync(id);
-                return Ok();
+                return Ok("Deleted");
             }
             catch (Exception ex)
             {
@@ -106,7 +106,7 @@ namespace Tourism_Egypt.Controllers
                 {
                     return NotFound("No Review on this Place");
                 }
-                
+
                 return Ok(reviews);
             }
             catch

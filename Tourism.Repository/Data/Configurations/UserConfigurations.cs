@@ -13,8 +13,8 @@ namespace Tourism.Repository.Data.Configurations
             builder.Property(x => x.Email).IsRequired();
             builder.Property(x => x.UserName).IsRequired();
             builder.HasKey(x => x.Id);
-            builder.HasMany(x => x.Places)
-                .WithMany(x => x.Users).UsingEntity<Favorite>();
+            //builder.HasMany(x => x.Places)
+            //    .WithMany(x => x.Users).UsingEntity<Favorite>();
 
             builder.ToTable("Users");
 

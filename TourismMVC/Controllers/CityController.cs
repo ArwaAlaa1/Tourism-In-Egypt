@@ -101,18 +101,18 @@ namespace TourismMVC.Controllers
             var citymapped = mapper.Map<CityViewModel, City>(city);
 
             if (ModelState.IsValid)
-                {
-                    _unitOfWork.generic.Update(citymapped);
-                    var count = _unitOfWork.Complet();
+            {
+                _unitOfWork.generic.Update(citymapped);
+                var count = _unitOfWork.Complet();
 
-                    if (count > 0)
-                        TempData["message"] = "City Created succesfully";
-                    else
-                        TempData["message"] = "City Failed Created";
+                if (count > 0)
+                    TempData["message"] = "City Created succesfully";
+                else
+                    TempData["message"] = "City Failed Created";
 
-                    return RedirectToAction("Index");
-                }
-            
+                return RedirectToAction("Index");
+            }
+
 
             return View(city);
         }

@@ -22,6 +22,21 @@ namespace Tourism.Repository.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("ApplicationUserPlace", b =>
+                {
+                    b.Property<int>("PlacesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PlacesId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("ApplicationUserPlace");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.Property<int>("Id")
@@ -170,9 +185,6 @@ namespace Tourism.Repository.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("ImgURL")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LName")
                         .HasMaxLength(50)
@@ -376,17 +388,17 @@ namespace Tourism.Repository.Data.Migrations
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("PlacesId")
+                    b.Property<int>("PlaceId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UsersId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PlacesId");
+                    b.HasIndex("PlaceId");
 
-                    b.HasIndex("UsersId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Favorites");
                 });
@@ -689,38 +701,19 @@ namespace Tourism.Repository.Data.Migrations
                     b.ToTable("User_Trips", (string)null);
                 });
 
-            modelBuilder.Entity("Tourism.Core.Entities.UserFav", b =>
+            modelBuilder.Entity("ApplicationUserPlace", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.HasOne("Tourism.Core.Entities.Place", null)
+                        .WithMany()
+                        .HasForeignKey("PlacesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("FavoriteId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("PlaceId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserFavs");
+                    b.HasOne("Tourism.Core.Entities.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Tourism.Core.Entities.CityPhotos", b =>
@@ -736,17 +729,21 @@ namespace Tourism.Repository.Data.Migrations
 
             modelBuilder.Entity("Tourism.Core.Entities.Favorite", b =>
                 {
-                    b.HasOne("Tourism.Core.Entities.Place", null)
+                    b.HasOne("Tourism.Core.Entities.Place", "Place")
                         .WithMany()
-                        .HasForeignKey("PlacesId")
+                        .HasForeignKey("PlaceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Tourism.Core.Entities.ApplicationUser", null)
+                    b.HasOne("Tourism.Core.Entities.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("UsersId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Place");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Tourism.Core.Entities.Place", b =>
@@ -812,7 +809,7 @@ namespace Tourism.Repository.Data.Migrations
             modelBuilder.Entity("Tourism.Core.Entities.Review", b =>
                 {
                     b.HasOne("Tourism.Core.Entities.Place", "Place")
-                        .WithMany()
+                        .WithMany("Reviews")
                         .HasForeignKey("PlaceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -862,6 +859,8 @@ namespace Tourism.Repository.Data.Migrations
             modelBuilder.Entity("Tourism.Core.Entities.Place", b =>
                 {
                     b.Navigation("Photos");
+
+                    b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618
         }

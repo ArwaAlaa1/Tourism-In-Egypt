@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Tourism.Core.Entities;
 using Tourism.Repository.Data;
 using TourismMVC.ViewModels;
 
@@ -13,11 +12,11 @@ namespace TourismMVC.Helpers
             if (TripPh.PhotoFile != null)
             {
                 TripPh.ImgUrl = DocumentSetting.UploadFile(TripPh.PhotoFile, "Images");
-           }
+            }
 
             TourismContext context = new TourismContext();
 
-            if (value != null )
+            if (value != null)
             {
                 var TripPhUrl = value.ToString();
                 var TP = context.Trips.Where(x => x.ImgUrl == TripPhUrl).FirstOrDefault();

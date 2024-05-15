@@ -13,7 +13,7 @@ namespace TourismMVC.Controllers
         private readonly IUnitOfWork<Trip> _unitOfWork;
         private readonly IMapper _mapper;
 
-        public TripController(IUnitOfWork<Trip> _unitOfWork , IMapper mapper)
+        public TripController(IUnitOfWork<Trip> _unitOfWork, IMapper mapper)
         {
             this._unitOfWork = _unitOfWork;
             _mapper = mapper;
@@ -57,13 +57,13 @@ namespace TourismMVC.Controllers
         public IActionResult Create(TripViewModel tripView)
         {
 
-			tripView.ImgUrl = tripView.PhotoFile.FileName;
+            tripView.ImgUrl = tripView.PhotoFile.FileName;
 
-			if (tripView.PhotoFile != null)
-			{
-				tripView.ImgUrl = DocumentSetting.UploadFile(tripView.PhotoFile, "trips");
-			}
-			if (ModelState.IsValid)
+            if (tripView.PhotoFile != null)
+            {
+                tripView.ImgUrl = DocumentSetting.UploadFile(tripView.PhotoFile, "trips");
+            }
+            if (ModelState.IsValid)
             {
                 try
                 {
@@ -82,7 +82,7 @@ namespace TourismMVC.Controllers
                 }
             }
 
-            return View("Create",tripView);
+            return View("Create", tripView);
         }
 
         //Get : open form of edit
@@ -109,10 +109,10 @@ namespace TourismMVC.Controllers
         {
             if (id != tripView.Id)
                 return BadRequest();
-            
+
             if (tripView.PhotoFile.FileName != null)
             {
-               tripView.ImgUrl = tripView.PhotoFile.FileName;
+                tripView.ImgUrl = tripView.PhotoFile.FileName;
                 DocumentSetting.DeleteFile("trips", tripView.ImgUrl);
                 tripView.ImgUrl = DocumentSetting.UploadFile(tripView.PhotoFile, "trips");
 
@@ -154,36 +154,36 @@ namespace TourismMVC.Controllers
             }
             else
             {
-              var tripMapper=  _mapper.Map<Trip, TripViewModel>(trip);
+                var tripMapper = _mapper.Map<Trip, TripViewModel>(trip);
                 return View(tripMapper);
-            }              
+            }
         }
 
         // post : Delete 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete([FromRoute]int id, TripViewModel tripView)
+        public async Task<IActionResult> Delete([FromRoute] int id, TripViewModel tripView)
         {
-            
-               
-                 var tripMapper = _mapper.Map<TripViewModel, Trip>(tripView);
-                 try
-                    {
-                   _unitOfWork.generic.Delete(tripMapper);
-                    var count = _unitOfWork.Complet();
-                    if (count > 0)
-                    {
-                        DocumentSetting.DeleteFile("trips", tripMapper.ImgUrl);
-                    }
-                    return RedirectToAction(nameof(Index));
 
 
-                }
-                catch(Exception ex)
+            var tripMapper = _mapper.Map<TripViewModel, Trip>(tripView);
+            try
+            {
+                _unitOfWork.generic.Delete(tripMapper);
+                var count = _unitOfWork.Complet();
+                if (count > 0)
                 {
-                    ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                    DocumentSetting.DeleteFile("trips", tripMapper.ImgUrl);
                 }
-            
+                return RedirectToAction(nameof(Index));
+
+
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+            }
+
             return View(tripView);
         }
     }

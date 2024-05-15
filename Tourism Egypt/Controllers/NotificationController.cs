@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Tourism.Core.Entities;
 using Tourism.Core.Repositories.Contract;
-using Tourism.Repository.Repository;
 
 namespace Tourism_Egypt.Controllers
 {

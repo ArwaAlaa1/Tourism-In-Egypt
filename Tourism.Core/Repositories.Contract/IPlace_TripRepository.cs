@@ -9,6 +9,6 @@ namespace Tourism.Core.Repositories.Contract
 
         Task<Place_Trip> ForUnique(int valueofplace, int trip);
 
-
+         Task<IEnumerable<Place_Trip>> GetTripWithplaces(int id);
     }
 }

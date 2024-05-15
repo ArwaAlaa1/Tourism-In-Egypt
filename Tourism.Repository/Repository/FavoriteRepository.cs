@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Tourism.Core.Entities;
+using Tourism.Core.Helper.DTO;
 using Tourism.Core.Repositories.Contract;
 using Tourism.Repository.Data;
 
@@ -15,7 +16,7 @@ namespace Tourism.Repository.Repository
         }
 
 
-        public async Task<Favorite> AddFavorite(Favorite userFav)
+        public async Task AddFavorite(Favorite userFav)
         {
             var findByUserIdAndPlaceId = await _context.Favorites.FirstOrDefaultAsync(r => r.UserId == userFav.UserId && r.PlaceId == userFav.PlaceId);
 
@@ -41,7 +42,7 @@ namespace Tourism.Repository.Repository
                 await _context.SaveChangesAsync();
             }
 
-            return userFav;
+            //return "Added";
         }
 
         public async Task DeletePlaceFromFavorite(int id)
@@ -58,15 +59,23 @@ namespace Tourism.Repository.Repository
             }
         }
 
-        public async Task<IEnumerable<Favorite>> GetAllFavoriteByUserIdAsync(int UserId)
+        public async Task<IEnumerable<ReturnFavoritesDTO>> GetAllFavoriteByUserIdAsync(int UserId)
         {
             return await _context.Favorites
                 .Include(p => p.Place)
                 .Include(u => u.User)
                 .Where(u => u.UserId == UserId)
-                //.Select(r => new Favorites
-                //{
-                //})
+                .Select(p => new ReturnFavoritesDTO
+                {
+                    Id = p.Id,
+                    Name = p.Place.Name,
+                    Description = p.Place.Description,
+                    Location = p.Place.Location,
+                    Rating = p.Place.Rating,
+                    Link = p.Place.Link,
+                  
+
+                })
                 .ToListAsync();
         }
     }

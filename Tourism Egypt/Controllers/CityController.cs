@@ -50,7 +50,7 @@ namespace Tourism_Egypt.Controllers
             if (city == null)
                 return NotFound();
 
-            //var photos =await _cityrepo.GetAllPhotoBySpecIdAsync(id);
+           // var photos =await _cityrepo.GetAllPhotoBySpecIdAsync(id);
             var data = mapper.Map<City, CityDTO>(city);
 
             return Ok(data);

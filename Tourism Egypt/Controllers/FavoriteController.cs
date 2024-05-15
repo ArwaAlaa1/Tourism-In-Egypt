@@ -26,9 +26,9 @@ namespace Tourism_Egypt.Controllers
             {
                 var mappedFavorite = _mapper.Map<FavoriteDTO, Favorite>(favorite);
 
-                var addedFavorite = await _favoriteRepository.AddFavorite(mappedFavorite);
+                await _favoriteRepository.AddFavorite(mappedFavorite);
 
-                return Ok(addedFavorite);
+                return Ok("Added");
             }
             catch (Exception ex)
             {

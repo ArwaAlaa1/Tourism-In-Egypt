@@ -25,6 +25,10 @@ namespace Tourism.Repository.Repository
         {
             return await _context.Place_Trips.Include("Place").Include("Trip").FirstAsync(x => x.Id == id);
         }
+        public async Task<IEnumerable< Place_Trip>> GetTripWithplaces(int id)
+        {
+            return await _context.Place_Trips.Where(x => x.TripId == id).Include("Trip").ToListAsync();
+        }
 
         public async Task<Place_Trip> ForUnique(int valueofplace, int trip)
         {

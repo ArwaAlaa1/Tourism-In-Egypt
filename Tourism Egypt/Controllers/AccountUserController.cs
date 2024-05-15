@@ -238,7 +238,11 @@ namespace Tourism_Egypt.Controllers
                 };
 
                 _emailService.SendEmail(SendEmail);
-                return Ok();
+                return Ok(new ForgetDTO()
+                {
+                    Status = true,
+                     Message = $"Code sent Successfully"
+                });
             }
             catch (Exception ex)
             {

@@ -23,13 +23,25 @@ namespace Tourism.Repository.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
+<<<<<<< HEAD
+             optionsBuilder.UseSqlServer("Server=TourismInEgypt.mssql.somee.com;Database=TourismInEgypt;user id=Sabry_SQLLogin_1;pwd=vf4uin2fa8;MultipleActiveResultSets=true;TrustServerCertificate=True");
+=======
+
+            optionsBuilder.UseSqlServer("Server=TourismInEgypt.mssql.somee.com;Database=TourismInEgypt;user id=Sabry_SQLLogin_1;pwd=vf4uin2fa8;MultipleActiveResultSets=true;TrustServerCertificate=True");
+            // "Data source = DESKTOP-9IISLS5 ; Database = Tourism ; integrated security = true ; trust server certificate = true"
+
             // optionsBuilder.UseSqlServer("Server=TourismInEgypt.mssql.somee.com;Database=TourismInEgypt;user id=Sabry_SQLLogin_1;pwd=vf4uin2fa8;MultipleActiveResultSets=true;TrustServerCertificate=True");
+>>>>>>> 786a4544dd5886f25cf7db778c4df09946abd534
             //"Server=TourismInegy.mssql.somee.com;Database=TourismInegy;user id=Sabry_SQLLogin_1;pwd=vf4uin2fa8;MultipleActiveResultSets=true;TrustServerCertificate=True");
             // "Data source = DESKTOP-9IISLS5 ; Database = Tourism ; integrated security = true ; trust server certificate = true"
 
 
 
         }
+
+                //"Server=TourismInegy.mssql.somee.com;Database=TourismInegy;user id=Sabry_SQLLogin_1;pwd=vf4uin2fa8;MultipleActiveResultSets=true;TrustServerCertificate=True");
+                // "Data source = DESKTOP-9IISLS5 ; Database = Tourism ; integrated security = true ; trust server certificate = true"
+        
         public DbSet<Trip> Trips { get; set; }
         public DbSet<ApplicationUser> Users { get; set; }
         public DbSet<CityPhotos> CityPhotos { get; set; }

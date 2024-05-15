@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using Tourism.Core.Entities;
+using Tourism.Core.Helper;
 using Tourism.Core.Helper.DTO;
 using Tourism.Core.Repositories.Contract;
 
@@ -74,12 +75,12 @@ namespace Tourism_Egypt.Controllers
             if (_startDate == null || _endDate == null)
             {
                 var trps = Trips.Where(x => x.City.ToLower().Contains(_city.ToLower())).ToList();
-                var tripMapper = _mapper.Map<List<Trip>, List<TripDTO>>(trps);
+                var tripMapper = _mapper.Map<List<Trip>, List<SimpleTripDto>>(trps);
                 return Ok(tripMapper);
             }
             var trp = Trips.Where((x => x.City.ToLower().Contains(_city.ToLower()) && x.StartDate == _startDate &&
             x.EndDate == _endDate)).ToList();
-            var tripMapper2 = _mapper.Map<List<Trip>, List<TripDTO>>(trp);
+            var tripMapper2 = _mapper.Map<IEnumerable<Trip>, IEnumerable<SimpleTripDto>>(trp);
 
             return Ok(tripMapper2);
         }

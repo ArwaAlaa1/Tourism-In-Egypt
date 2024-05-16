@@ -36,6 +36,24 @@ namespace Tourism_Egypt.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> DeleteFavorite(FavoriteDTO favorite)
+        {
+            try
+            {
+                var mappedFavorite = _mapper.Map<FavoriteDTO, Favorite>(favorite);
+
+                await _favoriteRepository.AddFavorite(mappedFavorite);
+
+                return Ok("Added");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFavorite(int FavoriteId)
         {

@@ -45,6 +45,29 @@ namespace Tourism.Repository.Repository
             //return "Added";
         }
 
+        public async Task<string> DeleteFavorite(Favorite userFav)
+        {
+           
+                Place place = await _context.Places.FindAsync(userFav.PlaceId);
+                if (place == null)
+                {
+                    throw new ArgumentException($"This Place Doesn't Exist");
+                }
+                ApplicationUser finduser = await _context.Users.FindAsync(userFav.UserId);
+
+                if (finduser == null)
+                {
+                    throw new ArgumentException($"This User Doesn't Exist");
+                }
+
+                _context.Favorites.Remove(userFav);
+                await _context.SaveChangesAsync();
+                var Message="This Place Removed From Wishlist!";
+               
+            return Message;
+
+        }
+
         public async Task DeletePlaceFromFavorite(int id)
         {
             var UserFavs = await _context.Favorites.FindAsync(id);

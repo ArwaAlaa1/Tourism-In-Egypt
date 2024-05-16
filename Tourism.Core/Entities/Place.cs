@@ -9,7 +9,7 @@
         public float Rating { get; set; }
         public string Link { get; set; }
         public string Phone { get; set; }
-
+        public bool IsFav { get; set; }
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; }
 

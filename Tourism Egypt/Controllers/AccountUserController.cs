@@ -200,7 +200,6 @@ namespace Tourism_Egypt.Controllers
                 if (email == null)
                     return BadRequest("Please enter Your email");
 
-                user = await _userManager.FindByEmailAsync(email);
 
                 if (user == null)
                     return BadRequest("Invalid Email");
@@ -257,7 +256,6 @@ namespace Tourism_Egypt.Controllers
             var User = await _resetpassword.changePassword.GetPasswordofOTP(otp, user.Email);
             if (User == null) return BadRequest("Invalid Code");
 
-            return Ok("Verification Done");
         }
 
         [HttpGet("ResendCode")]

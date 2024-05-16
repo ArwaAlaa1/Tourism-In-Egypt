@@ -28,13 +28,31 @@ namespace Tourism_Egypt.Controllers
 
                 await _favoriteRepository.AddFavorite(mappedFavorite);
 
-                return Ok("Added");
+                return Ok("This Place Added To Your WishList");
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteFavorite(FavoriteDTO favorite)
+        {
+            try
+            {
+                var mappedFavorite = _mapper.Map<FavoriteDTO, Favorite>(favorite);
+
+                await _favoriteRepository.DeleteFavorite(mappedFavorite);
+
+                return Ok("This Place Removed From Your WishList");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFavorite(int FavoriteId)

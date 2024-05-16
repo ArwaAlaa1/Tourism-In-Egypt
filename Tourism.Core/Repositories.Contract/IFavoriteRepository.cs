@@ -6,6 +6,7 @@ namespace Tourism.Core.Repositories.Contract
     public interface IFavoriteRepository
     {
         Task AddFavorite(Favorite userFav);
+        Task DeleteFavorite(Favorite userFav);
         Task DeletePlaceFromFavorite(int id);
         Task<IEnumerable<ReturnFavoritesDTO>> GetAllFavoriteByUserIdAsync(int UserId);
     }

@@ -12,8 +12,8 @@ using Tourism.Repository.Data;
 namespace Tourism.Repository.Data.Migrations
 {
     [DbContext(typeof(TourismContext))]
-    [Migration("20240514180642_CreateTable")]
-    partial class CreateTable
+    [Migration("20240516052015_first")]
+    partial class first
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -430,6 +430,9 @@ namespace Tourism.Repository.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsFav")
                         .HasColumnType("bit");
 
                     b.Property<string>("Link")

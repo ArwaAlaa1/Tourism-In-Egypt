@@ -59,24 +59,30 @@ namespace Tourism.Repository.Repository
             }
         }
 
+
+
         public async Task<IEnumerable<ReturnFavoritesDTO>> GetAllFavoriteByUserIdAsync(int UserId)
         {
             return await _context.Favorites
-                .Include(p => p.Place)
-                .Include(u => u.User)
-                .Where(u => u.UserId == UserId)
-                .Select(p => new ReturnFavoritesDTO
+                .Include(f => f.Place)
+                .Include(f => f.User)
+                .Where(f => f.UserId == UserId)
+                .Select(f => new ReturnFavoritesDTO
                 {
-                    Id = p.Id,
-                    Name = p.Place.Name,
-                    Description = p.Place.Description,
-                    Location = p.Place.Location,
-                    Rating = p.Place.Rating,
-                    Link = p.Place.Link,
-                  
-
-                })
-                .ToListAsync();
+                    Id = f.Id,
+                    Name = f.Place.Name,
+                    Description = f.Place.Description,
+                    Location = f.Place.Location,
+                    isAdded = f.IsActive,
+                    Rating = f.Place.Rating,
+                    Link = f.Place.Link,
+                    city = f.Place.City.Name,
+                    photos = f.Place.Photos.Select(p => new PhotoDTO
+                    {
+                        Id = p.Id,
+                        Photo = "http://tourisminegypt.somee.com/"+p.Photo
+                    }).ToList()
+                }).ToListAsync(); ;
         }
     }
 }

@@ -36,7 +36,7 @@ namespace Tourism_Egypt.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpDelete]
         public async Task<IActionResult> DeleteFavorite(FavoriteDTO favorite)
         {
             try

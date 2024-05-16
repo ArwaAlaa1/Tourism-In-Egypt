@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Tourism.Core.Helper.DTO
 {
-    public class ForgetDTO
+    public class Response
+
     {
         public bool Status { get; set; }
         public string Message { get; set; }

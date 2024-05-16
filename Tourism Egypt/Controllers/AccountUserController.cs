@@ -198,11 +198,21 @@ namespace Tourism_Egypt.Controllers
             try
             {
                 if (email == null)
-                    return BadRequest("Please enter Your email");
+                    return BadRequest(new Response()
+                    {
+                        Status = false,
+                        Message = $"Please enter Your email"
+                    });
+            
 
-
+                user = await _userManager.FindByEmailAsync(email);
                 if (user == null)
-                    return BadRequest("Invalid Email");
+                    return BadRequest(new Response()
+                    {
+                        Status = false,
+                        Message = $"Invalid Email"
+                    });
+              
 
                 token = await _userManager.GeneratePasswordResetTokenAsync(user);
                 //var encodedtoken = Encoding.UTF8.GetBytes(token);
@@ -237,7 +247,7 @@ namespace Tourism_Egypt.Controllers
                 };
 
                 _emailService.SendEmail(SendEmail);
-                return Ok(new ForgetDTO()
+                return Ok(new Response()
                 {
                     Status = true,
                      Message = $"Code sent Successfully"
@@ -254,8 +264,19 @@ namespace Tourism_Egypt.Controllers
         public async Task<IActionResult> VerifyCode(int otp)
         {
             var User = await _resetpassword.changePassword.GetPasswordofOTP(otp, user.Email);
-            if (User == null) return BadRequest("Invalid Code");
-
+            if (User == null)
+                return BadRequest(new Response()
+            {
+                Status = false,
+                Message = $"Invalid Code"
+            });
+            else
+            return Ok(new Response()
+            {
+                Status = true,
+                Message = $"Verification Done"
+            });
+          
         }
 
         [HttpGet("ResendCode")]
@@ -266,7 +287,12 @@ namespace Tourism_Egypt.Controllers
                 var user2 = await _userManager.FindByEmailAsync(user.Email);
 
                 if (user2 == null)
-                    return BadRequest("Invalid Email");
+                    return BadRequest(new Response()
+                    {
+                        Status =false,
+                        Message = $"Invalid Email"
+                    });
+               
 
                 token = await _userManager.GeneratePasswordResetTokenAsync(user2);
                 var OTP = RandomGenerator.Generate(1000, 9999);
@@ -296,7 +322,12 @@ namespace Tourism_Egypt.Controllers
                 };
 
                 _emailService.SendEmail(SendEmail);
-                return Ok("Check Your Inbox");
+                return Ok(new Response()
+                {
+                    Status = true,
+                    Message = $"Check Your Inbox"
+                });
+                
             }
             catch (Exception ex)
             {
@@ -315,11 +346,21 @@ namespace Tourism_Egypt.Controllers
                     var user1 = await _userManager.FindByEmailAsync(user.Email);
                     var result = await _userManager.ResetPasswordAsync(user1, token, passwordDto.NewPassword);
                     if (result.Succeeded)
-                        return Ok("PassWord Updated");
-
+                        return Ok(new Response()
+                        {
+                            Status = true,
+                            Message = $"PassWord Updated"
+                        });
+                 
+                   
                     foreach (var error in result.Errors)
                     {
-                        return BadRequest(error.Description);
+                        return BadRequest(new Response()
+                        {
+                            Status = false,
+                            Message = error.Description
+                        });
+                      
                     }
                 }
                 catch (Exception ex)
@@ -327,7 +368,13 @@ namespace Tourism_Egypt.Controllers
                     return BadRequest(ex.InnerException.Message);
                 }
             }
-            return BadRequest();
+            return BadRequest(new Response()
+            {
+                Status = false,
+                Message = $"Invalid Reset"
+            });
+
+           
         }
 
         [HttpPost("ChangePassWord")]
@@ -338,17 +385,32 @@ namespace Tourism_Egypt.Controllers
             {
 
                 if (changPassword.OldPassword == changPassword.NewPassword)
-                    return BadRequest("We're sorry, but the new password you entered is the same as your current password.");
+                    return BadRequest(new Response()
+                    {
+                        Status = false,
+                        Message = $"We're sorry, but the new password you entered is the same as your current password."
+                    });
+              
                 else
                 {
                     var user1 = await _userManager.FindByEmailAsync(email);
                     var result = await _userManager.ChangePasswordAsync(user1, changPassword.OldPassword, changPassword.NewPassword);
                     if (result.Succeeded)
-                        return Ok("PassWord Updated");
+                        return Ok(new Response()
+                        {
+                            Status = true,
+                            Message = $"PassWord Updated"
+                        });
+
+                
 
                     foreach (var error in result.Errors)
                     {
-                        return BadRequest(error.Description);
+                        return BadRequest(new Response()
+                        {
+                            Status = false,
+                            Message = error.Description
+                        });
                     }
                 }
 
@@ -357,14 +419,25 @@ namespace Tourism_Egypt.Controllers
             {
                 return BadRequest(ex.InnerException.Message);
             }
-            return BadRequest();
+            return BadRequest(new Response()
+            {
+                Status = false,
+                Message = $"Invalid Change Password"
+            });
+
+           
         }
 
         [HttpPost("LogOut")]
         public async Task<IActionResult> LogOut()
         {
             await _signInManager.SignOutAsync();
-            return Ok("Loged out successfully");
+                 return Ok(new Response()
+                 {
+                     Status = true,
+                     Message = $"Loged out successfully"
+                 });
+         
         }
 
         [HttpPost("ContactUs")]
@@ -391,7 +464,12 @@ namespace Tourism_Egypt.Controllers
 
                     _emailService.SendEmail(SendEmail);
 
-                    return Ok();
+                    return Ok(new Response()
+                    {
+                        Status = true,
+                        Message = $"Youe Message Send successfully"
+                    });
+                   
                 }
                 catch (Exception ex)
                 {

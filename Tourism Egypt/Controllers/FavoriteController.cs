@@ -28,7 +28,7 @@ namespace Tourism_Egypt.Controllers
 
                 await _favoriteRepository.AddFavorite(mappedFavorite);
 
-                return Ok("Added");
+                return Ok("This Place Added To Your WishList");
             }
             catch (Exception ex)
             {
@@ -43,9 +43,9 @@ namespace Tourism_Egypt.Controllers
             {
                 var mappedFavorite = _mapper.Map<FavoriteDTO, Favorite>(favorite);
 
-                await _favoriteRepository.AddFavorite(mappedFavorite);
+                await _favoriteRepository.DeleteFavorite(mappedFavorite);
 
-                return Ok("Added");
+                return Ok("This Place Removed From Your WishList");
             }
             catch (Exception ex)
             {

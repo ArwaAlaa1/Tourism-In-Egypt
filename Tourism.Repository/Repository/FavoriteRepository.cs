@@ -45,7 +45,7 @@ namespace Tourism.Repository.Repository
             //return "Added";
         }
 
-        public async Task<string> DeleteFavorite(Favorite userFav)
+        public async Task DeleteFavorite(Favorite userFav)
         {
            
                 Place place = await _context.Places.FindAsync(userFav.PlaceId);
@@ -62,9 +62,7 @@ namespace Tourism.Repository.Repository
 
                 _context.Favorites.Remove(userFav);
                 await _context.SaveChangesAsync();
-                var Message="This Place Removed From Wishlist!";
-               
-            return Message;
+             
 
         }
 

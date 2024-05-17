@@ -17,7 +17,7 @@ namespace Tourism.Core.Helper.DTO
         public float Rating { get; set; }
         public string Link { get; set; }
         public string city { get; set; }
-        public bool isAdded { get; set; }
+        public bool IsFav { get; set; } 
 
         public IEnumerable<PhotoDTO> photos { get; set; }
 

@@ -28,7 +28,11 @@ namespace Tourism_Egypt.Controllers
 
                 await _favoriteRepository.AddFavorite(mappedFavorite);
 
-                return Ok("This Place Added To Your WishList");
+                return Ok(new Response()
+                {
+                    Status = true,
+                    Message = $"Add Favorite Successfully"
+                });
             }
             catch (Exception ex)
             {
@@ -45,7 +49,11 @@ namespace Tourism_Egypt.Controllers
 
                 await _favoriteRepository.DeleteFavorite(mappedFavorite);
 
-                return Ok("This Place Removed From Your WishList");
+                return Ok(new Response()
+                {
+                    Status = true,
+                    Message = $"This Place Removed From Your Favorite"
+                });
             }
             catch (Exception ex)
             {
@@ -54,15 +62,18 @@ namespace Tourism_Egypt.Controllers
         }
 
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{FavoriteId}")]
         public async Task<IActionResult> DeleteFavorite(int FavoriteId)
         {
             try
             {
 
                 await _favoriteRepository.DeletePlaceFromFavorite(FavoriteId);
-
-                return Ok("Deleted");
+                return Ok(new Response()
+                {
+                    Status = true,
+                    Message = $"This Favorite Removed "
+                });
             }
             catch (Exception ex)
             {

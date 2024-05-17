@@ -28,7 +28,11 @@ namespace Tourism_Egypt.Controllers
 
                 var addedReview = await _reviewRepository.AddReviewAsync(mappedReview);
 
-                return Ok(addedReview);
+               return Ok(new Response()
+                {
+                    Status = true,
+                    Message = $"Added Successfully"
+                }); 
             }
             catch (Exception ex)
             {
@@ -45,7 +49,11 @@ namespace Tourism_Egypt.Controllers
                 var mappedReview = _mapper.Map<ReviewDTO, Review>(review);
 
                 var updatedReview = await _reviewRepository.UpdateReviewAsync(id, mappedReview);
-                return Ok(updatedReview);
+                return Ok(new Response()
+                {
+                    Status = true,
+                    Message = $"Updated Successfully"
+                });
             }
             catch (Exception ex)
             {
@@ -66,7 +74,11 @@ namespace Tourism_Egypt.Controllers
 
                 }
                 await _reviewRepository.DeleteReviewAsync(id);
-                return Ok("Deleted");
+                return Ok(new Response()
+                {
+                    Status = true,
+                    Message = $"Deleted Successfully"
+                });
             }
             catch (Exception ex)
             {

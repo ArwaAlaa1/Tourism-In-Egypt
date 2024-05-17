@@ -94,7 +94,7 @@ namespace Tourism.Repository.Repository
                     Name = f.Place.Name,
                     Description = f.Place.Description,
                     Location = f.Place.Location,
-                    isAdded = f.IsActive,
+                    IsFav = f.IsActive,
                     Rating = f.Place.Rating,
                     Link = f.Place.Link,
                     city = f.Place.City.Name,

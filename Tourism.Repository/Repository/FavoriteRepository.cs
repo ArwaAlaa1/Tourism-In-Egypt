@@ -91,12 +91,11 @@ namespace Tourism.Repository.Repository
                 .Select(f => new ReturnFavoritesDTO
                 {
                     FavoriteId =  f.Id,
+                    PlaceId = f.PlaceId,
                     Name = f.Place.Name,
                     Description = f.Place.Description,
-                    Location = f.Place.Location,
                     IsFav = f.IsActive,
                     Rating = f.Place.Rating,
-                    Link = f.Place.Link,
                     city = f.Place.City.Name,
                     photos = f.Place.Photos.Select(p => new PhotoDTO
                     {

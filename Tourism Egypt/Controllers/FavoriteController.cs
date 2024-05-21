@@ -45,9 +45,8 @@ namespace Tourism_Egypt.Controllers
         {
             try
             {
-                var mappedFavorite = _mapper.Map<FavoriteDTO, Favorite>(favorite);
 
-                await _favoriteRepository.DeleteFavorite(mappedFavorite);
+                await _favoriteRepository.DeleteFavorite(favorite);
 
                 return Ok(new Response()
                 {

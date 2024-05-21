@@ -33,7 +33,8 @@ namespace Tourism.Core.Helper
 
             CreateMap<Review, AddReviewDTO>().ReverseMap();
             CreateMap<Favorite, FavoriteDTO>().ReverseMap();
-            CreateMap<Favorite, ReturnFavoritesDTO>().ReverseMap();
+            CreateMap<Favorite, ReturnFavoritesDTO>()
+                .ForMember(t => t.FavoriteId, o => o.MapFrom(t => t.Id)).ReverseMap();
             CreateMap<ContactDTO, ContactUs>().ReverseMap();
             CreateMap<Trip, TripDTO>().ReverseMap();
             CreateMap<Trip, SimpleTripDto>().ForMember(i => i.Photo, i => i.MapFrom<PhotoTripResolved>()).ReverseMap();

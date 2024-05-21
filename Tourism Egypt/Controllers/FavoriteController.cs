@@ -40,26 +40,26 @@ namespace Tourism_Egypt.Controllers
             }
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> DeleteFavorite(FavoriteDTO favorite)
-        {
-            try
-            {
-                var mappedFavorite = _mapper.Map<FavoriteDTO, Favorite>(favorite);
+        //[HttpDelete]
+        //public async Task<IActionResult> DeleteFavorite(FavoriteDTO favorite)
+        //{
+        //    try
+        //    {
+        //        var mappedFavorite = _mapper.Map<FavoriteDTO, Favorite>(favorite);
 
-                await _favoriteRepository.DeleteFavorite(mappedFavorite);
+        //        await _favoriteRepository.DeleteFavorite(mappedFavorite);
 
-                return Ok(new Response()
-                {
-                    Status = true,
-                    Message = $"This Place Removed From Your Favorite"
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+        //        return Ok(new Response()
+        //        {
+        //            Status = true,
+        //            Message = $"This Place Removed From Your Favorite"
+        //        });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
 
 
         [HttpDelete("{FavoriteId}")]

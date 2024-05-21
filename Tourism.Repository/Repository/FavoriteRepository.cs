@@ -45,26 +45,26 @@ namespace Tourism.Repository.Repository
             //return "Added";
         }
 
-        public async Task DeleteFavorite(Favorite userFav)
-        {
+        //public async Task DeleteFavorite(Favorite userFav)
+        //{
            
-                Place place = await _context.Places.FindAsync(userFav.PlaceId);
-                if (place == null)
-                {
-                    throw new ArgumentException($"This Place Doesn't Exist");
-                }
-                ApplicationUser finduser = await _context.Users.FindAsync(userFav.UserId);
+        //        Place place = await _context.Places.FindAsync(userFav.PlaceId);
+        //        if (place == null)
+        //        {
+        //            throw new ArgumentException($"This Place Doesn't Exist");
+        //        }
+        //        ApplicationUser finduser = await _context.Users.FindAsync(userFav.UserId);
 
-                if (finduser == null)
-                {
-                    throw new ArgumentException($"This User Doesn't Exist");
-                }
+        //        if (finduser == null)
+        //        {
+        //            throw new ArgumentException($"This User Doesn't Exist");
+        //        }
 
-                _context.Favorites.Remove(userFav);
-                await _context.SaveChangesAsync();
+        //        _context.Favorites.Remove(userFav);
+        //        await _context.SaveChangesAsync();
              
 
-        }
+        //}
 
         public async Task DeletePlaceFromFavorite(int id)
         {
@@ -90,7 +90,7 @@ namespace Tourism.Repository.Repository
                 .Where(f => f.UserId == UserId)
                 .Select(f => new ReturnFavoritesDTO
                 {
-                    Id = f.Id,
+                    FavoriteId =  f.Id,
                     Name = f.Place.Name,
                     Description = f.Place.Description,
                     Location = f.Place.Location,

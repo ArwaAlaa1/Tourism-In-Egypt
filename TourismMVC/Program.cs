@@ -45,21 +45,7 @@ namespace TourismMVC
                 .AddEntityFrameworkStores<TourismContext>();
 
 
-            builder.Services.AddAuthentication(o =>
-            {
-                o.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
-                o.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-
-            })
-                .AddGoogle(options =>
-                {
-                    IConfigurationSection GoogleAuthSec = builder.Configuration.GetSection("Authentication:Google");
-                    options.ClientId = GoogleAuthSec["ClientId"];
-                    options.ClientSecret = GoogleAuthSec["ClientSecret"];
-                    options.CallbackPath = "/auth/google-callback";
-
-
-                });
+          
             builder.Services.ConfigureApplicationCookie(config =>
             {
                 config.LoginPath = "/Account/Login";

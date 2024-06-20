@@ -10,5 +10,7 @@ namespace Tourism.Core.Repositories.Contract
     public interface ITripRepository
     {
         public Task<IEnumerable<Place_Trip>> GetplacesByIdofTrip(int id);
-    }   
+		public Task<Trip> GetTrip(int id);
+
+	}
 }

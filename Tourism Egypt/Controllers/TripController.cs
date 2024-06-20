@@ -44,7 +44,7 @@ namespace Tourism_Egypt.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<TripDTO>> Details(int id)
         {
-            var trip = await _trip.GetAsync(id);
+            var trip = await _tripRepository.GetTrip(id);
 
             if (trip == null)
             {
@@ -52,14 +52,10 @@ namespace Tourism_Egypt.Controllers
             }
             else
             {
-                var places = await _tripRepository.GetplacesByIdofTrip(trip.Id);
+                //var places = await _tripRepository.GetplacesByIdofTrip(trip.Id);
                 var data = _mapper.Map<Trip, TripDTO>(trip);
-                //foreach (var item in places)
-                //{
-                //    var place = item.Place;
-                //    var mapedPlace = _mapper.Map<Place , placeOfTripDto>(place);
-                //    data.places.Add(mapedPlace);
-                //}
+             
+
                 return Ok(data);
             }
 

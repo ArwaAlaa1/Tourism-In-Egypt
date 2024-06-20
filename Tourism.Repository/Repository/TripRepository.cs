@@ -19,9 +19,13 @@ namespace Tourism.Repository.Repository
             this.context = context;
         }
 
+		public async Task<Trip> GetTrip(int id)
+		{
+			return await context.Trips.Where(x => x.Id == id).Include(p=>p.Places).ThenInclude(p=>p.Photos).FirstAsync(p => p.Id == id);
 
+		}
 
-        public async Task<IEnumerable<Place_Trip>> GetplacesByIdofTrip(int id)
+		public async Task<IEnumerable<Place_Trip>> GetplacesByIdofTrip(int id)
         {
             return await  context.Place_Trips.Where(x => x.TripId == id).Include("Place").ToListAsync();
 

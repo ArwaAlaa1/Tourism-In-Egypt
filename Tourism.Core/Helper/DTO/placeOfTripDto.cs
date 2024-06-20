@@ -11,6 +11,9 @@ namespace Tourism.Core.Helper.DTO
         public int Id { get; set; }
         public string placeName { get; set; }
 
+        
         public string Location { get; set; }
-    }
+		public virtual IEnumerable<PhotoDTO> Photos { get; set; }
+
+	}
 }

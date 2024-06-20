@@ -1,6 +1,8 @@
 ﻿
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Tourism.Core.Entities;
+using Tourism.Core.Helper.DTO;
 using Tourism.Core.Repositories.Contract;
 using Tourism.Repository.Data;
 
@@ -48,6 +50,7 @@ namespace Tourism.Repository.Repository
             return review;
         }
 
+        
         public async Task<Review> UpdateReviewAsync(int id, Review review)
         {
             if (id != review.Id)
@@ -80,26 +83,27 @@ namespace Tourism.Repository.Repository
             }
         }
 
-        public async Task<Review> GetReviewByIdAsync(int id)
+        public async Task<Review> GetReviewByIdAsync(int ReviewId)
         {
 
-            return await _context.Reviews.FirstOrDefaultAsync(R => R.Id == id);
+            return await _context.Reviews.FirstOrDefaultAsync(R => R.Id == ReviewId);
         }
 
-        public async Task<IEnumerable<Review>> GetAllReviewByPlaceIdAsync(int PlaceId)
+        public async Task<IEnumerable<ReviewsPlaceDTOs>> GetAllReviewByPlaceIdAsync(int PlaceId)
         {
             return await _context.Reviews
                 .Include(p => p.Place)
                 .Include(u => u.User)
-                .Where(p => p.PlaceId == PlaceId).Select(r => new Review
+                .Where(p => p.PlaceId == PlaceId).Select(r => new ReviewsPlaceDTOs
                 {
+                    Id = r.Id,  
+                    DisplayName = r.User.DisplayName,
                     Message = r.Message,
                     Rating = r.Rating,
-                    PlaceId = r.PlaceId,
-                    UserId = r.UserId,
-                    Time = r.Time,
+                    PlaceId = r.Place.Id,
+                    UserId = r.User.Id,
                     CreatedDate = r.CreatedDate,
-                    ModifiedDate = r.ModifiedDate,
+                    
                 })
                 .ToListAsync();
         }

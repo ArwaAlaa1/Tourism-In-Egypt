@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Tourism.Core.Entities;
 using Tourism.Core.Helper.DTO;
 using Tourism.Core.Repositories.Contract;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Tourism_Egypt.Controllers
 {
@@ -36,17 +37,21 @@ namespace Tourism_Egypt.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new Response()
+                {
+                    Status = false,
+                    Message = $"An error occurred while add Review: {ex.Message}"
+                });
             }
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<Review>> UpdateReview(int id, ReviewDTO review)
+        [HttpPut("[action]/{id}")]
+        public async Task<IActionResult> UpdateReview(int id, UpdateReviewDTO review)
         {
             try
             {
 
-                var mappedReview = _mapper.Map<ReviewDTO, Review>(review);
+                var mappedReview = _mapper.Map<UpdateReviewDTO, Review>(review);
 
                 var updatedReview = await _reviewRepository.UpdateReviewAsync(id, mappedReview);
                 return Ok(new Response()
@@ -57,23 +62,31 @@ namespace Tourism_Egypt.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new Response()
+                {
+                    Status = false,
+                    Message = $"An error occurred while Updated Review: {ex.Message}"
+                });
             }
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteReview(int id)
+        [HttpDelete("[action]/{ReviewId}")]
+        public async Task<IActionResult> DeleteReview(int ReviewId)
         {
             try
             {
-                var existingReview = await _reviewRepository.GetReviewByIdAsync(id);
+                var existingReview = await _reviewRepository.GetReviewByIdAsync(ReviewId);
 
                 if (existingReview == null)
                 {
-                    return NotFound("This Review No Existing");
+                    return NotFound(new Response()
+                    {
+                        Status = false,
+                        Message = $"This Review No Existing"
+                    });
 
                 }
-                await _reviewRepository.DeleteReviewAsync(id);
+                await _reviewRepository.DeleteReviewAsync(ReviewId);
                 return Ok(new Response()
                 {
                     Status = true,
@@ -82,32 +95,44 @@ namespace Tourism_Egypt.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new Response()
+                {
+                    Status = false,
+                    Message = $"An error occurred while Deleted Review: {ex.Message}"
+                });
             }
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ReviewDTO>> GetReviewById(int id)
+        [HttpGet("[action]/{ReviewId}")]
+        public async Task<ActionResult<Review>> GetReviewById(int ReviewId)
         {
             try
             {
 
-                var review = await _reviewRepository.GetReviewByIdAsync(id);
+                var review = await _reviewRepository.GetReviewByIdAsync(ReviewId);
 
                 if (review == null)
                 {
-                    return NotFound("This Review No Existing");
+                    return NotFound(new Response()
+                    {
+                        Status = false,
+                        Message = $"This Review No Existing"
+                    });
                 }
-                return Ok(_mapper.Map<Review, ReviewDTO>(review));
+                return Ok(review);
             }
-            catch
+            catch(Exception ex) 
             {
-                return NotFound("This Review Not Found");
+                    return NotFound(new Response()
+                    {
+                        Status = false,
+                        Message = $"An error occurred while updating the review: {ex.Message}"
+                    });
             }
         }
 
-        [HttpGet("[action]{PlaceId}")]
-        public async Task<ActionResult<IEnumerable<ReviewDTO>>> GetAllReviewByPlaceId(int PlaceId)
+        [HttpGet("[action]/{PlaceId}")]
+        public async Task<ActionResult<IEnumerable<ReviewsPlaceDTOs>>> GetAllReviewByPlaceId(int PlaceId)
         {
             try
             {
@@ -116,14 +141,22 @@ namespace Tourism_Egypt.Controllers
 
                 if (reviews == null || !reviews.Any())
                 {
-                    return NotFound("No Review on this Place");
+                    return NotFound(new Response()
+                    {
+                        Status = false,
+                        Message = $"No Review on this Place"
+                    });
                 }
 
                 return Ok(reviews);
             }
-            catch
+            catch(Exception ex) 
             {
-                return NotFound("This Place Not Found");
+                return NotFound(new Response()
+                {
+                    Status = false,
+                    Message = $"This Place Not Found: {ex.Message}"
+                });
             }
         }
 

@@ -36,30 +36,39 @@ namespace Tourism_Egypt.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new Response()
+                {
+                    Status = false,
+                    Message = $"Failed to add favorite: {ex.Message}"
+                });
             }
         }
 
-        //[HttpDelete]
-        //public async Task<IActionResult> DeleteFavorite(FavoriteDTO favorite)
-        //{
-        //    try
-        //    {
-        //        var mappedFavorite = _mapper.Map<FavoriteDTO, Favorite>(favorite);
 
-        //        await _favoriteRepository.DeleteFavorite(mappedFavorite);
+        [HttpDelete("[action]")]
+        public async Task<IActionResult> DeleteFavorite(FavoriteDTO favorite)
+        {
+            try
+            {
 
-        //        return Ok(new Response()
-        //        {
-        //            Status = true,
-        //            Message = $"This Place Removed From Your Favorite"
-        //        });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
+                await _favoriteRepository.DeleteFavorite(favorite);
+
+
+                return Ok(new Response()
+                {
+                    Status = true,
+                    Message = $"This Place Removed From Your Favorite"
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new Response()
+                {
+                    Status = false,
+                    Message = $"Failed to Remove favorite: {ex.Message}"
+                });
+            }
+        }
 
 
         [HttpDelete("{FavoriteId}")]
@@ -77,7 +86,11 @@ namespace Tourism_Egypt.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new Response()
+                {
+                    Status = false,
+                    Message = $"Failed to Remove favorite: {ex.Message}"
+                });
             }
         }
 
@@ -91,14 +104,22 @@ namespace Tourism_Egypt.Controllers
 
                 if (Favorite == null || !Favorite.Any())
                 {
-                    return NotFound("No Favorite");
+                    return NotFound(new Response()
+                    {
+                        Status = false,
+                        Message = $"No Favorite"
+                    });
                 }
 
                 return Ok(Favorite);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(new Response()
+                {
+                    Status = false,
+                    Message = $"No Favorite: {ex.Message}"
+                });
             }
         }
 

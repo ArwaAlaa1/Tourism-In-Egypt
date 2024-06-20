@@ -50,7 +50,6 @@ namespace Tourism_Egypt.Controllers
         {
             try
             {
-
                 await _favoriteRepository.DeleteFavorite(favorite);
 
 

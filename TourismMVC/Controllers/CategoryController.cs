@@ -17,6 +17,9 @@ namespace TourismMVC.Controllers
             _unitOfWork = unitOfWork;
             this.mapper = mapper;
         }
+       
+        
+        
         // GET: CategoryController
         public async Task<IActionResult> Index()
         {
@@ -28,8 +31,10 @@ namespace TourismMVC.Controllers
             else
                 return BadRequest();
 
-
         }
+
+
+
 
         // GET: CategoryController/Details/5
         public async Task<IActionResult> Details(int? id, string viewname = "Details")
@@ -44,6 +49,10 @@ namespace TourismMVC.Controllers
 
             return View(viewname, categorymapped);
         }
+
+
+
+
 
         // GET: CategoryController/Create
         public ActionResult Create()
@@ -88,24 +97,12 @@ namespace TourismMVC.Controllers
                     return RedirectToAction("Index");
                 }
             }
-
             return View(category);
         }
 
         // GET: CategoryController/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-
-            //if (id is null)
-            //    return BadRequest();
-
-            //var category = await _unitOfWork.generic.GetAsync(id.Value);
-
-            //if (category is null)
-            //    return NotFound();
-
-            //return View(category);
-
             return await Details(id, "Edit");
         }
 
@@ -114,10 +111,6 @@ namespace TourismMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit([FromRoute] int id, CategoryViewModel category)
         {
-
-
-            // var cat = _unitOfWork.generic.GetAsync(id);
-
 
             if (id != category.Id)
                 return BadRequest();
@@ -130,9 +123,7 @@ namespace TourismMVC.Controllers
 
                 category.ImgUrl = DocumentSetting.UploadFile(category.PhotoFile, "category");
             }
-
             var categorymapped = mapper.Map<CategoryViewModel, Category>(category);
-
 
             if (ModelState.IsValid)  //server side validation
             {
@@ -149,10 +140,7 @@ namespace TourismMVC.Controllers
                 {
                     ModelState.AddModelError(string.Empty, ex.Message);
                 }
-
             }
-
-
             return View(category);
         }
 

@@ -27,8 +27,6 @@ namespace TourismMVC.Controllers
             return View(List);
         }
 
-
-
         //Get : Open Register Form
         [HttpGet]
         public IActionResult Register()
@@ -131,37 +129,7 @@ namespace TourismMVC.Controllers
 
         }
 
-        public IActionResult GoogleLogin()
-        {
-            var authenticationProperties = new AuthenticationProperties
-            {
-                RedirectUri = Url.Action("GoogleResponse")
-            };
-
-            return Challenge(authenticationProperties, GoogleDefaults.AuthenticationScheme);
-        }
-
-        //[HttpGet("google-response")]
-        public async Task<IActionResult> GoogleResponse()
-        {
-            var authenticateResult = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
-
-            if (!authenticateResult.Succeeded)
-            {
-                // Handle authentication failure
-                return BadRequest();
-            }
-
-            // Here you can get user information from authenticateResult.Principal
-            var userInfo = new
-            {
-                Email = authenticateResult.Principal.FindFirstValue(ClaimTypes.Email),
-                Name = authenticateResult.Principal.FindFirstValue(ClaimTypes.Name)
-                // Add more fields as needed
-            };
-
-            return Ok(userInfo);
-        }
+       
 
     }
 }

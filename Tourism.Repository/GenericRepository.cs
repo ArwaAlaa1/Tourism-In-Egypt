@@ -30,8 +30,6 @@ namespace Tourism.Repository
 
         }
 
-
-
         public void Add(T entity)
         {
             _context.Add(entity);

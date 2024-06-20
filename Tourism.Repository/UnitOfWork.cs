@@ -23,7 +23,6 @@ namespace Tourism.Repository
             changePassword = new ChangePassword(_context);
         }
 
-
         public int Complet()
         {
             return _context.SaveChanges();

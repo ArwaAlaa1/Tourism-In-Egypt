@@ -16,7 +16,7 @@
 
 
         public virtual IEnumerable<PhotoDTO> Photos { get; set; }
-        public virtual IEnumerable<ReviewDTO> reviews { get; set; }
+        public virtual IEnumerable<UpdateReviewDTO> reviews { get; set; }
 
     }
 }

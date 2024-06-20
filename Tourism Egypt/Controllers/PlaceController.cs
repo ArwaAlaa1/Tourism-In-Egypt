@@ -55,21 +55,49 @@ namespace Tourism_Egypt.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<PlaceDTO>> GetPlace(int id)
         {
-            var place = await _placerepo.GetAsync(id);
+            try
+            {
+                var place = await _placerepo.GetAsync(id);
 
-            //var reviews =await GetAllReviewByPlaceId(id);
+                if (place == null)
+                {
+                    return NotFound();
+                }
 
-            if (place == null)
-                return NotFound();
+                var reviews = await _review.GetAllReviewByPlaceIdAsync(id);
 
+                var data = mapper.Map<Place, PlaceDTO>(place);
 
-            var data = mapper.Map<Place, PlaceDTO>(place);
+                data.reviews = (IEnumerable<UpdateReviewDTO>)reviews;
 
-            //data.reviews = reviews;
-            return Ok(data);
-
-
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                
+                return StatusCode(500, "Internal server error");
+            }
         }
+
+
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<PlaceDTO>> GetPlace(int id)
+        //{
+        //    var place = await _placerepo.GetAsync(id);
+
+        //    //var reviews =await GetAllReviewByPlaceId(id);
+
+        //    if (place == null)
+        //        return NotFound();
+
+
+        //    var data = mapper.Map<Place, PlaceDTO>(place);
+
+        //    //data.reviews = reviews;
+        //    return Ok(data);
+
+
+        //}
 
         //      [HttpGet("[action]{PlaceId}")]
         //      public async Task<ActionResult<IEnumerable<ReviewDTO>>> GetAllReviewByPlaceId(int PlaceId)

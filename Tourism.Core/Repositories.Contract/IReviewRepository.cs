@@ -1,4 +1,5 @@
 ﻿using Tourism.Core.Entities;
+using Tourism.Core.Helper.DTO;
 
 namespace Tourism.Core.Repositories.Contract
 {
@@ -7,7 +8,7 @@ namespace Tourism.Core.Repositories.Contract
         Task<Review> AddReviewAsync(Review review);
         Task<Review> UpdateReviewAsync(int id, Review review);
         Task DeleteReviewAsync(int id);
-        Task<Review> GetReviewByIdAsync(int Id);
-        Task<IEnumerable<Review>> GetAllReviewByPlaceIdAsync(int PlaceId);
+        Task<Review> GetReviewByIdAsync(int ReviewId);
+        Task<IEnumerable<ReviewsPlaceDTOs>> GetAllReviewByPlaceIdAsync(int PlaceId);
     }
 }

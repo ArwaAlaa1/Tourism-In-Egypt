@@ -1,5 +1,6 @@
-using Microsoft.AspNetCore.Authentication.Google;
+﻿using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.EntityFrameworkCore;
+using Tourism.Core;
 using Tourism.Core.Entities;
 using Tourism.Core.Repositories.Contract;
 using Tourism.Repository;
@@ -9,72 +10,72 @@ using TourismMVC.Helpers;
 
 namespace TourismMVC
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+	public class Program
+	{
+		public static void Main(string[] args)
+		{
+			var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            builder.Services.AddControllersWithViews();
+			// Add services to the container.
+			builder.Services.AddControllersWithViews();
 
-            builder.Services.AddDbContext<TourismContext>(
-               options =>
-               {
-                   options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("conn"));
-                   // options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+			builder.Services.AddDbContext<TourismContext>(
+			   options =>
+			   {
+				   options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("conn"));
+				   // options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 
-               });
+			   });
 
-            builder.Services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
+			builder.Services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
 
-            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            builder.Services.AddScoped(typeof(IAuthService), typeof(AuthService));
+			builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+			builder.Services.AddScoped(typeof(IAuthService), typeof(AuthService));
 
-            builder.Services.AddAutoMapper(m => m.AddProfile(new MappingProfiles()));
+			builder.Services.AddAutoMapper(m => m.AddProfile(new MappingProfiles()));
 
-            builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(
-            config =>
-            {
-                //config.Password.RequireUppercase = false;
-                //config.Lockout.MaxFailedAccessAttempts = 3;
-                //config.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-
-
-            })//configuration
-                .AddEntityFrameworkStores<TourismContext>();
+			builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(
+			config =>
+			{
+				//config.Password.RequireUppercase = false;
+				//config.Lockout.MaxFailedAccessAttempts = 3;
+				//config.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
 
 
-          
-            builder.Services.ConfigureApplicationCookie(config =>
-            {
-                config.LoginPath = "/Account/Login";
-                //config.ExpireTimeSpan= TimeSpan.FromMinutes(5);
-            });
+			})//configuration
+				.AddEntityFrameworkStores<TourismContext>();
 
 
-            var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
-            {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
+			builder.Services.ConfigureApplicationCookie(config =>
+			{
+				config.LoginPath = "/Account/Login";
+				//config.ExpireTimeSpan= TimeSpan.FromMinutes(5);
+			});
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
 
-            app.UseRouting();
-            app.UseAuthentication();
-            app.UseAuthorization();
+			var app = builder.Build();
 
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+			// Configure the HTTP request pipeline.
+			if (!app.Environment.IsDevelopment())
+			{
+				app.UseExceptionHandler("/Home/Error");
+				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+				app.UseHsts();
+			}
 
-            app.Run();
-        }
-    }
+			app.UseHttpsRedirection();
+			app.UseStaticFiles();
+
+			app.UseRouting();
+			app.UseAuthentication();
+			app.UseAuthorization();
+
+			app.MapControllerRoute(
+				name: "default",
+				pattern: "{controller=Home}/{action=Index}/{id?}");
+
+			app.Run();
+		}
+	}
 }

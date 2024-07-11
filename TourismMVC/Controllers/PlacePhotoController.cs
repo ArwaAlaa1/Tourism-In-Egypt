@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Tourism.Core;
 using Tourism.Core.Entities;
-using Tourism.Core.Repositories.Contract;
 using TourismMVC.Helpers;
 using TourismMVC.ViewModels;
 

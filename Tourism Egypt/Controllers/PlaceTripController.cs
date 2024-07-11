@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Tourism.Core;
 using Tourism.Core.Entities;
 using Tourism.Core.Repositories.Contract;
 
 namespace Tourism_Egypt.Controllers
 {
-    
+
     public class PlaceTripController : BaseApiController
     {
         private readonly IGenericRepository<Place_Trip> _placetrip;

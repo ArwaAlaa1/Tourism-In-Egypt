@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Tourism.Core;
 using Tourism.Core.Entities;
-using Tourism.Core.Repositories.Contract;
 using Tourism.Repository.Data;
 
 namespace Tourism.Repository

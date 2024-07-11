@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
+using Tourism.Core;
 using Tourism.Core.Entities;
 using Tourism.Core.Helper;
 using Tourism.Core.Helper.DTO;

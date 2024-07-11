@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using Tourism.Core;
 using Tourism.Core.Entities;
 using Tourism.Core.Helper;
 using Tourism.Core.Repositories.Contract;

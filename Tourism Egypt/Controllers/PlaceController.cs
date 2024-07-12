@@ -68,7 +68,7 @@ namespace Tourism_Egypt.Controllers
 
                 var data = mapper.Map<Place, PlaceDTO>(place);
 
-                data.reviews = (IEnumerable<UpdateReviewDTO>)reviews;
+               // data.reviews = (IEnumerable<UpdateReviewDTO>)reviews;
 
                 return Ok(data);
             }
